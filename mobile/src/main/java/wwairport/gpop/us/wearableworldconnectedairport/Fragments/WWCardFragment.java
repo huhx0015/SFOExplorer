@@ -142,8 +142,6 @@ public class WWCardFragment extends Fragment {
 
     }
 
-
-
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/
 
     // setUpDisplayParameters(): Sets up the device's display parameters.

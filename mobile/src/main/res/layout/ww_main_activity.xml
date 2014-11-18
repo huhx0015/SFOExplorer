@@ -4,24 +4,106 @@
     tools:context=".WWMainActivity"
     android:id="@+id/ww_main_activity_layout">
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView" />
-
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_fragment_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>
 
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/card_fragment_container"
-        android:visibility="gone">
+        android:layout_height="48dp"
+        android:id="@+id/notification_bar"
+        android:background="@drawable/dark_transparent_background">
 
-    </FrameLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/notification_weather_container"
+            android:layout_gravity="left"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/notification_weather_image"
+                android:layout_gravity="center"
+                android:src="@drawable/weather_partly_cloudy" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notification_weather_spacer"
+                android:padding="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="55° PARTLY CLOUDY"
+                android:id="@+id/notification_weather_status"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:id="@+id/notification_gate_container"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notification_flight_icon"
+                android:layout_gravity="center"
+                android:src="@drawable/aa_icon" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notification_flight_spacer"
+                android:padding="5dp"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:id="@+id/notification_flight_info_container">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FLIGHT 390"
+                    android:id="@+id/notification_flight_number"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GATE A12"
+                    android:id="@+id/notification_gate_number"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:46"
+                android:id="@+id/avip_sticky_departure"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:gravity="right" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </FrameLayout>

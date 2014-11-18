@@ -12,18 +12,24 @@ import android.support.v4.view.ViewPager;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Vector;
-
 import wwairport.gpop.us.wearableworldconnectedairport.Device.WWDisplay;
 import wwairport.gpop.us.wearableworldconnectedairport.Fragments.WWCardFragment;
 import wwairport.gpop.us.wearableworldconnectedairport.R;
+import wwairport.gpop.us.wearableworldconnectedairport.UI.WWFont;
 
 
 public class WWMainActivity extends FragmentActivity {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
+
+    // NOTIFICATION VARIABLES
+    private ImageView notification_flight_image, notification_weather_image;
+    private TextView notification_flight_number, notification_gate_number, notification_weather_status;
 
     // SLIDER VARIABLES
     private int cardNumber = 0; // Used to determine which card fragment is being displayed.
@@ -85,7 +91,70 @@ public class WWMainActivity extends FragmentActivity {
 
         setUpDisplayParameters(); // Sets up the device's display parameters.
         setContentView(R.layout.ww_main_activity); // Sets the XML file.
+        setUpNotificationBar(); // Sets up the notification bar for the activity.
         setUpSlider(false); // Initializes the fragment slides for the PagerAdapter.
+    }
+
+    /** NOTIFICATION BAR FUNCTIONALITY _________________________________________________________ **/
+
+    // setUpNotificationBar(): Sets up the notification bar for the activity.
+    private void setUpNotificationBar() {
+
+        // Sets up the ImageView objects.
+        notification_flight_image = (ImageView) findViewById(R.id.notification_flight_icon);
+        notification_weather_image = (ImageView) findViewById(R.id.notification_weather_image);
+
+        // Sets up the TextView objects.
+        notification_flight_number = (TextView) findViewById(R.id.notification_flight_number);
+        notification_gate_number = (TextView) findViewById(R.id.notification_gate_number);
+        notification_weather_status = (TextView) findViewById(R.id.notification_weather_status);
+
+        // Sets up the custom font type for the TextView objects.
+        notification_flight_number.setTypeface(WWFont.getInstance(this).getTypeFace()); // Sets the custom font face.
+        notification_gate_number.setTypeface(WWFont.getInstance(this).getTypeFace()); // Sets the custom font face.
+        notification_weather_status.setTypeface(WWFont.getInstance(this).getTypeFace()); // Sets the custom font face.
+
+        getFlightStatus(); // Updates the flight status on the notification bar.
+        getWeatherStatus(); // Updates the weather status on the notification bar.
+    }
+
+    // getWeatherStatus(): Retrieves the current weather status.
+    private void getWeatherStatus() {
+
+        int weather_image = R.drawable.weather_partly_cloudy;
+        String current_temperature = "55°";
+        String current_weather = "PARTLY CLOUDY";
+
+        // Sets the weather icon for the ImageView object.
+        Picasso.with(this)
+                .load(weather_image)
+                .placeholder(R.drawable.dark_transparent_tile)
+                .resize(48, 48)
+                .centerCrop()
+                .into(notification_weather_image);
+
+        // Sets the weather status for the TextView object.
+        notification_weather_status.setText(current_temperature + " " + current_weather);
+    }
+
+    // getFlightStatus(): Retrieves the current flight status.
+    private void getFlightStatus() {
+
+        int airline_logo = R.drawable.aa_icon;
+        String flight_number = "FLIGHT 390";
+        String gate_number = "GATE A12";
+
+        // Sets the weather icon for the ImageView object.
+        Picasso.with(this)
+                .load(airline_logo)
+                .placeholder(R.drawable.dark_transparent_tile)
+                .resize(48, 48)
+                .centerCrop()
+                .into(notification_flight_image);
+
+        // Sets the flight and gate number for the TextView objects.
+        notification_flight_number.setText(flight_number);
+        notification_gate_number.setText(gate_number);
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/
@@ -104,22 +173,18 @@ public class WWMainActivity extends FragmentActivity {
     /** SLIDER FUNCTIONALITY ___________________________________________________________________ **/
 
     // createSlideFragments(): Sets up the slide fragments for the PagerAdapter object.
-    private List<Fragment> createSlideFragments() {
+    private List<Fragment> createSlideFragments(int numberOfSlides) {
 
         final List<Fragment> fragments = new Vector<Fragment>(); // List of fragments in which the fragments is stored.
 
-        // Initialize fragment objects.
-        WWCardFragment cardFragment_1 = new WWCardFragment();
-        WWCardFragment cardFragment_2 = new WWCardFragment();
-        WWCardFragment cardFragment_3 = new WWCardFragment();
-        cardFragment_1.initializeFragment(0);
-        cardFragment_2.initializeFragment(1);
-        cardFragment_3.initializeFragment(2);
+        // Creates the card deck for the slider.
+        for (int i = 0; i <= numberOfSlides; i++) {
 
-        // Sets up the fragment list for the PagerAdapter object.
-        fragments.add(cardFragment_1); // Adds the cardFragment_1 fragment to the List<Fragment> object.
-        fragments.add(cardFragment_2); // Adds the cardFragment_2 fragment to the List<Fragment> object.
-        fragments.add(cardFragment_3); // Adds the cardFragment_3 fragment to the List<Fragment> object.
+            // Initializes the card fragment and adds it to the deck.
+            WWCardFragment cardFragment = new WWCardFragment();
+            cardFragment.initializeFragment(i);
+            fragments.add(cardFragment);
+        }
 
         return fragments;
     }
@@ -166,7 +231,7 @@ public class WWMainActivity extends FragmentActivity {
 
         // Initializes and creates a new FragmentListPagerAdapter objects using the List of slides
         // created from createSlideFragments.
-        wwPageAdapter = new FragmentListPagerAdapter(getSupportFragmentManager(), createSlideFragments());
+        wwPageAdapter = new FragmentListPagerAdapter(getSupportFragmentManager(), createSlideFragments(10));
 
         wwTitleScreenPager = (ViewPager) super.findViewById(R.id.card_fragment_pager);
         wwTitleScreenPager.setAdapter(this.wwPageAdapter); // Sets the PagerAdapter object for the activity.

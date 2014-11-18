@@ -1,8 +1,8 @@
 package wwairport.gpop.us.wearableworldconnectedairport.Server;
 
+import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
@@ -58,6 +58,7 @@ public class WWClient {
             BASE_URL = null;
         }
 
+        Log.d(TAG, "BASE_URL: " + BASE_URL); // Logging.
     }
 
     // getJsonData(): Retrieves the JSON data string.
@@ -66,13 +67,16 @@ public class WWClient {
         //String url = createApiUrl("lists/movies/box_office.json"); // Creates the full API URL string.
 
         // Creates an asynchronous HTTP request.
-        RequestParams params = new RequestParams();
+        //RequestParams params = new RequestParams();
         //RequestParams params = new RequestParams("apikey", API_KEY);
 
         // If the URL is not null, it retrieves the JSON data string.
         if (BASE_URL != null) {
-            client.get(BASE_URL, handler);
+            client.get(BASE_URL, handler); // Retrieves JSON data.
+            Log.d(TAG, "getJsonData(): Retrieving JsonData..."); // Logging.
             //client.get(BASE_URL, params, handler);
         }
+
+        else { Log.d(TAG, "getJsonData(): URL was invalid."); } // Logging.
     }
 }

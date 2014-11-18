@@ -1,6 +1,5 @@
 package wwairport.gpop.us.wearableworldconnectedairport.Fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -15,16 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
-
 import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.util.ArrayList;
 import wwairport.gpop.us.wearableworldconnectedairport.Device.WWDisplay;
 import wwairport.gpop.us.wearableworldconnectedairport.Model.WWEventModel;
-import wwairport.gpop.us.wearableworldconnectedairport.Model.WWWeatherModel;
 import wwairport.gpop.us.wearableworldconnectedairport.R;
 import wwairport.gpop.us.wearableworldconnectedairport.Server.WWClient;
 import wwairport.gpop.us.wearableworldconnectedairport.UI.WWFont;
@@ -36,8 +34,11 @@ public class WWCardFragment extends Fragment {
 
     /** FRAGMENT VARIABLES _____________________________________________________________________ **/
 
-    // FRAGMENT VARIABLES
+    // EVENT VARIABLES
     private int cardNumber = 0; // References the fragment number.
+    private WWEventModel eventModel; // References the event model object for this fragment.
+
+    // FRAGMENT VARIABLES
     private View card_view; // References the layout for the fragment.
 
     // LAYOUT VARIABLES
@@ -67,9 +68,10 @@ public class WWCardFragment extends Fragment {
     // getInstance(): Returns the profile_fragment instance.
     public static WWCardFragment getInstance() { return card_fragment; }
 
-    // initializeFragment(): Initializes the fragment with the slide number ID.
-    public void initializeFragment(int fragmentValue) {
-        cardNumber = fragmentValue;
+    // initializeFragment(): Initializes the fragment with the event properties.
+    public void initializeFragment(int cardID, WWEventModel event) {
+        cardNumber = cardID;
+        eventModel = event;
     }
 
     /** FRAGMENT LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
@@ -149,7 +151,7 @@ public class WWCardFragment extends Fragment {
     private void setUpLayout() {
 
         setUpCard(); // Sets up the card fragment layout objects.
-        getCardEvent(); // Retrieves the card event details.
+        //getCardEvent(); // Retrieves the card event details.
     }
 
     // setUpImages(): Sets up the images for the fragment.
@@ -167,6 +169,25 @@ public class WWCardFragment extends Fragment {
 
         // Sets up a shadow effect for the TextView objects.
         event_title.setShadowLayer(4, 0, 0, Color.BLACK);
+
+        // Sets up the attributes for the card event.
+        String event_name = eventModel.getEventTitle(); // Sets the event name from the JSON string.
+        String event_image_url = eventModel.getEventImageURL(); // Sets the event image URL from the JSON string.
+
+        Log.d(TAG, "Card: " + cardNumber + " | Image URL: " + event_image_url); // Logging.
+        Toast.makeText(currentActivity, "Card: " + cardNumber + " | Image URL: " + event_image_url, Toast.LENGTH_SHORT).show();
+
+        // Sets the weather icon for the ImageView object.
+        Picasso.with(currentActivity)
+                .load(event_image_url)
+                .placeholder(R.drawable.dark_transparent_tile)
+                .fit()
+                .centerCrop()
+                .into(card_background_image);
+
+        // Sets the weather status for the TextView object.
+        event_title.setText(event_name);
+
     }
 
     /** CARD FUNCTIONALITY _____________________________________________________________________ **/
@@ -174,34 +195,82 @@ public class WWCardFragment extends Fragment {
     // getCardEvent(): Gets the event details for the card.
     private void getCardEvent() {
 
+        Toast.makeText(currentActivity, "Is getCardEvent getting called? ", Toast.LENGTH_SHORT).show();
+
         client = new WWClient("FLYSFO"); // Sets up the JSON client for retrieving SFO data.
+        //client = new WWClient("WEATHER"); // Sets up the JSON client for retrieving SFO data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
 
-            // onSuccess(): Run when JSON request was successful.
+            // onSuccess(): Run when JSON request was successful for JSONArray.
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
-                WWEventModel model; // The model object for JSON weather data.
+                ArrayList<WWEventModel> models; // ArrayList of event model objects for JSON event data.
+                WWEventModel model = new WWEventModel(); // The model object for JSON event data.
 
                 Log.d(TAG, "Fly SFO API Handshake successful! " + response.toString()); // Logging.
                 Toast.makeText(currentActivity, "Fly SFO API Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
-                model = WWEventModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
-                String event_name = model.getEventTitle(); // Sets the event name from the JSON string.
-                String event_image_url = model.getEventImageURL(); // Sets the event image URL from the JSON string.
+                //models = WWEventModel.fromJson(response);
 
-                // Sets the weather icon for the ImageView object.
-                Picasso.with(currentActivity)
-                        .load(event_image_url)
-                        .placeholder(R.drawable.dark_transparent_tile)
-                        .resize(48, 48)
-                        .centerCrop()
-                        .into(card_background_image);
 
-                // Sets the weather status for the TextView object.
-                event_title.setText(event_name);
+                try {
+                    JSONObject object = (JSONObject) response.getJSONObject(0);
+                    model = WWEventModel.fromJson(object); // Attempts to retrieve a JSON string from the server.
+
+                    Toast.makeText(currentActivity, "Object 0 " + object.toString(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Object 0 " + object.toString()); // Logging.
+
+                    //JSONObject object1 = (JSONObject) response.getJSONObject(1);
+                    //Toast.makeText(currentActivity, "Object 1 " + object1.toString(), Toast.LENGTH_SHORT).show();
+                    //Log.d(TAG, "Object 1 " + object1.toString()); // Logging.
+
+
+                    String event_name = model.getEventTitle(); // Sets the event name from the JSON string.
+                    String event_image_url = model.getEventImageURL(); // Sets the event image URL from the JSON string.
+
+                    // Sets the weather icon for the ImageView object.
+                    Picasso.with(currentActivity)
+                            .load(event_image_url)
+                            .placeholder(R.drawable.dark_transparent_tile)
+                            .fit()
+                            .centerCrop()
+                            .into(card_background_image);
+
+                    // Sets the weather status for the TextView object.
+                    event_title.setText(event_name);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+
+                //model = WWEventModel.fromJson(); // Attempts to retrieve a JSON string from the server.
+
+
+                //String event_name = models.get(0).getEventTitle();
+                //String event_image_url = models.get(0).getEventImageURL();
+
+                //String event_name = model.getEventTitle(); // Sets the event name from the JSON string.
+                //String event_image_url = model.getEventImageURL(); // Sets the event image URL from the JSON string.
+
+
+
+                //Log.d(TAG, "Fly SFO API Handshake successful! " + response.toString()); // Logging.
+                //Toast.makeText(currentActivity, "Fly SFO API Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            // onSuccess(): Run when JSON request was successful for JSONObject.
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "Fly SFO API Handshake Success! | Status Code: " + statusCode); // Logging.
             }
 
             // onFailure(): Run when JSON request was a failure.
@@ -211,6 +280,7 @@ public class WWCardFragment extends Fragment {
                 Log.d(TAG, "Fly SFO API Handshake failure! | Status Code: " + statusCode); // Logging.
                 Toast.makeText(currentActivity, "Fly SFO API Handshake failure! | Status Code: " + statusCode, Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Vector;
 import wwairport.gpop.us.wearableworldconnectedairport.Device.WWDisplay;
 import wwairport.gpop.us.wearableworldconnectedairport.Fragments.WWCardFragment;
+import wwairport.gpop.us.wearableworldconnectedairport.Model.WWEventModel;
 import wwairport.gpop.us.wearableworldconnectedairport.Model.WWWeatherModel;
 import wwairport.gpop.us.wearableworldconnectedairport.R;
 import wwairport.gpop.us.wearableworldconnectedairport.Server.WWClient;
@@ -40,6 +41,9 @@ import wwairport.gpop.us.wearableworldconnectedairport.UI.WWFont;
 public class WWMainActivity extends FragmentActivity {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
+
+    // CARD VARIABLES
+    private ArrayList<WWEventModel> models; // References the ArrayList of WWEventModel objects.
 
     // LOGGING VARIABLES
     private static final String TAG = WWMainActivity.class.getSimpleName(); // Retrieves the simple name of the class.
@@ -53,6 +57,7 @@ public class WWMainActivity extends FragmentActivity {
 
     // SLIDER VARIABLES
     private int cardNumber = 0; // Used to determine which card fragment is being displayed.
+    private int numberOfCards = 1; // Used to determine how many card fragments are to be displayed.
     private PagerAdapter wwPageAdapter; // Used to reference the PagerAdapter object.
     private ViewPager wwTitleScreenPager; // Used to reference the ViewPager object.
 
@@ -112,7 +117,44 @@ public class WWMainActivity extends FragmentActivity {
         setUpDisplayParameters(); // Sets up the device's display parameters.
         setContentView(R.layout.ww_main_activity); // Sets the XML file.
         setUpNotificationBar(); // Sets up the notification bar for the activity.
-        setUpSlider(false); // Initializes the fragment slides for the PagerAdapter.
+        setUpCardEvents(); // Sets up the event cards for the slider fragments.
+    }
+
+    /** CARD FUNCTIONALITY _____________________________________________________________________ **/
+
+    // setUpCardEvents(): Sets up the event cards for the slider fragments. Queries the server to
+    // retrive the list of events.
+    private void setUpCardEvents() {
+
+        client = new WWClient("FLYSFO"); // Sets up the JSON client for retrieving SFO data.
+
+        // Attempts to retrieve the JSON data from the server.
+        client.getJsonData(new JsonHttpResponseHandler() {
+
+            // onSuccess(): Run when JSON request was successful for JSONArray.
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                Log.d(TAG, "Fly SFO API Handshake Success (JSONArray Response)" + response.toString()); // Logging.
+
+                models = WWEventModel.fromJson(response); // Builds an ArrayList of WWEventModel objects from the JSONArray.
+                numberOfCards = models.size(); // Retrieves the number of card fragments to build.
+
+                setUpSlider(false); // Initializes the fragment slides for the PagerAdapter.
+            }
+
+            // onSuccess(): Run when JSON request was successful for JSONObject.
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "Fly SFO API Handshake Success (JSONObject Response) | Status Code: " + statusCode); // Logging.
+            }
+
+            // onFailure(): Run when JSON request was a failure.
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Fly SFO API Handshake failure! | Status Code: " + statusCode); // Logging.
+            }
+        });
     }
 
     /** NOTIFICATION BAR FUNCTIONALITY _________________________________________________________ **/
@@ -233,11 +275,11 @@ public class WWMainActivity extends FragmentActivity {
         final List<Fragment> fragments = new Vector<Fragment>(); // List of fragments in which the fragments is stored.
 
         // Creates the card deck for the slider.
-        for (int i = 0; i <= numberOfSlides; i++) {
+        for (int i = 0; i < numberOfSlides; i++) {
 
             // Initializes the card fragment and adds it to the deck.
             WWCardFragment cardFragment = new WWCardFragment();
-            cardFragment.initializeFragment(i);
+            cardFragment.initializeFragment(i, models.get(i));
             fragments.add(cardFragment);
         }
 
@@ -286,7 +328,7 @@ public class WWMainActivity extends FragmentActivity {
 
         // Initializes and creates a new FragmentListPagerAdapter objects using the List of slides
         // created from createSlideFragments.
-        wwPageAdapter = new FragmentListPagerAdapter(getSupportFragmentManager(), createSlideFragments(10));
+        wwPageAdapter = new FragmentListPagerAdapter(getSupportFragmentManager(), createSlideFragments(numberOfCards));
 
         wwTitleScreenPager = (ViewPager) super.findViewById(R.id.card_fragment_pager);
         wwTitleScreenPager.setAdapter(this.wwPageAdapter); // Sets the PagerAdapter object for the activity.

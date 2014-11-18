@@ -17,6 +17,8 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,6 +52,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
     // FRAGMENT VARIABLES
     private Boolean isDetailsOn = false; // Used to determine if the card details fragment is currently being shown.
+    private Boolean isDetailsFragmentMade = false; // Used to determine if the card details fragment has already been created.
+    private WWDetailsFragment details_fragment; // References the WWDetailsFragment object.
 
     // LAYOUT VARIABLES
     private FrameLayout card_fragment_details_container; // References the card fragment details container object.
@@ -123,7 +127,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         // If the details fragment is currently being shown, the fragment is removed.
         if (isDetailsOn) {
             isDetailsOn = false; // Indicates that the details fragment is currently not being shown.
-            removeFragment(); // Removes the card details fragment.
+            displayFragment(false); // Hides the card details fragment.
         }
 
         else { finish(); } // The activity is terminated at this point.
@@ -176,11 +180,17 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             // Retrieves the WWEventModel, based on the card that is currently displayed.
             WWEventModel currentEvent = models.get(currentCardNumber);
 
-            // Initializes the WWDetailsFragment object.
-            WWDetailsFragment fragment = new WWDetailsFragment();
-            fragment.initializeFragment(currentCardNumber, currentEvent);
+            // If the card details fragment has already been made, the fragment is shown instead of
+            // being created.
+            if (isDetailsFragmentMade) { displayFragment(true); }
+            else {
 
-            setUpFragment(fragment); // Sets up the fragment for the card details.
+                // Initializes the WWDetailsFragment object.
+                details_fragment = new WWDetailsFragment();
+                details_fragment.initializeFragment(currentCardNumber, currentEvent);
+
+                setUpFragment(details_fragment); // Sets up the fragment for the card details.
+            }
         }
     }
 
@@ -192,7 +202,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         // If showDetails value is true, the card details fragment is removed.
         if (hideDetails) {
             isDetailsOn = false; // Indicates that the details fragment is currently not being shown.
-            removeFragment(); // Removes the card details fragment.
+            displayFragment(false); // Hides the card details fragment.
         }
     }
 
@@ -215,7 +225,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     /** CARD FUNCTIONALITY _____________________________________________________________________ **/
 
     // setUpCardEvents(): Sets up the event cards for the slider fragments. Queries the server to
-    // retrive the list of events.
+    // retrieve the list of events.
     private void setUpCardEvents() {
 
         client = new WWClient("FLYSFO"); // Sets up the JSON client for retrieving SFO data.
@@ -252,28 +262,24 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     /** FRAGMENT FUNCTIONALITY _________________________________________________________________ **/
 
     // displayFragment(): Displays/hides the fragment container.
-    private void displayFragment(Boolean isShow, Boolean isScenery) {
+    private void displayFragment(Boolean show) {
 
-        Handler fragmentHandler = new Handler(); // Thread for delaying the showing of the fragment container.
+        if ((weakRefActivity.get() != null) && (weakRefActivity.get().isFinishing() != true)) {
 
-        // If the fragment is currently being displayed, the fragment is hidden.
-        if (isShow == true) {
+            // Initializes the manager and transaction objects for the fragments.
+            final FragmentManager fragMan = weakRefActivity.get().getSupportFragmentManager();
+            final FragmentTransaction fragTrans = fragMan.beginTransaction();
+            fragTrans.setCustomAnimations(R.anim.slide_down, R.anim.slide_up);
 
-            card_fragment_details_container.setVisibility(View.INVISIBLE); // Hides the fragment.
-            removeFragment(); // Removes the fragment from the container.
+            // Displays the fragment.
+            if (show == true) { fragTrans.show(details_fragment); }
 
-            //showFragment = false; // Indicates that the fragment is hidden.
-            //noTouch = false; // Indicates that the user can move the map and interact with the activity buttons.
+            // Hides the fragment.
+            else { fragTrans.hide(details_fragment); } // Hides the fragment.
 
-        }
-
-        // If the fragment is currently hidden, the fragment is displayed.
-        else {
-
-            //showFragment = true; // Indicates that the fragment is currently being displayed.
-            //noTouch = true; // Indicates that the user cannot move the map and interact with the activity buttons.
-
-            card_fragment_details_container.setVisibility(View.VISIBLE); // Displays the fragment.
+            // Makes the changes to the fragment manager and transaction objects.
+            fragTrans.addToBackStack(null);
+            fragTrans.commitAllowingStateLoss();
         }
     }
 
@@ -283,26 +289,32 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         // Initializes the manager and transaction objects for the fragments.
         FragmentManager fragMan = weakRefActivity.get().getSupportFragmentManager();
         FragmentTransaction fragTrans = fragMan.beginTransaction();
-        fragTrans.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-
+        fragTrans.setCustomAnimations(R.anim.fade_in, R.anim.fade_out); // Sets the custom animation.
+        card_fragment_details_container.setVisibility(View.INVISIBLE); // Hides the fragment container.
+        fragTrans.show(details_fragment); // Shows the fragment.
         fragMan.popBackStack(); // Pops the fragment from the stack.
+        card_fragment_details_container.removeAllViews(); // Removes all views in the layout.
     }
 
-    // setUpFragment(): Updates the content of dg_fragment_container with the proper fragment.
+    // setUpFragment(): Updates the content of the fragment container with the proper fragment.
     private void setUpFragment(WWDetailsFragment fragment) {
 
         if ((weakRefActivity.get() != null) && (weakRefActivity.get().isFinishing() != true)) {
 
+            card_fragment_details_container.setVisibility(View.VISIBLE); // Displays the fragment.
+
             // Initializes the manager and transaction objects for the fragments.
             FragmentManager fragMan = weakRefActivity.get().getSupportFragmentManager();
             FragmentTransaction fragTrans = fragMan.beginTransaction();
-            fragTrans.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
 
+            fragTrans.setCustomAnimations(R.anim.slide_down, R.anim.slide_up);
             fragTrans.replace(R.id.card_fragment_details, fragment);
 
             // Makes the changes to the fragment manager and transaction objects.
             fragTrans.addToBackStack(null);
             fragTrans.commitAllowingStateLoss();
+
+            isDetailsFragmentMade = true; // Indicates that the card details fragment has been made.
         }
     }
 
@@ -442,14 +454,22 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         page.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             // onPageScrollStateChanged(): Called the page scroll state is changed.
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) { }
 
             // onPageScrolled(): Called when the pages are scrolled.
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             // onPageSelected(): Called when a new page is selected.
             public void onPageSelected(int position) {
+
                 currentCardNumber = position; // Sets the current card ID value.
+
+                // Removes the card details fragment if it was created. This is to fix the double
+                // animation effect when the fragment is re-created.
+                if (isDetailsFragmentMade) {
+                    isDetailsFragmentMade = false; // Indicates that the details fragment is no longer made.
+                    removeFragment(); // Removes the fragment.
+                }
             }
         });
     }

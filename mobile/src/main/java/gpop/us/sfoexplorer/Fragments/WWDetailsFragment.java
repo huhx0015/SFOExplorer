@@ -198,10 +198,12 @@ public class WWDetailsFragment extends Fragment {
         event_name.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());// Sets the custom font face.
         event_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
         event_description.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        event_gate.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
         bonus_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
 
         // Sets up a shadow effect for the TextView objects.
         event_name.setShadowLayer(8, 4, 4, Color.BLACK);
+        event_location.setShadowLayer(8, 4, 4, Color.BLACK);
         event_location.setShadowLayer(8, 4, 4, Color.BLACK);
         event_description.setShadowLayer(8, 4, 4, Color.BLACK);
         bonus_text.setShadowLayer(8, 4, 4, Color.BLACK);

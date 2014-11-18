@@ -3,9 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
-        applicationId "wwairport.gpop.us.wearableworldconnectedairport"
+        applicationId 'gpop.us.sfoexplorer'
         minSdkVersion 18
         targetSdkVersion 21
         versionCode 1
@@ -17,6 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -26,7 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.+'
     compile 'it.sephiroth.android.library.picasso:picasso:2.3.4.3'
     //compile 'com.squareup.picasso:picasso:2.4.+'
-
     compile('com.loopj.android:android-async-http:1.+') {
         exclude group: 'com.google.android', module: 'support-v4'
     }

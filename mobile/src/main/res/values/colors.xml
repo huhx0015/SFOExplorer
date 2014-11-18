@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="peter_river_blue">#2c97de</color>
+    <color name="belize_hole_blue">#268dd1</color>
+    <color name="red">#e94b35</color>
+    <color name="emerald_green">#1ece6d</color>
+    <color name="nephritis_green">#1aaf5d</color>
+    <color name="wet_asphalt">#33485f</color>
+    <color name="midnight_blue">#2b3e51</color>
+    <color name="amethyst">#33485f</color>
+    <color name="wisteria">#8f3faf</color>
+</resources>

@@ -8,16 +8,43 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/card_background_image"
-        android:background="@android:color/holo_orange_dark" />
+        android:background="@drawable/dark_transparent_background" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Event Name"
-        android:id="@+id/card_event_name"
         android:layout_gravity="center"
-        android:textSize="32sp"
-        android:textColor="@android:color/white" />
+        android:gravity="center"
+        android:id="@+id/card_event_text_container"
+        android:padding="10dp"
+        android:background="@drawable/dark_transparent_background">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event Name"
+            android:id="@+id/card_event_name"
+            android:layout_gravity="center"
+            android:textSize="36sp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IN TERMINAL 3 AT"
+            android:id="@+id/card_event_location"
+            android:textSize="24sp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GATE A20"
+            android:id="@+id/card_event_gate"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+    </LinearLayout>
 
     <ImageView
         android:layout_width="250dp"
@@ -26,4 +53,11 @@
         android:layout_gravity="center"
         android:src="@drawable/bathroom_sign"
         android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/card_details_button"
+        android:background="@android:color/transparent" />
+
 </FrameLayout>

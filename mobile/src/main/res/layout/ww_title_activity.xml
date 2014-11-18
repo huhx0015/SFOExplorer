@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ww_title_activity_layout"
+    android:background="@android:color/black">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/title_activity_background"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/logo_input_container">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_activity_logo"
+            android:src="@drawable/explorer_logo"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/flight_number_input"
+            android:background="@drawable/belize_hole_background"
+            android:hint="Enter Flight No."
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:padding="10dp"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center|bottom"
+        android:padding="50dp"
+        android:id="@+id/explore_button_container">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Explore"
+            android:id="@+id/explore_button"
+            android:background="@drawable/midnight_blue_background"
+            android:textSize="24sp"
+            android:padding="15dp"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ww_weather_fragment_layout"
+    android:background="@drawable/dark_transparent_background">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/weather_info_container">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weather_image"
+            android:layout_gravity="center"
+            android:src="@drawable/sun" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100°"
+            android:id="@+id/temperature_text"
+            android:textColor="@android:color/white"
+            android:textSize="36sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weather Status"
+            android:id="@+id/weather_status_text"
+            android:textColor="@android:color/white"
+            android:textSize="28sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weather_status_spacer"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="San Francisco International Airport"
+            android:id="@+id/current_location"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/weather_back_button"
+        android:layout_gravity="left|top"
+        android:src="@drawable/back"
+        android:background="@android:color/transparent"
+        android:padding="10dp" />
+
+</FrameLayout>

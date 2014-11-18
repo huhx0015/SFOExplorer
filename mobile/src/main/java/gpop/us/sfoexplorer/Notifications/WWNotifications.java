@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import gpop.us.sfoexplorer.Activities.WWMainActivity;
+import gpop.us.sfoexplorer.Activities.WWTitleActivity;
 import gpop.us.sfoexplorer.R;
 
 /**
@@ -49,8 +50,8 @@ public class WWNotifications {
         int notificationId = 001; // Notification ID tag.
 
         // Intent to launch the splash.
-        Intent sb_intent = new Intent(con, WWMainActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(con, 0, sb_intent, 0);
+        Intent ww_intent = new Intent(con, WWTitleActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(con, 0, ww_intent, 0);
 
         // ANDROID WEAR:
         // Specify the 'big view' content to display the long event description that may not fit the
@@ -61,14 +62,14 @@ public class WWNotifications {
         // ANDROID WEAR SPECIFIC ACTION:
         // Create the action.
         NotificationCompat.Action action =
-                new NotificationCompat.Action.Builder(R.drawable.ic_launcher, "FLY", pIntent).build();
+                new NotificationCompat.Action.Builder(R.drawable.ic_launcher, "EXPLORE", pIntent).build();
 
         // ANDROID WEAR NOTIFICATION FOR ANDROID WEAR ONLY ACTIONS:
         // Builds the notification and add the action via the WearableExtender.
         Notification noti =
                 new NotificationCompat.Builder(con)
                         .setSmallIcon(R.drawable.ic_launcher)
-                        .setContentTitle("FLY TO-DO")
+                        .setContentTitle("SFO Explorer")
                         .setContentText(notiText).setSmallIcon(R.drawable.ic_launcher)
                         .setStyle(bigStyle)
                         .extend(new NotificationCompat.WearableExtender().addAction(action))

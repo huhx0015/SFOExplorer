@@ -10,6 +10,10 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import wwairport.gpop.us.wearableworldconnectedairport.Device.WWDisplay;
+import wwairport.gpop.us.wearableworldconnectedairport.R;
 
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
@@ -22,12 +26,16 @@ public class WWCardFragment extends Fragment {
     private int cardNumber = 0; // References the fragment number.
     private View card_view; // References the layout for the fragment.
 
+    // LAYOUT VARIABLES
+    private ImageView card_background_image; // References the card background ImageView object.
+    private ImageView main_card_image; // References the main card image ImageView object.
+    private int main_card_image_resource; // Used to reference the main card image.
+
     // SYSTEM VARIABLES
-    private static final int api_level = android.os.Build.VERSION.SDK_INT; // Used to determine the device's Android API version.
     private Activity currentActivity; // Used to determine the activity class this fragment is currently attached to.
+    private Point resolutionDimens; // Used to determine the device's full resolution parameters.
     private int currentOrientation = 0; // Used to determine the device's orientation. (0: PORTRAIT / 1: LANDSCAPE)
     private int displaySize; // Stores the device's display size.
-    private int seriesNumber = 0; // References the fragment number.
     
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
@@ -40,7 +48,7 @@ public class WWCardFragment extends Fragment {
     public static WWCardFragment getInstance() { return card_fragment; }
 
     // initializeFragment(): Initializes the fragment with the slide number ID.
-    public void initializeFragment(int fragmentValue ) {
+    public void initializeFragment(int fragmentValue) {
         cardNumber = fragmentValue;
     }
 
@@ -59,10 +67,10 @@ public class WWCardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        updateDisplayLayout(); // Retrieves the device's display attributes.
+        setUpDisplayParameters(); // Sets up the device's display parameters.
 
         // Sets the view to the specified XML layout file.
-        card_view = (ViewGroup) inflater.inflate(R.layout.dg_game_select_fragment, container, false);
+        card_view = (ViewGroup) inflater.inflate(R.layout.ww_card_fragment, container, false);
         setUpLayout(); // Sets up the layout for the fragment.
 
         return card_view;
@@ -99,7 +107,7 @@ public class WWCardFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
 
-        updateDisplayLayout(); // Retrieves the device's display attributes.
+        setUpDisplayParameters(); // Sets up the device's display parameters.
         setUpLayout(); // Sets up the layout for the fragment.
     }
 
@@ -115,57 +123,38 @@ public class WWCardFragment extends Fragment {
         catch (ClassCastException cce) { } // Catch for class cast exception errors.
     }
 
+    /** LAYOUT FUNCTIONALITY ___________________________________________________________________ **/
+
+    // setUpLayout(): Sets up the layout for the fragment.
+    private void setUpLayout() {
+
+        setUpImages(); // Sets up the ImageView objects in the fragment.
+    }
+
+    // setUpImages(): Sets up the images for the fragment.
+    private void setUpImages() {
+
+        // References the ImageView objects.
+        card_background_image = (ImageView) card_view.findViewById(R.id.card_background_image);
+        main_card_image = (ImageView) card_view.findViewById(R.id.card_activity_image);
+
+        // TODO
+
+    }
+
+
+
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/
 
-    // getDisplaySize(): Used for retrieving the display size of the device.
-    public int getDisplaySize(Point resolution, int currentOrientation) {
+    // setUpDisplayParameters(): Sets up the device's display parameters.
+    private void setUpDisplayParameters() {
 
-        int size = 0;
+        // References the display parameters for the device.
+        Display deviceWindow = currentActivity.getWindowManager().getDefaultDisplay();
 
-        // PORTRAIT MODE: Determines the display size from the resolution.x value.
-        if (currentOrientation == 0) { size = resolution.x; }
-
-        // LANDSCAPE MODE: Determines the display size from the resolution.y value.
-        else if (currentOrientation == 1) { size = resolution.y; }
-
-        return size;
-    }
-
-    // getResolution(): Retrieves the device's screen resolution (width and height).
-    @SuppressLint("NewApi")
-    public Point getResolution(Display display) {
-
-        Point displayDimen = new Point(); // Used for determining the device's display resolution.
-
-        // If API Level is 13 and higher (HONEYCOMB_MR2>), use the new method.
-        if (api_level > 12) { display.getSize(displayDimen); }
-
-        // If API Level is less than 13 (HONEYCOMB_MR1<), use the depreciated method.
-        else {
-            displayDimen.x = display.getWidth();
-            displayDimen.y = display.getHeight();
-        }
-
-        return displayDimen;
-    }
-
-    // updateDisplayLayout(): Retrieves the device's screen resolution and current orientation.
-    private void updateDisplayLayout() {
-
-        // Used for retrieving the device's screen resolution values.
-        Display display = currentActivity.getWindowManager().getDefaultDisplay();
-        Point displayDimen = getResolution(display);
-
-        // Retrieves the device's current screen orientation.
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            currentOrientation = 0;
-        }
-
-        else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            currentOrientation = 1;
-        }
-
-        displaySize = getDisplaySize(displayDimen, currentOrientation);
+        currentOrientation = WWDisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
+        resolutionDimens = WWDisplay.getResolution(deviceWindow);
+        displaySize = WWDisplay.getDisplaySize(resolutionDimens, currentOrientation);
     }
 
     /** INTERFACE FUNCTIONALITY ________________________________________________________________ **/

@@ -4,28 +4,31 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
 import it.sephiroth.android.library.picasso.Picasso;
 import gpop.us.sfoexplorer.Device.WWDisplay;
 import gpop.us.sfoexplorer.Fragments.WWCardFragment;
@@ -37,12 +40,16 @@ import gpop.us.sfoexplorer.Server.WWClient;
 import gpop.us.sfoexplorer.UI.WWFont;
 import gpop.us.sfoexplorer.UI.WWImages;
 
-public class WWMainActivity extends FragmentActivity {
+public class WWMainActivity extends FragmentActivity implements WWCardFragment.OnCardSelectedListener,
+        WWDetailsFragment.OnDetailsSelectedListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // CARD VARIABLES
     private ArrayList<WWEventModel> models; // References the ArrayList of WWEventModel objects.
+
+    // FRAGMENT VARIABLES
+    private Boolean isDetailsOn = false; // Used to determine if the card details fragment is currently being shown.
 
     // LAYOUT VARIABLES
     private FrameLayout card_fragment_details_container; // References the card fragment details container object.
@@ -58,7 +65,7 @@ public class WWMainActivity extends FragmentActivity {
     private WWClient client; // Custom AsyncHttpClient client object for accessing JSON data.
 
     // SLIDER VARIABLES
-    private int cardNumber = 0; // Used to determine which card fragment is being displayed.
+    private int currentCardNumber = 0; // Used to determine which card fragment is currently being displayed.
     private int numberOfCards = 1; // Used to determine how many card fragments are to be displayed.
     private PagerAdapter wwPageAdapter; // Used to reference the PagerAdapter object.
     private ViewPager wwTitleScreenPager; // Used to reference the ViewPager object.
@@ -67,6 +74,10 @@ public class WWMainActivity extends FragmentActivity {
     private Point resolutionDimens; // Used to determine the device's full resolution parameters.
     private int currentOrientation = 0; // Used to determine the device's orientation. (0: PORTRAIT / 1: LANDSCAPE)
     private int displaySize; // Stores the device's display size.
+    private static WeakReference<WWMainActivity> weakRefActivity = null; // Used to maintain a weak reference to the activity.
+
+    // THREAD VARIABLES
+    private Handler updateThread; // A thread that handles the updating of the notification bar.
 
     /** ACTIVITY LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
 
@@ -76,6 +87,7 @@ public class WWMainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        weakRefActivity = new WeakReference<WWMainActivity>(this); // Creates a weak reference of this activity.
         setUpLayout(); // Sets up the layout for the activity.
     }
 
@@ -107,7 +119,14 @@ public class WWMainActivity extends FragmentActivity {
     // onBackPressed(): Defines the action to take when the physical back button key is pressed.
     @Override
     public void onBackPressed() {
-        finish(); // The activity is terminated at this point.
+
+        // If the details fragment is currently being shown, the fragment is removed.
+        if (isDetailsOn) {
+            isDetailsOn = false; // Indicates that the details fragment is currently not being shown.
+            removeFragment(); // Removes the card details fragment.
+        }
+
+        else { finish(); } // The activity is terminated at this point.
     }
 
     // onConfigurationChanged(): If the screen orientation changes, this function loads the proper
@@ -144,13 +163,51 @@ public class WWMainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // updateFromCardFragment(): This function is called whenever the user interacts with the fragment
+    // buttons. Called directly by the interface methods in WWCardFragment.
+    @Override
+    public void updateFromCardFragment(Boolean showDetails) {
+
+        // If showDetails value is true, the card details fragment is setup.
+        if (showDetails) {
+
+            isDetailsOn = true; // Indicates that the details fragment is currently being shown.
+
+            // Retrieves the WWEventModel, based on the card that is currently displayed.
+            WWEventModel currentEvent = models.get(currentCardNumber);
+
+            // Initializes the WWDetailsFragment object.
+            WWDetailsFragment fragment = new WWDetailsFragment();
+            fragment.initializeFragment(currentCardNumber, currentEvent);
+
+            setUpFragment(fragment); // Sets up the fragment for the card details.
+        }
+    }
+
+    // updateFromDetailsFragment(): This function is called whenever the user interacts with the fragment
+    // buttons. Called directly by the interface methods in WWDetailsFragment.
+    @Override
+    public void updateFromDetailsFragment(Boolean hideDetails) {
+
+        // If showDetails value is true, the card details fragment is removed.
+        if (hideDetails) {
+            isDetailsOn = false; // Indicates that the details fragment is currently not being shown.
+            removeFragment(); // Removes the card details fragment.
+        }
+    }
+
     /** LAYOUT FUNCTIONALITY ___________________________________________________________________ **/
 
     // setUpLayout(): Sets up the layout for the activity.
     private void setUpLayout() {
 
         setUpDisplayParameters(); // Sets up the device's display parameters.
+
         setContentView(R.layout.ww_main_activity); // Sets the XML file.
+
+        // References the card fragment details layout container.
+        card_fragment_details_container = (FrameLayout) findViewById(R.id.card_fragment_details);
+
         setUpNotificationBar(); // Sets up the notification bar for the activity.
         setUpCardEvents(); // Sets up the event cards for the slider fragments.
     }
@@ -190,6 +247,63 @@ public class WWMainActivity extends FragmentActivity {
                 Log.d(TAG, "Fly SFO API Handshake failure! | Status Code: " + statusCode); // Logging.
             }
         });
+    }
+
+    /** FRAGMENT FUNCTIONALITY _________________________________________________________________ **/
+
+    // displayFragment(): Displays/hides the fragment container.
+    private void displayFragment(Boolean isShow, Boolean isScenery) {
+
+        Handler fragmentHandler = new Handler(); // Thread for delaying the showing of the fragment container.
+
+        // If the fragment is currently being displayed, the fragment is hidden.
+        if (isShow == true) {
+
+            card_fragment_details_container.setVisibility(View.INVISIBLE); // Hides the fragment.
+            removeFragment(); // Removes the fragment from the container.
+
+            //showFragment = false; // Indicates that the fragment is hidden.
+            //noTouch = false; // Indicates that the user can move the map and interact with the activity buttons.
+
+        }
+
+        // If the fragment is currently hidden, the fragment is displayed.
+        else {
+
+            //showFragment = true; // Indicates that the fragment is currently being displayed.
+            //noTouch = true; // Indicates that the user cannot move the map and interact with the activity buttons.
+
+            card_fragment_details_container.setVisibility(View.VISIBLE); // Displays the fragment.
+        }
+    }
+
+    // removeFragment(): Removes the fragment from the container.
+    private void removeFragment() {
+
+        // Initializes the manager and transaction objects for the fragments.
+        FragmentManager fragMan = weakRefActivity.get().getSupportFragmentManager();
+        FragmentTransaction fragTrans = fragMan.beginTransaction();
+        fragTrans.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+
+        fragMan.popBackStack(); // Pops the fragment from the stack.
+    }
+
+    // setUpFragment(): Updates the content of dg_fragment_container with the proper fragment.
+    private void setUpFragment(WWDetailsFragment fragment) {
+
+        if ((weakRefActivity.get() != null) && (weakRefActivity.get().isFinishing() != true)) {
+
+            // Initializes the manager and transaction objects for the fragments.
+            FragmentManager fragMan = weakRefActivity.get().getSupportFragmentManager();
+            FragmentTransaction fragTrans = fragMan.beginTransaction();
+            fragTrans.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+
+            fragTrans.replace(R.id.card_fragment_details, fragment);
+
+            // Makes the changes to the fragment manager and transaction objects.
+            fragTrans.addToBackStack(null);
+            fragTrans.commitAllowingStateLoss();
+        }
     }
 
     /** NOTIFICATION BAR FUNCTIONALITY _________________________________________________________ **/
@@ -321,7 +435,7 @@ public class WWMainActivity extends FragmentActivity {
         return fragments;
     }
 
-    // setPageListener(): Sets up the listener for the Pager Adapter object.
+    // setPageListener(): Sets up the listener for the PagerAdapter object.
     private void setPageListener(ViewPager page) {
 
         // Defines the action to take when the page is changed.
@@ -335,22 +449,7 @@ public class WWMainActivity extends FragmentActivity {
 
             // onPageSelected(): Called when a new page is selected.
             public void onPageSelected(int position) {
-
-                switch (position) {
-
-                    case 0:
-                        //series = 0;
-                        break;
-                    case 1:
-                        //series = 1;
-                        break;
-                    case 2:
-                        //series = 2;
-                        break;
-                    default:
-                        //series = 0;
-                        break;
-                }
+                currentCardNumber = position; // Sets the current card ID value.
             }
         });
     }
@@ -371,7 +470,7 @@ public class WWMainActivity extends FragmentActivity {
 
         // If the activity has experienced a screen change, the page is set to the game series that
         // was previously being displayed.
-        if (isChanged == true) { wwTitleScreenPager.setCurrentItem(cardNumber); } // Loads the selected slider page.
+        if (isChanged == true) { wwTitleScreenPager.setCurrentItem(currentCardNumber); } // Loads the selected slider page.
     }
 
     // FragmentListPagerAdapter(): A subclass that extends upon the FragmentPagerAdapter class object,

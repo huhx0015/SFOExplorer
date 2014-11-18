@@ -1,17 +1,12 @@
 package wwairport.gpop.us.wearableworldconnectedairport.Model;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class WWWeatherModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
-
-    // CLASS VARIABLES
-    private static final long serialVersionUID = -8959832007991513854L;
 
     // JSON VARIABLES
     private String weather_status;
@@ -53,31 +48,4 @@ public class WWWeatherModel implements Serializable {
         // Returns the new model object.
         return model;
     }
-
-    // ARRAY LIST OF MOVIES of BoxOfficeMovie type.
-    // Decodes array of box office movie json results into business model objects
-    // BoxOfficeMovie.fromJson(jsonArrayOfMovies)
-    public static ArrayList<WWWeatherModel> fromJson(JSONArray jsonArray) {
-        ArrayList<WWWeatherModel> businesses = new ArrayList<WWWeatherModel>(jsonArray.length());
-
-
-        // Processes each result in json array, decode and convert to business objects.
-        for (int i = 0; i < jsonArray.length(); i++) {
-
-            JSONObject businessJson = null;
-
-            try { businessJson = jsonArray.getJSONObject(i); }
-            catch (Exception e) {
-                e.printStackTrace();
-                continue;
-            }
-
-            WWWeatherModel business = WWWeatherModel.fromJson(businessJson);
-
-            if (business != null) { businesses.add(business); }
-        }
-
-        return businesses;
-    }
-
 }

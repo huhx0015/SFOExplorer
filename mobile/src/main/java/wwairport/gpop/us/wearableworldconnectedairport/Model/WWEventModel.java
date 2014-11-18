@@ -2,7 +2,6 @@ package wwairport.gpop.us.wearableworldconnectedairport.Model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.Serializable;
 
 /**
@@ -11,9 +10,6 @@ import java.io.Serializable;
 public class WWEventModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
-
-    // CLASS VARIABLES
-    private static final long serialVersionUID = -8959832007991513854L;
 
     // JSON VARIABLES
     private String event_title;
@@ -66,16 +62,16 @@ public class WWEventModel implements Serializable {
         // Deserializes the JSON string into object fields.
         try {
             model.event_title = jsonObject.getString("subjective"); // Weather status.
-            model.event_body = jsonObject.getString("temp"); // Temperature.
-            model.event_summary = jsonObject.getString("temp"); // Temperature.
-            model.phone_number = jsonObject.getString("temp"); // Temperature.
-            model.event_hours = jsonObject.getString("temp"); // Temperature.
-            model.tags = jsonObject.getString("temp"); // Temperature.
-            model.terminal_location = jsonObject.getString("temp"); // Temperature.
-            model.security_location = jsonObject.getString("temp"); // Temperature.
-            model.event_image_URL = jsonObject.getString("temp"); // Temperature.
-            model.event_map = jsonObject.getString("temp"); // Temperature.
-            model.event_website = jsonObject.getString("temp"); // Temperature.
+            model.event_body = jsonObject.getString("body"); // Temperature.
+            model.event_summary = jsonObject.getString("location_summary"); // Temperature.
+            model.phone_number = jsonObject.getString("phone"); // Temperature.
+            model.event_hours = jsonObject.getString("hours"); // Temperature.
+            model.tags = jsonObject.getString("tags"); // Temperature.
+            model.terminal_location = jsonObject.getString("terminal"); // Temperature.
+            model.security_location = jsonObject.getString("security"); // Temperature.
+            model.event_image_URL = jsonObject.getString("image"); // Temperature.
+            model.event_map = jsonObject.getString("map"); // Temperature.
+            model.event_website = jsonObject.getString("website"); // Temperature.
         }
 
         // Exception handler.
@@ -84,8 +80,6 @@ public class WWEventModel implements Serializable {
             return null;
         }
 
-        // Returns the new model object.
-        return model;
+        return model; // Returns the new model object.
     }
-
 }

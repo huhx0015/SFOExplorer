@@ -13,9 +13,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView"
-        android:layout_gravity="center" />
+        android:text="Event Name"
+        android:id="@+id/card_event_name"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:textColor="@android:color/white" />
 
     <ImageView
         android:layout_width="250dp"

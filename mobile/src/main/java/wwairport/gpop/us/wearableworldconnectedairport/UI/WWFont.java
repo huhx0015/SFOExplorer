@@ -30,9 +30,15 @@ public class WWFont {
         }
     }
 
-    // getTypeFace(): Retrieves the custom font family (Big Noodle Titling) from resources.
-    public Typeface getTypeFace() {
+    // setBigNoodleTypeFace(): Retrieves the custom font family (Big Noodle Titling) from resources.
+    public Typeface setBigNoodleTypeFace() {
         return Typeface.createFromAsset(context.getResources().getAssets(),
                 "fonts/big_noodle_titling.ttf");
+    }
+
+    // setYanoneKaffeeSatzTypeFace(): Retrieves the custom font family (Yanone Kaffee Satz)from resources.
+    public Typeface setYanoneKaffeeSatzTypeFace() {
+        return Typeface.createFromAsset(context.getResources().getAssets(),
+                "fonts/yanonekaffeesatz_bold.ttf");
     }
 }

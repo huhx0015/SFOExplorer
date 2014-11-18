@@ -3,17 +3,31 @@ package wwairport.gpop.us.wearableworldconnectedairport.Fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import wwairport.gpop.us.wearableworldconnectedairport.Device.WWDisplay;
+import wwairport.gpop.us.wearableworldconnectedairport.Model.WWEventModel;
+import wwairport.gpop.us.wearableworldconnectedairport.Model.WWWeatherModel;
 import wwairport.gpop.us.wearableworldconnectedairport.R;
+import wwairport.gpop.us.wearableworldconnectedairport.Server.WWClient;
+import wwairport.gpop.us.wearableworldconnectedairport.UI.WWFont;
 
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
@@ -27,9 +41,15 @@ public class WWCardFragment extends Fragment {
     private View card_view; // References the layout for the fragment.
 
     // LAYOUT VARIABLES
-    private ImageView card_background_image; // References the card background ImageView object.
-    private ImageView main_card_image; // References the main card image ImageView object.
+    private ImageView card_background_image, main_card_image; // References the ImageView objects in the fragment.
     private int main_card_image_resource; // Used to reference the main card image.
+    private TextView event_title; // References the TextView objects in the fragment.
+
+    // LOGGING VARIABLES
+    private static final String TAG = WWCardFragment.class.getSimpleName(); // Retrieves the simple name of the class.
+
+    // SERVER VARIABLES
+    private WWClient client; // Custom AsyncHttpClient client object for accessing JSON data.
 
     // SYSTEM VARIABLES
     private Activity currentActivity; // Used to determine the activity class this fragment is currently attached to.
@@ -128,18 +148,70 @@ public class WWCardFragment extends Fragment {
     // setUpLayout(): Sets up the layout for the fragment.
     private void setUpLayout() {
 
-        setUpImages(); // Sets up the ImageView objects in the fragment.
+        setUpCard(); // Sets up the card fragment layout objects.
+        getCardEvent(); // Retrieves the card event details.
     }
 
     // setUpImages(): Sets up the images for the fragment.
-    private void setUpImages() {
+    private void setUpCard() {
 
         // References the ImageView objects.
         card_background_image = (ImageView) card_view.findViewById(R.id.card_background_image);
         main_card_image = (ImageView) card_view.findViewById(R.id.card_activity_image);
 
-        // TODO
+        // References the TextView objects.
+        event_title = (TextView) card_view.findViewById(R.id.card_event_name);
 
+        // Sets the custom font type to the TextView objects.
+        event_title.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
+
+        // Sets up a shadow effect for the TextView objects.
+        event_title.setShadowLayer(4, 0, 0, Color.BLACK);
+    }
+
+    /** CARD FUNCTIONALITY _____________________________________________________________________ **/
+
+    // getCardEvent(): Gets the event details for the card.
+    private void getCardEvent() {
+
+        client = new WWClient("FLYSFO"); // Sets up the JSON client for retrieving SFO data.
+
+        // Attempts to retrieve the JSON data from the server.
+        client.getJsonData(new JsonHttpResponseHandler() {
+
+            // onSuccess(): Run when JSON request was successful.
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                WWEventModel model; // The model object for JSON weather data.
+
+                Log.d(TAG, "Fly SFO API Handshake successful! " + response.toString()); // Logging.
+                Toast.makeText(currentActivity, "Fly SFO API Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
+                model = WWEventModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
+
+                String event_name = model.getEventTitle(); // Sets the event name from the JSON string.
+                String event_image_url = model.getEventImageURL(); // Sets the event image URL from the JSON string.
+
+                // Sets the weather icon for the ImageView object.
+                Picasso.with(currentActivity)
+                        .load(event_image_url)
+                        .placeholder(R.drawable.dark_transparent_tile)
+                        .resize(48, 48)
+                        .centerCrop()
+                        .into(card_background_image);
+
+                // Sets the weather status for the TextView object.
+                event_title.setText(event_name);
+            }
+
+            // onFailure(): Run when JSON request was a failure.
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                Log.d(TAG, "Fly SFO API Handshake failure! | Status Code: " + statusCode); // Logging.
+                Toast.makeText(currentActivity, "Fly SFO API Handshake failure! | Status Code: " + statusCode, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/

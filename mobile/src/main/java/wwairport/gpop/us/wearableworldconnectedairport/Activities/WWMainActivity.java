@@ -1,6 +1,7 @@
 package wwairport.gpop.us.wearableworldconnectedairport.Activities;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -38,12 +41,15 @@ public class WWMainActivity extends FragmentActivity {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // LOGGING VARIABLES
+    private static final String TAG = WWMainActivity.class.getSimpleName(); // Retrieves the simple name of the class.
+
     // NOTIFICATION VARIABLES
     private ImageView notification_flight_image, notification_weather_image;
-    private TextView notification_flight_number, notification_gate_number, notification_weather_status;
+    private TextView notification_countdown_timer, notification_flight_number, notification_gate_number, notification_weather_status;
 
     // SERVER VARIABLES
-    private WWClient client;
+    private WWClient client; // Custom AsyncHttpClient client object for accessing JSON data.
 
     // SLIDER VARIABLES
     private int cardNumber = 0; // Used to determine which card fragment is being displayed.
@@ -119,14 +125,22 @@ public class WWMainActivity extends FragmentActivity {
         notification_weather_image = (ImageView) findViewById(R.id.notification_weather_image);
 
         // Sets up the TextView objects.
+        notification_countdown_timer = (TextView) findViewById(R.id.notification_countdown_text);
         notification_flight_number = (TextView) findViewById(R.id.notification_flight_number);
         notification_gate_number = (TextView) findViewById(R.id.notification_gate_number);
         notification_weather_status = (TextView) findViewById(R.id.notification_weather_status);
 
         // Sets up the custom font type for the TextView objects.
-        notification_flight_number.setTypeface(WWFont.getInstance(this).getTypeFace()); // Sets the custom font face.
-        notification_gate_number.setTypeface(WWFont.getInstance(this).getTypeFace()); // Sets the custom font face.
-        notification_weather_status.setTypeface(WWFont.getInstance(this).getTypeFace()); // Sets the custom font face.
+        notification_countdown_timer.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace());// Sets the custom font face.
+        notification_flight_number.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
+        notification_gate_number.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
+        notification_weather_status.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
+
+        // Sets up a shadow effect for the TextView objects.
+        notification_countdown_timer.setShadowLayer(4, 0, 0, Color.BLACK);
+        notification_flight_number.setShadowLayer(4, 0, 0, Color.BLACK);
+        notification_gate_number.setShadowLayer(4, 0, 0, Color.BLACK);
+        notification_weather_status.setShadowLayer(4, 0, 0, Color.BLACK);
 
         getFlightStatus(); // Updates the flight status on the notification bar.
         getWeatherStatus(); // Updates the weather status on the notification bar.
@@ -135,53 +149,47 @@ public class WWMainActivity extends FragmentActivity {
     // getWeatherStatus(): Retrieves the current weather status.
     private void getWeatherStatus() {
 
-        client = new WWClient();
+        client = new WWClient("WEATHER"); // Sets up the JSON client for retrieving weather data.
 
+        // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
 
+            // onSuccess(): Run when JSON request was successful.
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-                JSONArray items = null;
+                WWWeatherModel model; // The model object for JSON weather data.
 
-                try {
+                Log.d(TAG, "Weather Handshake successful! " + response.toString()); // Logging.
+                //Toast.makeText(getApplicationContext(), "Weather Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
+                model = WWWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
-                    // Retrieves the JSON array.
-                    items = response.getJSONArray("movies");
+                String current_weather = model.getWeather(); // Sets the weather status from the JSON string.
+                double current_temperature = model.getTemperature(); // Sets the current temperature from the JSON string.
 
-                    // Parse json array into array of model objects
-                    ArrayList<WWWeatherModel> movies = WWWeatherModel.fromJson(items);
+                // Retrieves the appropriate weather image based on the value from the JSON string.
+                int weather_image = R.drawable.weather_partly_cloudy;
 
-                    // Load model objects into the adapter
-                    //for (WWWeatherModel movie : movies) {
-                        //adapterMovies.add(movie);
-                    //}
+                // Sets the weather icon for the ImageView object.
+                Picasso.with(getApplicationContext())
+                        .load(weather_image)
+                        .placeholder(R.drawable.dark_transparent_tile)
+                        .resize(48, 48)
+                        .centerCrop()
+                        .into(notification_weather_image);
 
-                }
+                // Sets the weather status for the TextView object.
+                notification_weather_status.setText(current_temperature + "° " + current_weather);
+            }
 
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            // onFailure(): Run when JSON request was a failure.
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 
+                Log.d(TAG, "Weather Handshake failure! | Status Code: " + statusCode); // Logging.
+                //Toast.makeText(getApplicationContext(), "Weather Handshake failure! | Status Code: " + statusCode, Toast.LENGTH_SHORT).show();
             }
         });
-
-        //WWWeatherModel currentWeather = WWWeatherModel.fromJson();
-
-        int weather_image = R.drawable.weather_partly_cloudy;
-        String current_temperature = "55°";
-        String current_weather = "PARTLY CLOUDY";
-
-        // Sets the weather icon for the ImageView object.
-        Picasso.with(this)
-                .load(weather_image)
-                .placeholder(R.drawable.dark_transparent_tile)
-                .resize(48, 48)
-                .centerCrop()
-                .into(notification_weather_image);
-
-        // Sets the weather status for the TextView object.
-        notification_weather_status.setText(current_temperature + " " + current_weather);
     }
 
     // getFlightStatus(): Retrieves the current flight status.

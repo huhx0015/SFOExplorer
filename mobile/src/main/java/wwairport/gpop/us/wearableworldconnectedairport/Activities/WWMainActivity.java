@@ -14,12 +14,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import wwairport.gpop.us.wearableworldconnectedairport.Device.WWDisplay;
 import wwairport.gpop.us.wearableworldconnectedairport.Fragments.WWCardFragment;
+import wwairport.gpop.us.wearableworldconnectedairport.Model.WWWeatherModel;
 import wwairport.gpop.us.wearableworldconnectedairport.R;
+import wwairport.gpop.us.wearableworldconnectedairport.Server.WWClient;
 import wwairport.gpop.us.wearableworldconnectedairport.UI.WWFont;
 
 
@@ -30,6 +41,9 @@ public class WWMainActivity extends FragmentActivity {
     // NOTIFICATION VARIABLES
     private ImageView notification_flight_image, notification_weather_image;
     private TextView notification_flight_number, notification_gate_number, notification_weather_status;
+
+    // SERVER VARIABLES
+    private WWClient client;
 
     // SLIDER VARIABLES
     private int cardNumber = 0; // Used to determine which card fragment is being displayed.
@@ -120,6 +134,39 @@ public class WWMainActivity extends FragmentActivity {
 
     // getWeatherStatus(): Retrieves the current weather status.
     private void getWeatherStatus() {
+
+        client = new WWClient();
+
+        client.getJsonData(new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                JSONArray items = null;
+
+                try {
+
+                    // Retrieves the JSON array.
+                    items = response.getJSONArray("movies");
+
+                    // Parse json array into array of model objects
+                    ArrayList<WWWeatherModel> movies = WWWeatherModel.fromJson(items);
+
+                    // Load model objects into the adapter
+                    //for (WWWeatherModel movie : movies) {
+                        //adapterMovies.add(movie);
+                    //}
+
+                }
+
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        //WWWeatherModel currentWeather = WWWeatherModel.fromJson();
 
         int weather_image = R.drawable.weather_partly_cloudy;
         String current_temperature = "55°";

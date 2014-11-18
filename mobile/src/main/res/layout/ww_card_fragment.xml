@@ -10,10 +10,18 @@
         android:id="@+id/card_background_image"
         android:background="@android:color/holo_orange_dark" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_gravity="center" />
+
     <ImageView
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:id="@+id/card_activity_image"
         android:layout_gravity="center"
-        android:src="@drawable/bathroom_sign" />
+        android:src="@drawable/bathroom_sign"
+        android:visibility="gone" />
 </FrameLayout>

@@ -25,4 +25,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:+'
     compile 'com.android.support:appcompat-v7:21.+'
     compile 'com.squareup.picasso:picasso:2.4.+'
+
+    compile('com.loopj.android:android-async-http:1.+') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
 }

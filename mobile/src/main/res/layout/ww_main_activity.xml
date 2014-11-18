@@ -14,7 +14,8 @@
         android:layout_width="fill_parent"
         android:layout_height="48dp"
         android:id="@+id/notification_bar"
-        android:background="@drawable/dark_transparent_background">
+        android:background="@drawable/dark_transparent_background"
+        android:layout_gravity="bottom">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -22,7 +23,8 @@
             android:layout_height="fill_parent"
             android:id="@+id/notification_weather_container"
             android:layout_gravity="left"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="48dp"
@@ -50,10 +52,13 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center"
             android:id="@+id/notification_gate_container"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -69,20 +74,26 @@
                 android:padding="5dp"
                 android:visibility="invisible" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FLIGHT 390"
+                android:id="@+id/notification_flight_number"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:padding="5dp"
+                android:visibility="invisible" />
+
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:gravity="center"
-                android:id="@+id/notification_flight_info_container">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FLIGHT 390"
-                    android:id="@+id/notification_flight_number"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                android:gravity="center_vertical|right">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,16 +102,24 @@
                     android:id="@+id/notification_gate_number"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView2"
+                    android:padding="5dp"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0:46"
+                    android:id="@+id/notification_countdown_text"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:gravity="right" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0:46"
-                android:id="@+id/avip_sticky_departure"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:gravity="right" />
         </LinearLayout>
 
     </LinearLayout>

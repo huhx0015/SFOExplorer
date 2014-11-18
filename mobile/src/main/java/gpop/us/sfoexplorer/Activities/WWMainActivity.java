@@ -33,8 +33,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import gpop.us.sfoexplorer.Data.WWAirlineCodes;
 import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
 import gpop.us.sfoexplorer.Fragments.WWWeatherFragment;
+import gpop.us.sfoexplorer.Model.WWFlightModel;
 import gpop.us.sfoexplorer.Motion.WWVibration;
 import gpop.us.sfoexplorer.Notifications.WWNotifications;
 import gpop.us.sfoexplorer.Weather.WWWeather;
@@ -56,10 +59,12 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
     // CARD VARIABLES
     private ArrayList<WWEventModel> models; // References the ArrayList of WWEventModel objects.
+    private WWFlightModel flightModel; // The model object for JSON flight data.
     private WWWeatherModel weatherModel; // The model object for JSON weather data.
 
     // FLIGHT VARIABLES
     private int timeToBoard = 31; // Used to reference the remaining time (in minutes) to flight boarding.
+    private String airlineCode = "AA"; // Used to reference the airline code.
     private String airlineCarrier = "American Airlines"; // Used to reference the airline carrier.
     private String flightDestination = "Minneapolis Saint Paul"; // Used to reference the passenger's destination.
     private String flightNumber = "AA 1482"; // Used to reference the passenger's flight number.
@@ -180,7 +185,6 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
 
-        setUpDisplayParameters(); // Sets up the device's display parameters.
         setUpLayout(); // Sets up the layout for the fragment.
     }
 
@@ -292,7 +296,12 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
         // Tries to retrieve the additional information from the bundle.
         if (extras != null) {
+
             flightNumber = extras.getString("flight_number");
+            String[] separated = flightNumber.split(" ");
+            airlineCode = separated[0];
+            flightNumber = separated[1];
+
         }
 
     }
@@ -311,8 +320,9 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                 // If the card details fragment has already been made, the fragment is shown instead of
                 // being created.
-                if (isWeatherFragmentMade) { displayFragment(true, weather_fragment); }
-                else {
+                if (isWeatherFragmentMade) {
+                    displayFragment(true, weather_fragment);
+                } else {
 
                     // Initializes the WWWeatherFragment object.
                     weather_fragment = new WWWeatherFragment();
@@ -527,7 +537,11 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // getFlightStatus(): Retrieves the current flight status.
     private void getFlightStatus() {
 
-        int airline_logo = R.drawable.aa_icon;
+        /*
+        int airline_logo = R.drawable.plane_icon;
+
+        // Add airline check here later.
+
         String flight_number = flightNumber;
         String gate_number = departureGate;
 
@@ -542,13 +556,66 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         // Sets the flight and gate number for the TextView objects.
         notification_flight_number.setText(flight_number);
         notification_gate_number.setText(gate_number);
+        */
+
+        //final String airlineCode = WWAirlineCodes.decipherAirlineCodes(airlineCarrier);
+
+        client = new WWClient(airlineCode, flightNumber); // Sets up the JSON client for retrieving weather data.
+
+        // Attempts to retrieve the JSON data from the server.
+        client.getJsonData(new JsonHttpResponseHandler() {
+
+            // onSuccess(): Run when JSON request was successful.
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                Log.d(TAG, "Flight Handshake successful! " + response.toString()); // Logging.
+                flightModel = WWFlightModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
+
+                timeToBoard = flightModel.getTimeToDeparture(); // Gets the time to board value from the JSON string.
+                departureGate = flightModel.getDepartureGate(); // Gets the departure gate from the JSON string.
+                String departure_time = flightModel.getDepartureTime(); // Gets the departure time from the JSON string.
+
+                Log.d(TAG, "Time to departure value: " + timeToBoard); // Logging.
+
+                int airline_logo = R.drawable.plane_icon; // Image to use as the airline flag.
+
+                // AMERICAN AIRLINES:
+                if ( (airlineCode.equals("AA")) || (airlineCode.equals("aa")) ) {
+                    airline_logo = R.drawable.aa_icon;
+                }
+
+                // Sets the weather icon for the ImageView object.
+                Picasso.with(getApplicationContext())
+                        .load(airline_logo)
+                        .placeholder(R.drawable.dark_transparent_tile)
+                        .resize(48, 48)
+                        .centerCrop()
+                        .into(notification_flight_image);
+
+                // Sets the flight and gate number for the TextView objects.
+                notification_countdown_timer.setText(timeToBoard + " MINUTES");
+                notification_flight_number.setText(flightNumber);
+                notification_gate_number.setText(departureGate);
+
+            }
+
+            // onFailure(): Run when JSON request was a failure.
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
+                Log.d(TAG, "Flight Handshake failure! | Status Code: " + statusCode); // Logging.
+                //Toast.makeText(getApplicationContext(), "Weather Handshake failure! | Status Code: " + statusCode, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     // updateTimeToBoard(): Updates the time to board value.
     private void updateTimeToBoard() {
 
         // Updates the countdown timer value.
-        notification_countdown_timer.setText("0:" + timeToBoard);
+        notification_countdown_timer.setText(timeToBoard + " MINUTES");
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/
@@ -733,6 +800,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             getWeatherStatus(); // Updates the current weather status on the notification bar.
             updateTimeToBoard(); // Updates the time to board counter on the notification bar.
             timeToBoard--; // Decrements the boarding time value.
+            getFlightStatus(); // Updates the flight status on the notification bar.
 
             updateThread.postDelayed(this, updateTimer); // Thread loops for every 60000 milliseconds.
         }

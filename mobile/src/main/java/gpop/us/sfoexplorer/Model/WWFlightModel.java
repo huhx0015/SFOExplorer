@@ -13,22 +13,21 @@ public class WWFlightModel implements Serializable {
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // JSON VARIABLES
-    private String flight_number;
-    private String gate_number;
+    private String departure_time;
+    private String departure_gate;
+    private int timeToDeparture;
 
     /** GET / SET FUNCTIONALITY ________________________________________________________________ **/
 
-    // getFlightNumber(): Retrieves the flight number.
-    public String getFlightNumber() { return flight_number; }
+    // GET METHODS:
+    public String getDepartureTime() { return departure_time; }
+    public String getDepartureGate() { return departure_gate; }
+    public int getTimeToDeparture() { return timeToDeparture; }
 
-    // getGateNumber(): Retrieves the gate number.
-    public String getGateNumber() { return gate_number; }
-
-    // setFlightNumber(): Sets the current flight number.
-    public void setFlightNumber(String flight) { flight_number = flight; }
-
-    // setGateNumber(): Sets the gate number.
-    public void getGateNumber(String gate) { gate_number = gate; }
+    // SET METHODS:
+    public void setDepartureTime(String time) { departure_time = time; }
+    public void setDepartureGate(String gate) { departure_gate = gate; }
+    public void setTimeToDeparture(int time) { timeToDeparture = time; }
 
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
@@ -39,8 +38,9 @@ public class WWFlightModel implements Serializable {
 
         // Deserializes the JSON string into object fields.
         try {
-            model.flight_number = jsonObject.getString("flight_number"); // Flight number.
-            model.gate_number = jsonObject.getString("gate_number"); // Gate number.
+            model.departure_time = jsonObject.getString("departureTime"); // Departure time.
+            model.departure_gate = jsonObject.getString("departureGate"); // Gate number.
+            model.timeToDeparture = jsonObject.getInt("minutes"); // Time to departure value.
         }
 
         // Exception handler.

@@ -11,15 +11,18 @@ public class WWClient {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    // API VARIABLES
-    //private final String API_KEY = "au9t49ts6j2t5ngpfhrydkcu"; // API key string.
+    // API VARIABLES:
     private String BASE_URL = ""; // Base URL string.
     private String API_TYPE = "NONE"; // API type string.
 
-    // CLIENT VARIABLES
+    // CLIENT VARIABLES:
     private AsyncHttpClient client; // AsyncHttpClient object.
 
-    // LOGGING VARIABLES
+    // FLIGHT VARIABLES:
+    private String airlineCarrier; // Referenes the name of the airline carrier.
+    private String flightNumber; // References the flight number.
+
+    // LOGGING VARIABLES:
     private static final String TAG = WWClient.class.getSimpleName(); // Retrieves the simple name of the class.
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
@@ -34,10 +37,19 @@ public class WWClient {
         selectApi(); // Selects the API based on the specified API type.
     }
 
-    /** SERVER FUNCTIONALITY ___________________________________________________________________ **/
+    // WWClient(): Sets up the HTTP Client for getting the flight status.
+    public WWClient(String carrier, String flight) {
 
-    // createApiUrl(): Creates the full API URL string.
-    private String createApiUrl(String apiURL) { return BASE_URL + apiURL; }
+        // Initializes the class variables.
+        this.client = new AsyncHttpClient();
+        airlineCarrier = carrier;
+        flightNumber = flight;
+
+        API_TYPE = "FLIGHT_STATUS"; // Sets the type to FLIGHT_STATUS.
+        selectApi(); // Selects the API based on the specified API type.
+    }
+
+    /** SERVER FUNCTIONALITY ___________________________________________________________________ **/
 
     // selectApi(): Selects an API based on the API type.
     private void selectApi() {
@@ -50,7 +62,7 @@ public class WWClient {
 
         // FLIGHT STATUS API:
         else if (API_TYPE.equals("FLIGHT_STATUS")) {
-            BASE_URL = "";
+            BASE_URL = "http://gpop-server.com/sfo/stats.php?airline=" + airlineCarrier + "&flight_number=" + flightNumber;
         }
 
         // NULL (NO API SELECTED):
@@ -64,17 +76,10 @@ public class WWClient {
     // getJsonData(): Retrieves the JSON data string.
     public void getJsonData(JsonHttpResponseHandler handler) {
 
-        //String url = createApiUrl("lists/movies/box_office.json"); // Creates the full API URL string.
-
-        // Creates an asynchronous HTTP request.
-        //RequestParams params = new RequestParams();
-        //RequestParams params = new RequestParams("apikey", API_KEY);
-
         // If the URL is not null, it retrieves the JSON data string.
         if (BASE_URL != null) {
             client.get(BASE_URL, handler); // Retrieves JSON data.
-            Log.d(TAG, "getJsonData(): Retrieving JsonData..."); // Logging.
-            //client.get(BASE_URL, params, handler);
+            Log.d(TAG, "getJsonData(): Retrieving JsonData from " + BASE_URL); // Logging.
         }
 
         else { Log.d(TAG, "getJsonData(): URL was invalid."); } // Logging.

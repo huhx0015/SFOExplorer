@@ -8,8 +8,6 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:fillViewport="true"
-        android:fadingEdge="none"
         android:id="@+id/details_scrollview">
 
         <LinearLayout
@@ -20,17 +18,27 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/details_map_container"
-                android:layout_gravity="center">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:id="@+id/details_map_parent_container"
+                android:layout_gravity="center"
+                android:gravity="center">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:id="@+id/airport_map_display"
-                    android:layout_gravity="center" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:id="@+id/details_map_container"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:adjustViewBounds="false"
+                        android:id="@+id/airport_map_display"
+                        android:layout_gravity="center" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -152,6 +160,7 @@
                 android:layout_height="48dp"
                 android:id="@+id/card_details_bottom_spacer"
                 android:visibility="invisible" />
+
         </LinearLayout>
     </ScrollView>
 

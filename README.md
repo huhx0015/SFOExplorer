@@ -2,7 +2,8 @@ SFO Explorer | Wearable World Invents: The Connected Airport
 ============
 
 Team: Michael Huh, Ibrahim Kabil, David Lee
-Platform: Android, Web
+
+Platform: Android
 
 Find things to do at San Francisco International Airport while waiting for your flights!
 

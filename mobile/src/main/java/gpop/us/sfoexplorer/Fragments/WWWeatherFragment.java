@@ -19,7 +19,7 @@ import gpop.us.sfoexplorer.Model.WWWeatherModel;
 import gpop.us.sfoexplorer.R;
 import gpop.us.sfoexplorer.UI.WWFont;
 import gpop.us.sfoexplorer.UI.WWImages;
-import gpop.us.sfoexplorer.Weather.WWWeather;
+import gpop.us.sfoexplorer.Data.WWWeather;
 import it.sephiroth.android.library.picasso.Picasso;
 
 /**

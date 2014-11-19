@@ -1,4 +1,4 @@
-package gpop.us.sfoexplorer.Weather;
+package gpop.us.sfoexplorer.Data;
 
 import gpop.us.sfoexplorer.R;
 
@@ -21,7 +21,8 @@ public class WWWeather {
 
         // CLOUDY:
         else if ( (type.equals("cloudy")) || (type.equals("Cloudy") ||
-                (type.equals("mostly cloudy")) || (type.equals("Mostly Cloudy")) ) ) {
+                (type.equals("mostly cloudy")) || (type.equals("Mostly Cloudy")) ) ||
+                (type.equals("overcast")) || (type.equals("Overcast")) ) {
             weatherIcon = R.drawable.cloudy;
         }
 
@@ -30,8 +31,10 @@ public class WWWeather {
             weatherIcon = R.drawable.clouds_mild_snow;
         }
 
-        // HEAVY RAIN:
-        else if ( (type.equals("heavy rain")) || (type.equals("Heavy Rain")) ) {
+        // RAIN:
+        else if ( (type.equals("heavy rain")) || (type.equals("Heavy Rain")) ||
+                (type.equals("Rain")) || (type.equals("rain")) || (type.equals("Light Rain"))
+                || (type.equals("rainy")) || (type.equals("Rainy"))) {
 
             // NIGHT:
             if ( (time > 21) || ( (time > 0) && (time < 7) ) ) {
@@ -94,7 +97,7 @@ public class WWWeather {
         }
 
         // SNOW:
-        else if ( (type.equals("snow")) || (type.equals("Snow")) ) {
+        else if ( (type.equals("snow")) || (type.equals("Snow")) || (type.equals("Snowy")) ) {
             weatherIcon = R.drawable.snow;
         }
 

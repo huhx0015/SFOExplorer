@@ -19,8 +19,6 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,13 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import gpop.us.sfoexplorer.Data.WWAirlineCodes;
 import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
 import gpop.us.sfoexplorer.Fragments.WWWeatherFragment;
 import gpop.us.sfoexplorer.Model.WWFlightModel;
 import gpop.us.sfoexplorer.Motion.WWVibration;
 import gpop.us.sfoexplorer.Notifications.WWNotifications;
-import gpop.us.sfoexplorer.Weather.WWWeather;
+import gpop.us.sfoexplorer.Data.WWWeather;
 import it.sephiroth.android.library.picasso.Picasso;
 import gpop.us.sfoexplorer.Device.WWDisplay;
 import gpop.us.sfoexplorer.Fragments.WWCardFragment;
@@ -298,12 +295,14 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         if (extras != null) {
 
             flightNumber = extras.getString("flight_number");
-            String[] separated = flightNumber.split(" ");
-            airlineCode = separated[0];
-            flightNumber = separated[1];
+            String[] flightStrip = flightNumber.split(" ");
 
+            // If the array size is of two elements, the airline code and flight number is extracted.
+            if (flightStrip.length == 2) {
+                airlineCode = flightStrip[0];
+                flightNumber = flightStrip[1];
+            }
         }
-
     }
 
     // setUpButtons(): Sets up the buttons for the activity.

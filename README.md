@@ -9,4 +9,4 @@ For the Wearable Worlds: The Connected Airport hackathon, we wanted to focus on 
 
 More often than not, travelers encounter boredom and are left wondering how to spend their time while they wait for their flight. To solve this pain point, we have come up with a mobile Android application called SFO Explorer. Using the FLYSFO and other APIs like WeatherUnderground, mobile smartphone users can use SFO Explorer to find out where they can locate restaurants, stores, and airport events that they may be interested in. We have also created a web-based merchant tool for restaurants and businesses at SFO to be able to add additional information and images on the fly, using our own custom API that has been built as an extension from the FLYSFO API.
 
-With SFO Explorer, we hope provide travelers with interesting things to do while waiting for their flight.
+With SFO Explorer, we hope to provide travelers with interesting things to do while waiting for their flight.

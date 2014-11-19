@@ -1,4 +1,4 @@
-SFO_Explorer
+SFO Explorer
 ============
 
 Find things to do at San Francisco International Airport while waiting for your flights!

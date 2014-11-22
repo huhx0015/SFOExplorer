@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import gpop.us.sfoexplorer.Fragments.WWDepartureFragment;
 import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
 import gpop.us.sfoexplorer.Fragments.WWWeatherFragment;
 import gpop.us.sfoexplorer.Model.WWFlightModel;
@@ -50,7 +51,8 @@ import gpop.us.sfoexplorer.UI.WWFont;
 import gpop.us.sfoexplorer.UI.WWImages;
 
 public class WWMainActivity extends FragmentActivity implements WWCardFragment.OnCardSelectedListener,
-        WWDetailsFragment.OnDetailsSelectedListener, WWWeatherFragment.OnWeatherSelectedListener {
+        WWDetailsFragment.OnDetailsSelectedListener, WWDepartureFragment.OnFlightSelectedListener,
+        WWWeatherFragment.OnWeatherSelectedListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -66,18 +68,22 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private String flightDestination = "Minneapolis Saint Paul"; // Used to reference the passenger's destination.
     private String flightNumber = "AA 1482"; // Used to reference the passenger's flight number.
     private String departureGate = "A20"; // Used to reference the passenger's departure gate.
-    private String curretLocation = "San Francisco International Airport"; // Used to reference the traveler's current location.
+    private String currentLocation = "San Francisco International Airport"; // Used to reference the traveler's current location.
 
     // FRAGMENT VARIABLES
     private Boolean isDetailsOn = false; // Used to determine if the card details fragment is currently being shown.
     private Boolean isDetailsFragmentMade = false; // Used to determine if the card details fragment has already been created.
+    private Boolean isFlightOn = false; // Used to determine if the flight fragment is currently being shown.
+    private Boolean isFlightFragmentMade = false; // Used to determine if the flight fragment has already been created.
     private Boolean isWeatherOn = false; // Used to determine if the weather fragment is currently being shown.
     private Boolean isWeatherFragmentMade = false; // Used to determine if the weather fragment has already been created.
     private WWDetailsFragment details_fragment; // References the WWDetailsFragment object.
+    private WWDepartureFragment flight_fragment; // References the WWDepartureFragment object.
     private WWWeatherFragment weather_fragment; // References the WWWeatherFragment object.
 
     // LAYOUT VARIABLES
     private FrameLayout card_fragment_details_container; // References the card fragment details container object.
+    private LinearLayout notification_flight_container; // References the flight container on the notification bar.
     private LinearLayout notification_weather_container; // References the weather container on the notification bar.
 
     // LOGGING VARIABLES
@@ -233,7 +239,13 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 details_fragment = new WWDetailsFragment();
                 details_fragment.initializeFragment(currentCardNumber, currentEvent);
 
-                setUpFragment(details_fragment, true); // Sets up the fragment for the card details.
+                setUpFragment(details_fragment, "FLIGHT"); // Sets up the fragment for the card details.
+            }
+
+            // Disables flight fragment if currently active.
+            if (isFlightOn) {
+                isFlightOn = false;
+                isFlightFragmentMade = false;
             }
 
             // Disables weather fragment if currently active.
@@ -253,6 +265,18 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         if (hideDetails) {
             isDetailsOn = false; // Indicates that the details fragment is currently not being shown.
             displayFragment(false, details_fragment); // Hides the card details fragment.
+        }
+    }
+
+    // updateFromFlightFragment(): This function is called whenever the user interacts with the fragment
+    // buttons. Called directly by the interface methods in WWDepartureFragment.
+    @Override
+    public void updateFromFlightFragment(Boolean hideFlight) {
+
+        // If hideFlight value is true, the departure fragment is removed.
+        if (hideFlight) {
+            isFlightOn = false; // Indicates that the details fragment is currently not being shown.
+            displayFragment(false, flight_fragment); // Hides the weather fragment.
         }
     }
 
@@ -279,6 +303,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
         // References the layout containers.
         card_fragment_details_container = (FrameLayout) findViewById(R.id.card_fragment_details);
+        notification_flight_container = (LinearLayout) findViewById(R.id.notification_flight_container);
         notification_weather_container = (LinearLayout) findViewById(R.id.notification_weather_container);
 
         setUpNotificationBar(); // Sets up the notification bar for the activity.
@@ -309,25 +334,57 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private void setUpButtons() {
 
         // Sets up the listener and the actions for the weather container button.
+        notification_flight_container.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // Checks to see if the flightModel object has been initialized first or not.
+                if (flightModel != null) {
+
+                    // Sets up the weather fragment.
+                    isFlightOn = true; // Indicates that the flight fragment is currently being shown.
+
+                    // If the card details fragment has already been made, the fragment is shown instead of
+                    // being created.
+                    if (isFlightFragmentMade) {
+                        displayFragment(true, flight_fragment);
+                    } else {
+
+                        // Initializes the WWFlightFragment object.
+                        flight_fragment = new WWDepartureFragment();
+                        flight_fragment.initializeFragment(flightModel, airlineCarrier);
+
+                        setUpFragment(flight_fragment, "FLIGHT"); // Sets up the fragment for the weather details.
+                    }
+                }
+            }
+        });
+
+        // Sets up the listener and the actions for the weather container button.
         notification_weather_container.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                // Sets up the weather fragment.
-                isWeatherOn = true; // Indicates that the weather fragment is currently being shown.
+                // Checks to see if the weatherModel object has been initialized first or not.
+                if (weatherModel != null) {
 
-                // If the card details fragment has already been made, the fragment is shown instead of
-                // being created.
-                if (isWeatherFragmentMade) {
-                    displayFragment(true, weather_fragment);
-                } else {
+                    // Sets up the weather fragment.
+                    isWeatherOn = true; // Indicates that the weather fragment is currently being shown.
 
-                    // Initializes the WWWeatherFragment object.
-                    weather_fragment = new WWWeatherFragment();
-                    weather_fragment.initializeFragment(weatherModel, curretLocation);
+                    // If the card details fragment has already been made, the fragment is shown instead of
+                    // being created.
+                    if (isWeatherFragmentMade) {
+                        displayFragment(true, weather_fragment);
+                    } else {
 
-                    setUpFragment(weather_fragment, false); // Sets up the fragment for the weather details.
+                        // Initializes the WWWeatherFragment object.
+                        weather_fragment = new WWWeatherFragment();
+                        weather_fragment.initializeFragment(weatherModel, currentLocation);
+
+                        setUpFragment(weather_fragment, "WEATHER"); // Sets up the fragment for the weather details.
+                    }
                 }
             }
         });
@@ -409,7 +466,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     }
 
     // setUpFragment(): Updates the content of the fragment container with the proper fragment.
-    private void setUpFragment(Fragment fragment, Boolean isDetailsOrWeather) {
+    private void setUpFragment(Fragment fragment, String fragmentType) {
 
         if ((weakRefActivity.get() != null) && (weakRefActivity.get().isFinishing() != true)) {
 
@@ -427,11 +484,18 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             fragTrans.commitAllowingStateLoss();
 
             // DETAILS FRAGMENT:
-            if (isDetailsOrWeather) {
+            if (fragmentType.equals("DETAILS")) {
                 isDetailsFragmentMade = true; // Indicates that the card details fragment has been made.
+
             }
 
-            else {
+            // FLIGHT:
+            else if (fragmentType.equals("FLIGHT")) {
+                isFlightFragmentMade = true; // Indicates that the flight fragment has been made.
+            }
+
+            // WEATHER:
+            else if (fragmentType.equals("WEATHER")) {
                 isWeatherFragmentMade = true; // Indicates that the weather fragment has been made.
             }
         }
@@ -535,29 +599,6 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
     // getFlightStatus(): Retrieves the current flight status.
     private void getFlightStatus() {
-
-        /*
-        int airline_logo = R.drawable.plane_icon;
-
-        // Add airline check here later.
-
-        String flight_number = flightNumber;
-        String gate_number = departureGate;
-
-        // Sets the weather icon for the ImageView object.
-        Picasso.with(this)
-                .load(airline_logo)
-                .placeholder(R.drawable.dark_transparent_tile)
-                .resize(48, 48)
-                .centerCrop()
-                .into(notification_flight_image);
-
-        // Sets the flight and gate number for the TextView objects.
-        notification_flight_number.setText(flight_number);
-        notification_gate_number.setText(gate_number);
-        */
-
-        //final String airlineCode = WWAirlineCodes.decipherAirlineCodes(airlineCarrier);
 
         client = new WWClient(airlineCode, flightNumber); // Sets up the JSON client for retrieving weather data.
 
@@ -731,7 +772,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         }
     }
 
-    /** THREADING FUNCTIONALITY ________________________________________________________________ **/
+    /** THREAD FUNCTIONALITY ________________________________________________________________ **/
 
     // checkBoardingTime(): Checks on the remaining time to boarding the flight and activates voice,
     // notification and vibration alerts accordingly.
@@ -775,8 +816,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         else if (timeToBoard == 0)  {
 
             message = "Final boarding call! Your flight to " + flightDestination + " on " + airlineCarrier + " " +
-                    notification_flight_number.toString() + " at Gate " + notification_gate_number.toString() +
-                    " is now boarding. Please make your way to Gate " + notification_gate_number.toString() + " immediately!";
+                    flightNumber + " at Gate " + departureGate +
+                    " is now boarding. Please make your way to Gate " + departureGate + " immediately!";
 
             notifyTraveler = true;
         }
@@ -787,7 +828,6 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             WWNotifications.createNotification(this, message); // Creates a notification instance.
             WWVibration.vibrateDevice(500, this); // Vibrates the device.
         }
-
     }
 
     // runningUpdates(): Updates the weather and time to flight boarding.

@@ -349,7 +349,9 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                     // being created.
                     if (isFlightFragmentMade) {
                         displayFragment(true, flight_fragment);
-                    } else {
+                    }
+
+                    else {
 
                         // Initializes the WWFlightFragment object.
                         flight_fragment = new WWDepartureFragment();

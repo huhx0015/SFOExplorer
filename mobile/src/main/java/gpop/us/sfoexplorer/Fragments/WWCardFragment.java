@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import it.sephiroth.android.library.picasso.Picasso;
@@ -147,11 +148,24 @@ public class WWCardFragment extends Fragment {
     // setUpButtons(): Sets up the buttons for the fragment.
     private void setUpButtons() {
 
+        /*
         // References the ImageButton objects.
-        ImageButton card_details_button = (ImageButton) card_view.findViewById(R.id.card_details_button);
+        //ImageButton card_details_button = (ImageButton) card_view.findViewById(R.id.card_details_button);
 
         // Sets up the listener and the actions for the invisible card details button.
         card_details_button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                updateActivity(true); // Signals to the attached activity that the details fragment should be shown.
+            }
+        });
+        */
+
+        LinearLayout card_event_text_container = (LinearLayout) card_view.findViewById(R.id.card_event_text_container);
+
+        // Sets up the listener and the actions for the invisible card details button.
+        card_event_text_container.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

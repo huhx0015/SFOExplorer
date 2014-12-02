@@ -1,5 +1,6 @@
 package gpop.us.sfoexplorer.Memory;
 
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,6 +11,19 @@ import android.widget.AdapterView;
 public class WWMemory {
 
     /** MEMORY FUNCTIONALITY ___________________________________________________________________ **/
+
+    // recycleMemory(): Recycles View objects to clear up memory resources.
+    public static void recycleMemory(View layout, Activity activity) {
+
+        // Unbinds all Drawable objects attached to the current layout.
+        try { unbindDrawables(layout); }
+
+        // Null pointer exception catch.
+        catch (NullPointerException e) {
+            e.printStackTrace(); // Prints error message.
+            String errorString = "WWMEMORY\nNULL POINTER EXCEPTION OCCURRED WHILE ATTEMPTING TO RECYCLE MEMORY!";
+        }
+    }
 
     // unbindDrawables(): Unbinds all Drawable objects attached to the view layout by setting them
     // to null, freeing up memory resources and preventing Context-related memory leaks. This code

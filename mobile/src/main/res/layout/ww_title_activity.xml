@@ -27,38 +27,53 @@
             android:layout_gravity="center" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/title_button_container">
 
-            <EditText
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/flight_number_input"
-                android:background="@drawable/belize_hole_background"
-                android:hint="Enter Flight No."
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:padding="10dp"
-                android:textSize="24sp" />
-
-            <ImageView
+            <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/title_button_spacer_1"
-                android:padding="5dp"
-                android:visibility="invisible" />
+                android:id="@+id/title_airline_dropdown_spinner"
+                android:visibility="gone" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Explore"
-                android:id="@+id/explore_button"
-                android:background="@drawable/midnight_blue_background"
-                android:textSize="24sp"
-                android:padding="10dp"
-                android:textColor="@android:color/white" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:id="@+id/title_button_subcontainer">
+
+                <EditText
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/flight_number_input"
+                    android:background="@drawable/belize_hole_background"
+                    android:hint="Enter Flight No."
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:padding="10dp"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_button_spacer_1"
+                    android:padding="5dp"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Explore"
+                    android:id="@+id/explore_button"
+                    android:background="@drawable/midnight_blue_background"
+                    android:textSize="24sp"
+                    android:padding="10dp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="airline_carrier">
+        <item>Aer Lingus</item>
+        <item>AeroMexico</item>
+        <item>Air Canada</item>
+        <item>Air China</item>
+        <item>Air France</item>
+        <item>Air New Zealand</item>
+        <item>AirTran Airways</item>
+        <item>Alaska Airlines</item>
+        <item>American Airlines</item>
+        <item>ANA</item>
+        <item>Asiana Airlines</item>
+        <item>Avianca</item>
+        <item>British Airways</item>
+        <item>Cathay Pacific</item>
+        <item>China Airlines</item>
+        <item>China Eastern Airlines</item>
+        <item>China Southern Airlines</item>
+        <item>Delta Airlines</item>
+        <item>Emirates</item>
+        <item>Etihad Airways</item>
+        <item>EVA AIR</item>
+        <item>Frontier Airlines</item>
+        <item>Hawaiian Airlines</item>
+        <item>Japan Airlines</item>
+        <item>JetBlue</item>
+        <item>KLM</item>
+        <item>Korean Air</item>
+        <item>Lufthansa</item>
+        <item>Phillipine Airlines</item>
+        <item>SAS</item>
+        <item>Singapore Airlines</item>
+        <item>Southwest Airlines</item>
+        <item>Sun Country Airlines</item>
+        <item>Swiss International Air Lines</item>
+        <item>United Airlines</item>
+        <item>US Airways</item>
+        <item>Virgin Atlantic</item>
+        <item>WestJet</item>
+        <item>XL Airways France</item>
+    </string-array>
+</resources>

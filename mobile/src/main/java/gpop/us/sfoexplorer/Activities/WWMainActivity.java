@@ -31,7 +31,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
 import gpop.us.sfoexplorer.Fragments.WWDepartureFragment;
 import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
 import gpop.us.sfoexplorer.Fragments.WWWeatherFragment;
@@ -614,6 +613,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 Log.d(TAG, "Flight Handshake successful! " + response.toString()); // Logging.
                 flightModel = WWFlightModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
+                flightDestination = flightModel.getDestination(); // Gets the flight destination value from the JSON string.
                 timeToBoard = flightModel.getTimeToDeparture(); // Gets the time to board value from the JSON string.
                 departureGate = flightModel.getDepartureGate(); // Gets the departure gate from the JSON string.
                 String departure_time = flightModel.getDepartureTime(); // Gets the departure time from the JSON string.

@@ -323,6 +323,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
             // If the array size is of two elements, the airline code and flight number is extracted.
             if (flightStrip.length == 2) {
+                airlineCarrier = flightStrip[0];
                 airlineCode = flightStrip[0];
                 flightNumber = flightStrip[1];
             }
@@ -613,7 +614,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 Log.d(TAG, "Flight Handshake successful! " + response.toString()); // Logging.
                 flightModel = WWFlightModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
-                flightDestination = flightModel.getDestination(); // Gets the flight destination value from the JSON string.
+                flightDestination = flightModel.getDestinationCity(); // Gets the flight destination value from the JSON string.
                 timeToBoard = flightModel.getTimeToDeparture(); // Gets the time to board value from the JSON string.
                 departureGate = flightModel.getDepartureGate(); // Gets the departure gate from the JSON string.
                 String departure_time = flightModel.getDepartureTime(); // Gets the departure time from the JSON string.
@@ -851,14 +852,10 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private void startStopAllThreads(Boolean isStart) {
 
         // Starts all threads.
-        if (isStart) {
-            updateThread.postDelayed(runningUpdates, updateTimer);
-        }
+        if (isStart) { updateThread.postDelayed(runningUpdates, updateTimer); }
 
         // Stops all threads.
-        else {
-            updateThread.removeCallbacks(runningUpdates);
-        }
+        else { updateThread.removeCallbacks(runningUpdates); }
     }
 
     /** MEMORY FUNCTIONALITY ___________________________________________________________________ **/

@@ -49,10 +49,10 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/flight_number_input"
-                    android:background="@drawable/belize_hole_background"
+                    android:background="@drawable/white_round_background"
                     android:hint="Enter Flight No."
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/black"
                     android:padding="10dp"
                     android:textSize="24sp" />
 
@@ -66,15 +66,66 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Explore"
+                    android:text="GO"
                     android:id="@+id/explore_button"
-                    android:background="@drawable/midnight_blue_background"
+                    android:background="@drawable/deep_red_background"
                     android:textSize="24sp"
                     android:padding="10dp"
                     android:textColor="@android:color/white" />
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:id="@+id/title_weather_bar"
+        android:background="@drawable/dark_transparent_background"
+        android:layout_gravity="top"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_weather_icon"
+            android:layout_gravity="center"
+            android:src="@drawable/weather_partly_cloudy" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_weather_spacer"
+            android:padding="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="55° PARTLY CLOUDY"
+            android:id="@+id/title_weather_text"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:id="@+id/title_skip_container"
+        android:background="@drawable/dark_transparent_background"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SKIP THIS"
+            android:id="@+id/skip_button"
+            android:textColor="@android:color/white"
+            android:background="@android:color/transparent"
+            android:textSize="18sp"
+            android:typeface="sans" />
 
     </LinearLayout>
 

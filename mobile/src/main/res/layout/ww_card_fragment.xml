@@ -13,37 +13,152 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/card_event_text_container"
-        android:padding="10dp"
-        android:background="@drawable/dark_transparent_background">
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:id="@+id/card_event_main_container">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Event Name"
-            android:id="@+id/card_event_name"
             android:layout_gravity="center"
-            android:textSize="36sp"
-            android:textColor="@android:color/white" />
+            android:gravity="center"
+            android:id="@+id/card_event_text_container"
+            android:padding="10dp"
+            android:background="@drawable/dark_transparent_background">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Store Name"
+                android:id="@+id/card_event_name"
+                android:layout_gravity="center"
+                android:textSize="36sp"
+                android:textColor="#cccc9f" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="4dp"
+                android:id="@+id/card_event_location_container">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_terminal_container">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TERMINAL"
+                        android:id="@+id/card_terminal_text"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INTERNATIONAL"
+                        android:id="@+id/card_event_location"
+                        android:textSize="36sp"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_event_location_spacer_1"
+                    android:padding="5dp"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_gate_container">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GATE"
+                        android:id="@+id/card_gate_text"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="A20"
+                        android:id="@+id/card_event_gate"
+                        android:textColor="@android:color/white"
+                        android:textSize="36sp"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_event_location_spacer_2"
+                    android:padding="5dp"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/card_eta_container">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SPACER"
+                        android:id="@+id/card_eta_spacer"
+                        android:textColor="@android:color/transparent"
+                        android:visibility="invisible" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/card_eta_subcontainer">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/card_indicator_icon"
+                            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+                            android:layout_gravity="center"
+                            android:paddingRight="10dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2 min"
+                            android:id="@+id/card_eta_text"
+                            android:textColor="@android:color/white"
+                            android:textSize="36sp"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="IN TERMINAL 3 AT"
-            android:id="@+id/card_event_location"
-            android:textSize="24sp"
-            android:textColor="@android:color/white" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GATE A20"
-            android:id="@+id/card_event_gate"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:padding="64dp"
+            android:id="@+id/card_event_bottom_spacer"></LinearLayout>
     </LinearLayout>
 
     <ImageView

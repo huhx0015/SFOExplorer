@@ -111,7 +111,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private static WeakReference<WWMainActivity> weakRefActivity = null; // Used to maintain a weak reference to the activity.
 
     // THREAD VARIABLES
-    private Handler updateThread = new Handler(); // A thread that handles the updating of the notification bar and .
+    private Handler updateThread = new Handler(); // A thread that handles the updating of the notification bar.
     private int updateTimer = 60000; // Time (in milliseconds) used by the updateThread.
 
     /** ACTIVITY LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
@@ -131,7 +131,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     @Override
     public void onResume() {
         super.onResume();
-        startStopAllThreads(true); // Starts all threads.
+        //startStopAllThreads(true); // Starts all threads.
     }
 
     // onPause(): This function is called whenever the current activity is suspended or another
@@ -139,7 +139,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     @Override
     protected void onPause() {
         super.onPause();
-        startStopAllThreads(false); // Stops all threads.
+        //startStopAllThreads(false); // Stops all threads.
     }
 
     // onStop(): This function runs when screen is no longer visible and the activity is in a

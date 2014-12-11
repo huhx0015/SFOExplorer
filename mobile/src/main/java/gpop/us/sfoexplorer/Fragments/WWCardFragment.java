@@ -71,8 +71,7 @@ public class WWCardFragment extends Fragment {
     // onAttach(): The initial function that is called when the Fragment is run. The activity is
     // attached to the fragment.
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.currentActivity = activity; // Sets the currentActivity to attached activity object.
     }
@@ -180,21 +179,33 @@ public class WWCardFragment extends Fragment {
         // References the ImageView objects.
         card_background_image = (ImageView) card_view.findViewById(R.id.card_background_image);
         main_card_image = (ImageView) card_view.findViewById(R.id.card_activity_image);
+        ImageView eta_indicator_icon = (ImageView) card_view.findViewById(R.id.card_indicator_icon);
 
         // References the TextView objects.
         TextView event_title = (TextView) card_view.findViewById(R.id.card_event_name);
         TextView event_location = (TextView) card_view.findViewById(R.id.card_event_location);
+        TextView event_location_label = (TextView) card_view.findViewById(R.id.card_terminal_text);
         TextView event_gate = (TextView) card_view.findViewById(R.id.card_event_gate);
+        TextView event_gate_label = (TextView) card_view.findViewById(R.id.card_gate_text);
+        TextView event_eta = (TextView) card_view.findViewById(R.id.card_eta_text);
+        TextView event_eta_spacer = (TextView) card_view.findViewById(R.id.card_eta_spacer);
 
         // Sets the custom font type to the TextView objects.
         event_gate.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
+        event_gate_label.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
         event_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
+        event_location_label.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
         event_title.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
+        event_eta.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
+        event_eta_spacer.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
 
         // Sets up a shadow effect for the TextView objects.
         event_title.setShadowLayer(8, 4, 4, Color.BLACK);
         event_gate.setShadowLayer(8, 4, 4, Color.BLACK);
+        event_gate_label.setShadowLayer(8, 4, 4, Color.BLACK);
         event_location.setShadowLayer(8, 4, 4, Color.BLACK);
+        event_location_label.setShadowLayer(8, 4, 4, Color.BLACK);
+        event_eta.setShadowLayer(8, 4, 4, Color.BLACK);
 
         // Retrieves the event details from the WWEventModel object.
         String event_name = eventModel.getEventTitle(); // Gets the event name from the JSON string.
@@ -217,13 +228,23 @@ public class WWCardFragment extends Fragment {
         // Hides the gate details if the value is equal to -1.
         if (event_gate_number.equals("-1")) {
             event_gate.setVisibility(View.GONE); // Hides the TextView object.
-            location_spacer = "";
+            //location_spacer = "";
         }
+
+        // Removes improper text from the string for formatting.
+        event_terminal = event_terminal.replace("Terminal", ""); // Removes 'Terminal' from the string.
+        event_terminal = event_terminal.replace("TERMINAL", ""); // Removes 'Terminal' from the string.
+        event_gate_number = event_gate_number.replace("Boarding Area ", "");
+        event_gate_number = event_gate_number.replace("Boarding area ", "");
+        event_gate_number = event_gate_number.replace("Near ", "");
+        event_gate_number = event_gate_number.replace("Gate", "");
 
         // Sets the event text for the TextView objects.
         event_title.setText(event_name);
-        event_location.setText("IN " + event_terminal + location_spacer);
-        event_gate.setText("GATE " + event_gate_number);
+        //event_location.setText("IN " + event_terminal + location_spacer);
+        event_location.setText(event_terminal);
+        //event_gate.setText("GATE " + event_gate_number);
+        event_gate.setText(event_gate_number);
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/

@@ -82,6 +82,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
     // LAYOUT VARIABLES
     private FrameLayout card_fragment_details_container; // References the card fragment details container object.
+    private LinearLayout notification_bar; // References the notification bar.
     private LinearLayout notification_flight_container; // References the flight container on the notification bar.
     private LinearLayout notification_weather_container; // References the weather container on the notification bar.
 
@@ -131,7 +132,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     @Override
     public void onResume() {
         super.onResume();
-        //startStopAllThreads(true); // Starts all threads.
+        startStopAllThreads(true); // Starts all threads.
     }
 
     // onPause(): This function is called whenever the current activity is suspended or another
@@ -139,7 +140,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     @Override
     protected void onPause() {
         super.onPause();
-        //startStopAllThreads(false); // Stops all threads.
+        startStopAllThreads(false); // Stops all threads.
     }
 
     // onStop(): This function runs when screen is no longer visible and the activity is in a
@@ -165,6 +166,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // onBackPressed(): Defines the action to take when the physical back button key is pressed.
     @Override
     public void onBackPressed() {
+
+        notification_bar.setVisibility(View.VISIBLE); // Hides the notification bar.
 
         // If the details fragment is currently being shown, the fragment is removed.
         if (isDetailsOn) {
@@ -369,6 +372,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             @Override
             public void onClick(View v) {
 
+                notification_bar.setVisibility(View.INVISIBLE); // Hides the notification bar.
+
                 // Checks to see if the weatherModel object has been initialized first or not.
                 if (weatherModel != null) {
 
@@ -377,20 +382,19 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                     // If the card details fragment has already been made, the fragment is shown instead of
                     // being created.
-                    if (isWeatherFragmentMade) {
-                        displayFragment(true, weather_fragment);
-                    } else {
+                    if (isWeatherFragmentMade) { displayFragment(true, weather_fragment); }
+
+                    else {
 
                         // Initializes the WWWeatherFragment object.
                         weather_fragment = new WWWeatherFragment();
-                        weather_fragment.initializeFragment(weatherModel, currentLocation);
+                        weather_fragment.initializeFragment(weatherModel, currentLocation, flightDestination);
 
                         setUpFragment(weather_fragment, "WEATHER"); // Sets up the fragment for the weather details.
                     }
                 }
             }
         });
-
     }
 
     /** CARD FUNCTIONALITY _____________________________________________________________________ **/
@@ -522,6 +526,9 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
     // setUpNotificationBar(): Sets up the notification bar for the activity.
     private void setUpNotificationBar() {
+
+        // References the notification bar.
+        notification_bar = (LinearLayout) findViewById(R.id.notification_bar);
 
         // Sets up the ImageView objects.
         notification_flight_image = (ImageView) findViewById(R.id.notification_flight_icon);

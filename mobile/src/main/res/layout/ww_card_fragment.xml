@@ -10,12 +10,28 @@
         android:id="@+id/card_background_image"
         android:background="@drawable/dark_transparent_background" />
 
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/card_activity_image"
+        android:layout_gravity="center"
+        android:src="@drawable/bathroom_sign"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/card_details_button"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="bottom"
-        android:id="@+id/card_event_main_container">
+        android:id="@+id/card_event_main_container"
+        android:layout_gravity="center_horizontal|bottom">
 
         <LinearLayout
             android:orientation="vertical"
@@ -160,20 +176,5 @@
             android:padding="64dp"
             android:id="@+id/card_event_bottom_spacer"></LinearLayout>
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:id="@+id/card_activity_image"
-        android:layout_gravity="center"
-        android:src="@drawable/bathroom_sign"
-        android:visibility="gone" />
-
-    <ImageButton
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/card_details_button"
-        android:background="@android:color/transparent"
-        android:visibility="gone" />
 
 </FrameLayout>

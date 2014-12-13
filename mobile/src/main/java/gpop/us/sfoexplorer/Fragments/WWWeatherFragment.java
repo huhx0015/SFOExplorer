@@ -43,6 +43,7 @@ public class WWWeatherFragment extends Fragment {
 
     // WEATHER VARIABLES
     private String currentLocation; // References the current location.
+    private String destinationLocation; // References the destination location.
     private WWWeatherModel weatherModel; // References the event model object for this fragment.
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
@@ -56,9 +57,10 @@ public class WWWeatherFragment extends Fragment {
     public static WWWeatherFragment getInstance() { return weather_fragment; }
 
     // initializeFragment(): Initializes the fragment with the event properties.
-    public void initializeFragment(WWWeatherModel weather, String location) {
+    public void initializeFragment(WWWeatherModel weather, String location, String destination) {
         weatherModel = weather;
         currentLocation = location;
+        destinationLocation = destination;
     }
 
     /** FRAGMENT LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
@@ -163,7 +165,7 @@ public class WWWeatherFragment extends Fragment {
     private void setUpImages() {
 
         // References the ImageView objects.
-        ImageView weather_image = (ImageView) weather_view.findViewById(R.id.weather_image);
+        ImageView origin_weather_image = (ImageView) weather_view.findViewById(R.id.ww_origin_weather_image);
 
         String current_weather = weatherModel.getWeather(); // Sets the weather status from the JSON string.
 
@@ -179,34 +181,53 @@ public class WWWeatherFragment extends Fragment {
         Picasso.with(currentActivity)
                 .load(weather_image_resource)
                 .withOptions(WWImages.setBitmapOptions())
-                .into(weather_image);
+                .into(origin_weather_image);
     }
 
     // setUpText(): Sets up the TextView objects for the fragment.
     private void setUpText() {
 
         // References the TextView objects.
-        TextView temperature_text = (TextView) weather_view.findViewById(R.id.temperature_text);
-        TextView weather_status_text = (TextView) weather_view.findViewById(R.id.weather_status_text);
-        TextView current_location = (TextView) weather_view.findViewById(R.id.current_location);
+        TextView origin_text = (TextView) weather_view.findViewById(R.id.ww_origin_text);
+        TextView origin_location = (TextView) weather_view.findViewById(R.id.ww_origin_location_text);
+        TextView origin_temperature_text = (TextView) weather_view.findViewById(R.id.ww_origin_weather_temp);
+        TextView origin_weather_status_text = (TextView) weather_view.findViewById(R.id.ww_origin_weather_text);
+        TextView destination_text = (TextView) weather_view.findViewById(R.id.ww_destination_text);
+        TextView destination_location = (TextView) weather_view.findViewById(R.id.ww_destination_location_text);
+        TextView destination_temperature_text = (TextView) weather_view.findViewById(R.id.ww_destination_weather_temp);
+        TextView destination_weather_status_text = (TextView) weather_view.findViewById(R.id.ww_destination_weather_text);
 
         // Sets up the custom font type for the TextView objects.
-        temperature_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());// Sets the custom font face.
-        weather_status_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
-        current_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        origin_text.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        origin_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        origin_temperature_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
+        origin_weather_status_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
+        destination_text.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        destination_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        destination_temperature_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());// Sets the custom font face.
+        destination_weather_status_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
 
         // Sets up a shadow effect for the TextView objects.
-        temperature_text.setShadowLayer(8, 4, 4, Color.BLACK);
-        weather_status_text.setShadowLayer(8, 4, 4, Color.BLACK);
-        current_location.setShadowLayer(8, 4, 4, Color.BLACK);
+        origin_text.setShadowLayer(8, 4, 4, Color.BLACK);
+        origin_location.setShadowLayer(8, 4, 4, Color.BLACK);
+        origin_temperature_text.setShadowLayer(8, 4, 4, Color.BLACK);
+        origin_weather_status_text.setShadowLayer(8, 4, 4, Color.BLACK);
+        destination_text.setShadowLayer(8, 4, 4, Color.BLACK);
+        destination_location.setShadowLayer(8, 4, 4, Color.BLACK);
+        destination_temperature_text.setShadowLayer(8, 4, 4, Color.BLACK);
+        destination_weather_status_text.setShadowLayer(8, 4, 4, Color.BLACK);
 
         // Retrieves the event details from the WWEventModel object.
         double temperature_value = weatherModel.getTemperature(); // Gets the temperature from the JSON string.
         String weather_status_string = weatherModel.getWeather(); // Gets the weather from the JSON string.
 
         // Sets the weather status for the TextView object.
-        temperature_text.setText(temperature_value + "°"); // Sets the temperature text.
-        weather_status_text.setText(weather_status_string); // Sets the weather status text.
+        origin_temperature_text.setText(temperature_value + "°"); // Sets the temperature text.
+        origin_weather_status_text.setText(weather_status_string); // Sets the weather status text.
+
+        // Sets the location for the TextView objects.
+        origin_location.setText(currentLocation); // Sets the current location text.
+        destination_location.setText(destinationLocation); // Sets the destination location text.
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/

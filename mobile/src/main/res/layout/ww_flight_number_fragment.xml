@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ww_flight_number_fragment_layout"
+    android:background="@drawable/dark_transparent_background">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/flight_back_button"
+        android:layout_gravity="left|top"
+        android:src="@drawable/back_red_button"
+        android:background="@android:color/transparent"
+        android:padding="10dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/enter_flight_container">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENTER FLIGHT NUMBER"
+            android:id="@+id/enter_flight_text"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/enter_flight_spacer_1"
+            android:padding="5dp"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:id="@+id/enter_flight_subcontainer">
+
+            <EditText
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/enter_flight_number_input"
+                android:background="@drawable/white_round_background"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:padding="10dp"
+                android:textSize="24sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/enter_flight_spacer_2"
+                android:padding="5dp"
+                android:visibility="invisible" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GO"
+                android:id="@+id/enter_flight_button"
+                android:background="@drawable/deep_red_background"
+                android:textSize="24sp"
+                android:padding="10dp"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

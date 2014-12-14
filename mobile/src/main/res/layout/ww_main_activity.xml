@@ -67,11 +67,11 @@
         android:padding="8dp">
 
         <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:id="@+id/search_button"
             android:src="@drawable/abc_ic_search_api_mtrl_alpha"
-            android:background="@drawable/dark_transparent_background" />
+            android:background="@drawable/blue_button_background" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -80,12 +80,11 @@
             android:padding="16dp" />
 
         <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:id="@+id/flight_button"
             android:src="@drawable/plane_icon"
-            android:background="@drawable/dark_transparent_background"
-            android:visibility="gone" />
+            android:background="@drawable/blue_button_background" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -99,17 +98,20 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_gravity="center"
-            android:background="@drawable/dark_transparent_background">
+            android:background="@drawable/rounded_dark_transparent_background"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/notification_flight_row_1">
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical">
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/notification_flight_number_container">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -125,7 +127,8 @@
                         android:id="@+id/notification_flight_number"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:padding="5dp" />
 
                 </LinearLayout>
 
@@ -133,7 +136,8 @@
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right">
+                    android:layout_gravity="center_vertical|right"
+                    android:id="@+id/notification_flight_status_container">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -143,7 +147,8 @@
                         android:layout_gravity="center_vertical|right"
                         android:textColor="@android:color/white"
                         android:gravity="right"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:padding="5dp" />
                 </LinearLayout>
             </FrameLayout>
 
@@ -156,7 +161,8 @@
 
             <FrameLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:id="@+id/notification_flight_row_2">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -173,7 +179,8 @@
                     android:layout_height="fill_parent"
                     android:id="@+id/notification_countdown_container"
                     android:gravity="right"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="wrap_content"

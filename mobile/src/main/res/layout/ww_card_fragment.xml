@@ -48,16 +48,19 @@
                 android:layout_height="wrap_content"
                 android:text="Store Name"
                 android:id="@+id/card_event_name"
-                android:layout_gravity="center"
+                android:layout_gravity="center|right"
                 android:textSize="36sp"
-                android:textColor="#cccc9f" />
+                android:textColor="#cccc9f"
+                android:paddingRight="10dp" />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:padding="4dp"
-                android:id="@+id/card_event_location_container">
+                android:id="@+id/card_event_location_container"
+                android:layout_gravity="right"
+                android:gravity="right">
 
                 <LinearLayout
                     android:orientation="vertical"

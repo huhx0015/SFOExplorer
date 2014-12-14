@@ -12,6 +12,7 @@ public class WWClient {
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // API VARIABLES:
+    private String SERVER_URL = "http://gpop-server.com/sfo/"; // Server URL string.
     private String BASE_URL = ""; // Base URL string.
     private String API_TYPE = "NONE"; // API type string.
 
@@ -55,20 +56,21 @@ public class WWClient {
     private void selectApi() {
 
         // WEATHER UNDERGROUND API (VIA GPOP SERVER):
-        if (API_TYPE.equals("WEATHER")) { BASE_URL = "http://gpop-server.com/sfo/weather.php"; }
+        if (API_TYPE.equals("WEATHER")) { BASE_URL = SERVER_URL + "weather.php"; }
+
+        // WEATHER UNDERGROUND API - AIRPORT (VIA GPOP SERVER):
+        else if (API_TYPE.equals("WEATHER-AIRPORT")) { BASE_URL = SERVER_URL + "weather-airport.php?airline=" + airlineCarrier + "&flight_number=" + flightNumber; }
 
         // FLYSFO API:
-        else if (API_TYPE.equals("FLYSFO")) { BASE_URL = "http://gpop-server.com/sfo/"; }
+        else if (API_TYPE.equals("FLYSFO")) { BASE_URL = SERVER_URL; }
 
         // FLIGHT STATUS API:
         else if (API_TYPE.equals("FLIGHT_STATUS")) {
-            BASE_URL = "http://gpop-server.com/sfo/stats.php?airline=" + airlineCarrier + "&flight_number=" + flightNumber;
+            BASE_URL = SERVER_URL + "stats.php?airline=" + airlineCarrier + "&flight_number=" + flightNumber;
         }
 
         // NULL (NO API SELECTED):
-        else {
-            BASE_URL = null;
-        }
+        else { BASE_URL = null; }
 
         Log.d(TAG, "BASE_URL: " + BASE_URL); // Logging.
     }

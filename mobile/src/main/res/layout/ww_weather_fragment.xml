@@ -412,7 +412,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/weather_back_button"
         android:layout_gravity="left|top"
-        android:src="@drawable/back"
+        android:src="@drawable/back_red_button"
         android:background="@android:color/transparent"
         android:padding="10dp" />
 

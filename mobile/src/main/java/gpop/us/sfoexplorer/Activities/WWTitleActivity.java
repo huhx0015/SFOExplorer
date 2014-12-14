@@ -41,7 +41,7 @@ public class WWTitleActivity extends Activity {
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // FLIGHT VARIABLES
-    private String flightNumber = "NULL"; // References the flight number.
+    private String flightNumber; // References the flight number.
 
     // LAYOUT VARIABLES
     private EditText flight_input; // References the EditText input fields.

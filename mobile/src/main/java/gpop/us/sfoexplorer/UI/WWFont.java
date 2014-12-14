@@ -36,6 +36,18 @@ public class WWFont {
                 "fonts/big_noodle_titling.ttf");
     }
 
+    // setRobotoLight(): Retrieves the custom font family (Roboto Light) from resources.
+    public Typeface setRobotoLight() {
+        return Typeface.createFromAsset(context.getResources().getAssets(),
+                "fonts/roboto_light.ttf");
+    }
+
+    // setRobotoRegular(): Retrieves the custom font family (Roboto Regular) from resources.
+    public Typeface setRobotoRegular() {
+        return Typeface.createFromAsset(context.getResources().getAssets(),
+                "fonts/roboto_regular.ttf");
+    }
+
     // setYanoneKaffeeSatzTypeFace(): Retrieves the custom font family (Yanone Kaffee Satz)from resources.
     public Typeface setYanoneKaffeeSatzTypeFace() {
         return Typeface.createFromAsset(context.getResources().getAssets(),

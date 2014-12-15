@@ -8,7 +8,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/ww_current_weather_container">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:background="@android:color/holo_blue_dark"
-            android:id="@+id/ww_current_weather_container">
+            android:id="@+id/ww_current_weather_subcontainer">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -138,22 +139,34 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="5dp"
-            android:background="@android:color/holo_blue_light">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5 DAY FORECAST"
-                android:id="@+id/textView2"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:padding="10dp" />
+            android:background="@android:color/holo_blue_light"
+            android:id="@+id/ww_forecast_container">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@android:color/holo_orange_dark"
+                android:id="@+id/ww_forecast_header">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5 DAY FORECAST"
+                    android:id="@+id/ww_forecast_header_text"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:id="@+id/ww_forecast_subcontainer">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -161,27 +174,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:id="@+id/linearLayout"
+                    android:id="@+id/ww_forecast_day_1_container"
                     android:layout_weight="1">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView"
+                        android:id="@+id/ww_forecast_day_1_image"
                         android:layout_gravity="center"
                         android:src="@drawable/sun" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ww_forecast_day_1_spacer"
                         android:padding="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100°"
-                        android:id="@+id/textView"
+                        android:id="@+id/ww_forecast_day_1_temp"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
 
@@ -189,7 +202,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SUNNY"
-                        android:id="@+id/textView3"
+                        android:id="@+id/ww_forecast_day_1_status"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:gravity="center" />
@@ -201,27 +214,28 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:id="@+id/linearLayout2"
-                    android:layout_weight="1">
+                    android:id="@+id/ww_forecast_day_2_container"
+                    android:layout_weight="1"
+                    android:focusableInTouchMode="false">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView3"
+                        android:id="@+id/ww_forecast_day_2_image"
                         android:layout_gravity="center"
                         android:src="@drawable/sun" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView4"
+                        android:id="@+id/ww_forecast_day_2_spacer"
                         android:padding="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100°"
-                        android:id="@+id/textView4"
+                        android:id="@+id/ww_forecast_day_2_temp"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
 
@@ -229,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SUNNY"
-                        android:id="@+id/textView6"
+                        android:id="@+id/ww_forecast_day_2_status"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:gravity="center" />
@@ -241,27 +255,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:id="@+id/linearLayout3"
+                    android:id="@+id/ww_forecast_day_3_container"
                     android:layout_weight="1" >
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView5"
+                        android:id="@+id/ww_forecast_day_3_image"
                         android:layout_gravity="center"
                         android:src="@drawable/sun" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView6"
+                        android:id="@+id/ww_forecast_day_3_spacer"
                         android:padding="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100°"
-                        android:id="@+id/textView7"
+                        android:id="@+id/ww_forecast_day_3_temp"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
 
@@ -269,7 +283,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SUNNY"
-                        android:id="@+id/textView9"
+                        android:id="@+id/ww_forecast_day_3_status"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:gravity="center" />
@@ -281,27 +295,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:id="@+id/linearLayout4"
+                    android:id="@+id/ww_forecast_day_4_container"
                     android:layout_weight="1" >
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView7"
+                        android:id="@+id/ww_forecast_day_4_image"
                         android:layout_gravity="center"
                         android:src="@drawable/sun" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView8"
+                        android:id="@+id/ww_forecast_day_4_spacer"
                         android:padding="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100°"
-                        android:id="@+id/textView10"
+                        android:id="@+id/ww_forecast_day_4_temp"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
 
@@ -309,7 +323,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SUNNY"
-                        android:id="@+id/textView12"
+                        android:id="@+id/ww_forecast_day_4_status"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:gravity="center" />
@@ -321,27 +335,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:id="@+id/linearLayout5"
+                    android:id="@+id/ww_forecast_day_5_container"
                     android:layout_weight="1" >
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView9"
+                        android:id="@+id/ww_forecast_day_5_image"
                         android:layout_gravity="center"
                         android:src="@drawable/sun" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageView10"
+                        android:id="@+id/ww_forecast_day_5_spacer"
                         android:padding="2dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="100°"
-                        android:id="@+id/textView13"
+                        android:id="@+id/ww_forecast_day_5_temp"
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
 
@@ -349,7 +363,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SUNNY"
-                        android:id="@+id/textView15"
+                        android:id="@+id/ww_forecast_day_5_status"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:gravity="center" />
@@ -357,54 +371,6 @@
             </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/weather_info_container"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/weather_image"
-            android:layout_gravity="center"
-            android:src="@drawable/sun" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="100°"
-            android:id="@+id/temperature_text"
-            android:textColor="@android:color/white"
-            android:textSize="36sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Weather Status"
-            android:id="@+id/weather_status_text"
-            android:textColor="@android:color/white"
-            android:textSize="28sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/weather_status_spacer"
-            android:padding="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="San Francisco International Airport"
-            android:id="@+id/current_location"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:gravity="center" />
     </LinearLayout>
 
     <ImageButton

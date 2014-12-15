@@ -61,6 +61,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // CARD VARIABLES
     private ArrayList<WWEventModel> models; // References the ArrayList of WWEventModel objects.
     private String currentCategory = null; // Used to determine the current category of cards to display.
+    private WWAirportWeatherModel airportWeatherModel; // The model object for the JSON airport weather data.
     private WWFlightModel flightModel; // The model object for JSON flight data.
     private WWWeatherModel weatherModel; // The model object for JSON weather data.
 
@@ -68,10 +69,10 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private int timeToBoard = 31; // Used to reference the remaining time (in minutes) to flight boarding.
     private String airlineCode = "AA"; // Used to reference the airline code.
     private String airlineCarrier = "American Airlines"; // Used to reference the airline carrier.
-    private String flightDestination = "Minneapolis Saint Paul"; // Used to reference the passenger's destination.
+    private String flightDestination = "San Francisco"; // Used to reference the passenger's destination.
     private String flightNumber = "AA 1482"; // Used to reference the passenger's flight number.
     private String departureGate = "A20"; // Used to reference the passenger's departure gate.
-    private String currentLocation = "San Francisco International Airport"; // Used to reference the traveler's current location.
+    private String currentLocation = "San Francisco"; // Used to reference the traveler's current location.
 
     // FRAGMENT VARIABLES
     private Boolean isDetailsOn = false; // Used to determine if the card details fragment is currently being shown.
@@ -398,6 +399,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         if (extras != null) {
 
             // Retrieves the flight number from the bundle.
+            Boolean isSkip = extras.getBoolean("flight_skip");
             flightNumber = extras.getString("flight_number");
 
             // If the flightNumber value is not "NULL", the String is split and the values are
@@ -505,7 +507,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             public void onClick(View v) {
 
                 // Checks to see if the weatherModel object has been initialized first or not.
-                if (weatherModel != null) {
+                if (airportWeatherModel != null) {
 
                     // Sets up the weather fragment.
                     isWeatherOn = true; // Indicates that the weather fragment is currently being shown.
@@ -518,7 +520,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                         // Initializes the WWWeatherFragment object.
                         weather_fragment = new WWWeatherFragment();
-                        weather_fragment.initializeFragment(weatherModel, currentLocation, flightDestination);
+                        weather_fragment.initializeFragment(airportWeatherModel, currentLocation, flightDestination);
                         setUpFragment(weather_fragment, "WEATHER"); // Sets up the fragment for the weather details.
                     }
 
@@ -696,15 +698,18 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         notification_weather_status.setShadowLayer(4, 0, 0, Color.BLACK);
 
         getFlightStatus(); // Updates the flight status on the notification bar.
-        getWeatherStatus(); // Updates the weather status on the notification bar.
+
+        // Calls the appropriate weather API depending if the flight number has been entered or not.
+        if (flightNumber == null) { getWeatherStatus(); } // Updates the weather status on the notification bar.
+        else { getAirportWeatherStatus(); } // Updates the airport weather status data.
+
         updateTimeToBoard(); // Updates the time to board value on the notification bar.
     }
 
-    /*
     // getAirportWeatherStatus(): Retrieves the current airport weather status.
     private void getAirportWeatherStatus() {
 
-        client = new WWClient("WEATHER-AIRPORT"); // Sets up the JSON client for retrieving weather data.
+        client = new WWClient("WEATHER-AIRPORT", airlineCode, flightNumber); // Sets up the JSON client for retrieving the airport weather data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -717,8 +722,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 //Toast.makeText(getApplicationContext(), "Weather Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
                 airportWeatherModel = WWAirportWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
-                String current_weather = weatherModel.getWeather(); // Sets the weather status from the JSON string.
-                double current_temperature = weatherModel.getTemperature(); // Sets the current temperature from the JSON string.
+                String current_origin_weather = airportWeatherModel.getOriginWeatherStatus(); // Sets the weather status from the JSON string.
+                double current_origin_temperature = airportWeatherModel.getOriginTemperature(); // Sets the current temperature from the JSON string.
 
                 // Creates a new Time object.
                 Time currentTime = new Time(); // Initializes the Time object.
@@ -726,7 +731,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 int newTime = (int) (currentTime.toMillis(true) / 1000); // Converts the time into hours.
 
                 // Retrieves the appropriate weather image based on the value from the JSON string.
-                int weather_image = WWWeather.weatherGraphicSelector(current_weather, newTime);
+                int weather_image = WWWeather.weatherGraphicSelector(current_origin_weather, newTime);
 
                 // Sets the weather icon for the ImageView object.
                 Picasso.with(getApplicationContext())
@@ -737,7 +742,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                         .into(notification_weather_image);
 
                 // Sets the weather status for the TextView object.
-                notification_weather_status.setText(current_temperature + "° " + current_weather);
+                notification_weather_status.setText(current_origin_temperature + "° " + current_origin_weather);
             }
 
             // onFailure(): Run when JSON request was a failure.
@@ -749,7 +754,6 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             }
         });
     }
-    */
 
     // getWeatherStatus(): Retrieves the current weather status.
     private void getWeatherStatus() {
@@ -803,7 +807,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // getFlightStatus(): Retrieves the current flight status.
     private void getFlightStatus() {
 
-        client = new WWClient(airlineCode, flightNumber); // Sets up the JSON client for retrieving weather data.
+        client = new WWClient("FLIGHT_STATUS", airlineCode, flightNumber); // Sets up the JSON client for retrieving flight data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -1039,7 +1043,11 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         public void run() {
 
             checkBoardingTime(); // Checks the boarding time and updates the time accordingly.
-            getWeatherStatus(); // Updates the current weather status on the notification bar.
+
+            // Calls the appropriate weather API depending if the flight number has been entered or not.
+            if (flightNumber == null) { getWeatherStatus(); } // Updates the weather status on the notification bar.
+            else { getAirportWeatherStatus(); } // Updates the airport weather status data.
+
             updateTimeToBoard(); // Updates the time to board counter on the notification bar.
             timeToBoard--; // Decrements the boarding time value.
             getFlightStatus(); // Updates the flight status on the notification bar.

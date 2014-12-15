@@ -13,6 +13,7 @@ public class WWWeather {
     public static int weatherGraphicSelector(String type, int time) {
 
         int weatherIcon = R.drawable.na; // References the weather icon.
+        type = type.toLowerCase(); // Converts the String object into a String with all lowercase characters.
 
         // MILD SNOW:
         if ( (type.equals("mild snow")) || (type.equals("Mild Snow")) ) {
@@ -32,9 +33,8 @@ public class WWWeather {
         }
 
         // RAIN:
-        else if ( (type.equals("heavy rain")) || (type.equals("Heavy Rain")) ||
-                (type.equals("Rain")) || (type.equals("rain")) || (type.equals("Light Rain"))
-                || (type.equals("rainy")) || (type.equals("Rainy"))) {
+        else if ( (type.equals("heavy rain")) || (type.equals("light rain")) ||
+                (type.equals("rain")) || (type.equals("rainy"))) {
 
             // NIGHT:
             if ( (time > 21) || ( (time > 0) && (time < 7) ) ) {
@@ -70,7 +70,7 @@ public class WWWeather {
         }
 
         // CLEAR:
-        else if ( (type.equals("moon")) || (type.equals("night")) || (type.equals("clear skies"))) {
+        else if ( (type.equals("clear")) || (type.equals("moon")) || (type.equals("night")) || (type.equals("clear skies"))) {
 
             // NIGHT:
             if ( (time > 21) || ( (time > 0) && (time < 7) ) ) {

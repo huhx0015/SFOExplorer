@@ -33,20 +33,20 @@ public class WWClient {
 
         // Initializes the class variables.
         this.client = new AsyncHttpClient();
-        API_TYPE = api_type;
+        API_TYPE = api_type; // Sets the API type.
 
         selectApi(); // Selects the API based on the specified API type.
     }
 
     // WWClient(): Sets up the HTTP Client for getting the flight status.
-    public WWClient(String carrier, String flight) {
+    public WWClient(String api_type, String carrier, String flight) {
 
         // Initializes the class variables.
         this.client = new AsyncHttpClient();
         airlineCarrier = carrier;
         flightNumber = flight;
 
-        API_TYPE = "FLIGHT_STATUS"; // Sets the type to FLIGHT_STATUS.
+        API_TYPE = api_type; // Sets the API type.
         selectApi(); // Selects the API based on the specified API type.
     }
 

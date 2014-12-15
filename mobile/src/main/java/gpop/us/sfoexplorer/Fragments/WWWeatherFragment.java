@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import gpop.us.sfoexplorer.Device.WWDisplay;
-import gpop.us.sfoexplorer.Model.WWWeatherModel;
+import gpop.us.sfoexplorer.Model.WWAirportWeatherModel;
 import gpop.us.sfoexplorer.R;
 import gpop.us.sfoexplorer.UI.WWFont;
 import gpop.us.sfoexplorer.UI.WWImages;
@@ -44,7 +44,8 @@ public class WWWeatherFragment extends Fragment {
     // WEATHER VARIABLES
     private String currentLocation; // References the current location.
     private String destinationLocation; // References the destination location.
-    private WWWeatherModel weatherModel; // References the event model object for this fragment.
+    //private WWWeatherModel weatherModel; // References the event model object for this fragment.
+    private WWAirportWeatherModel weatherModel; // References the event model object for this fragment.
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
@@ -57,7 +58,7 @@ public class WWWeatherFragment extends Fragment {
     public static WWWeatherFragment getInstance() { return weather_fragment; }
 
     // initializeFragment(): Initializes the fragment with the event properties.
-    public void initializeFragment(WWWeatherModel weather, String location, String destination) {
+    public void initializeFragment(WWAirportWeatherModel weather, String location, String destination) {
         weatherModel = weather;
         currentLocation = location;
         destinationLocation = destination;
@@ -139,8 +140,8 @@ public class WWWeatherFragment extends Fragment {
     private void setUpLayout() {
 
         setUpButtons(); // Sets up the Button objects for the fragment.
-        setUpImages(); // Sets up the ImageView objects for the fragment.
-        setUpText(); // Sets up the TextView objects for the fragment.
+        setUpOriginDestWeather(); // Sets up the ImageView objects for the fragment.
+        setUpOriginDestText(); // Sets up the TextView objects for the fragment.
 
     }
 
@@ -161,31 +162,16 @@ public class WWWeatherFragment extends Fragment {
 
     }
 
-    // setUpImages(): Sets up the ImageView objects for the fragment.
-    private void setUpImages() {
+    // setUpWeekForecast(): Sets up the image resources for displaying the five day weather
+    // forecast.
+    private void setUpWeekForecastImages() {
 
-        // References the ImageView objects.
-        ImageView origin_weather_image = (ImageView) weather_view.findViewById(R.id.ww_origin_weather_image);
 
-        String current_weather = weatherModel.getWeather(); // Sets the weather status from the JSON string.
-
-        // Creates a new Time object.
-        Time currentTime = new Time(); // Initializes the Time object.
-        currentTime.setToNow(); // Sets the current time.
-        int newTime = (int) (currentTime.toMillis(true) / 1000); // Converts the time into hours.
-
-        // Retrieves the appropriate weather image based on the value from the JSON string.
-        int weather_image_resource = WWWeather.weatherGraphicSelector(current_weather, newTime);
-
-        // Sets the weather icon for the ImageView object.
-        Picasso.with(currentActivity)
-                .load(weather_image_resource)
-                .withOptions(WWImages.setBitmapOptions())
-                .into(origin_weather_image);
     }
 
-    // setUpText(): Sets up the TextView objects for the fragment.
-    private void setUpText() {
+    // setUpOriginDestText(): Sets up the TextView objects for the current origin and destination
+    // city weather.
+    private void setUpOriginDestText() {
 
         // References the TextView objects.
         TextView origin_text = (TextView) weather_view.findViewById(R.id.ww_origin_text);
@@ -217,17 +203,55 @@ public class WWWeatherFragment extends Fragment {
         destination_temperature_text.setShadowLayer(8, 4, 4, Color.BLACK);
         destination_weather_status_text.setShadowLayer(8, 4, 4, Color.BLACK);
 
-        // Retrieves the event details from the WWEventModel object.
-        double temperature_value = weatherModel.getTemperature(); // Gets the temperature from the JSON string.
-        String weather_status_string = weatherModel.getWeather(); // Gets the weather from the JSON string.
+        // Retrieves the weather details from the WWAirportWeatherModel object.
+        double arrival_temperature_value = weatherModel.getOriginTemperature(); // Gets the temperature from the JSON string.
+        double departure_temperature_value = weatherModel.getDestinationTemperature(); // Gets the temperature from the JSON string.
+        String arrival_weather_status_string = weatherModel.getOriginWeatherStatus(); // Gets the weather from the JSON string.
+        String departure_weather_status_string = weatherModel.getDestinationWeatherStatus(); // Gets the weather from the JSON string.
 
         // Sets the weather status for the TextView object.
-        origin_temperature_text.setText(temperature_value + "°"); // Sets the temperature text.
-        origin_weather_status_text.setText(weather_status_string); // Sets the weather status text.
+        origin_temperature_text.setText(arrival_temperature_value + "°"); // Sets the temperature text.
+        destination_temperature_text.setText(departure_temperature_value + "°"); // Sets the temperature text.
+        origin_weather_status_text.setText(arrival_weather_status_string); // Sets the weather status text.
+        destination_weather_status_text.setText(departure_weather_status_string + "°"); // Sets the temperature text.
 
         // Sets the location for the TextView objects.
         origin_location.setText(currentLocation); // Sets the current location text.
         destination_location.setText(destinationLocation); // Sets the destination location text.
+    }
+
+    // setUpOriginDestWeather(): Sets up the ImageView objects for the current origin & destination
+    // city weather.
+    private void setUpOriginDestWeather() {
+
+        // References the ImageView objects.
+        ImageView origin_weather_image = (ImageView) weather_view.findViewById(R.id.ww_origin_weather_image);
+        ImageView destination_weather_image = (ImageView) weather_view.findViewById(R.id.ww_destination_weather_image);
+
+        // Retrieves the current weather status for the origin and destination locations.
+        String origin_current_weather = weatherModel.getOriginWeatherStatus(); // Sets the weather status from the JSON string.
+        String departure_current_weather = weatherModel.getDestinationWeatherStatus(); // Sets the weather status from the JSON string.
+
+        // Creates a new Time object.
+        Time currentTime = new Time(); // Initializes the Time object.
+        currentTime.setToNow(); // Sets the current time.
+        int newTime = (int) (currentTime.toMillis(true) / 1000); // Converts the time into hours.
+
+        // Retrieves the appropriate weather image based on the value from the JSON string.
+        int origin_weather_image_resource = WWWeather.weatherGraphicSelector(origin_current_weather, newTime);
+        int destination_weather_image_resource = WWWeather.weatherGraphicSelector(departure_current_weather, newTime);
+
+        // Sets the weather icon for the ImageView object.
+        Picasso.with(currentActivity)
+                .load(origin_weather_image_resource)
+                .withOptions(WWImages.setBitmapOptions())
+                .into(origin_weather_image);
+
+        // Sets the weather icon for the ImageView object.
+        Picasso.with(currentActivity)
+                .load(destination_weather_image_resource)
+                .withOptions(WWImages.setBitmapOptions())
+                .into(destination_weather_image);
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/

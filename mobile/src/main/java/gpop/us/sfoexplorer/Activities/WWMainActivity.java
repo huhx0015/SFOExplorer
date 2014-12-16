@@ -30,6 +30,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import gpop.us.sfoexplorer.Data.WWAirlineCodes;
 import gpop.us.sfoexplorer.Fragments.WWDepartureFragment;
 import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
 import gpop.us.sfoexplorer.Fragments.WWFlightNumberFragment;
@@ -414,6 +416,9 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                     airlineCode = flightStrip[0];
                     flightNumber = flightStrip[1];
                 }
+
+                // Deciphers the airline code to determine the airline carrier.
+                airlineCarrier = WWAirlineCodes.decipherAirlineCodes(airlineCode);
             }
 
             else { flightNumber = null; } // Sets the flightNumber to be null.
@@ -826,12 +831,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                 Log.d(TAG, "Time to departure value: " + timeToBoard); // Logging.
 
-                int airline_logo = R.drawable.plane_icon; // Image to use as the airline flag.
-
-                // AMERICAN AIRLINES:
-                if ( (airlineCode.equals("AA")) || (airlineCode.equals("aa")) ) {
-                    airline_logo = R.drawable.aa_icon;
-                }
+                // Image to use as the airline flag.
+                int airline_logo = WWAirlineCodes.getAirlineIcon(airlineCode);
 
                 // Sets the weather icon for the ImageView object.
                 Picasso.with(getApplicationContext())

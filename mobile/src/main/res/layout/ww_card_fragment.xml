@@ -64,7 +64,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="160dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/card_terminal_container">
 
@@ -79,7 +79,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="INTERNATIONAL"
+                        android:text="INT"
                         android:id="@+id/card_event_location"
                         android:textSize="36sp"
                         android:textColor="@android:color/white"
@@ -97,7 +97,7 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="48dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/card_gate_container">
 
@@ -129,8 +129,8 @@
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/card_eta_container">
 
                     <TextView
@@ -143,8 +143,8 @@
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:id="@+id/card_eta_subcontainer">
 
                         <ImageView

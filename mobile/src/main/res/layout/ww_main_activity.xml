@@ -37,8 +37,7 @@
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/notification_weather_image"
-                android:layout_gravity="center"
-                android:src="@drawable/weather_partly_cloudy" />
+                android:layout_gravity="center" />
 
             <ImageView
                 android:layout_width="wrap_content"

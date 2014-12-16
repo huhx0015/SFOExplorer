@@ -21,8 +21,8 @@ public class WWWeather {
         }
 
         // CLOUDY:
-        else if ( (type.equals("cloudy")) || (type.equals("Cloudy") ||
-                (type.equals("mostly cloudy")) || (type.equals("Mostly Cloudy")) ) ||
+        else if ( (type.equals("cloudy")) || (type.equals("mostly_cloudy") ||
+                (type.equals("mostly cloudy")) || (type.equals("nt_mostly_cloudy")) ) ||
                 (type.equals("overcast")) || (type.equals("Overcast")) ) {
             weatherIcon = R.drawable.cloudy;
         }
@@ -34,7 +34,9 @@ public class WWWeather {
 
         // RAIN:
         else if ( (type.equals("heavy rain")) || (type.equals("light rain")) ||
-                (type.equals("rain")) || (type.equals("rainy"))) {
+                (type.equals("rain")) || (type.equals("rainy")) || (type.equals("nt_chancerain")) ||
+                (type.equals("nt_rain")) || (type.equals("chancerain")) || (type.equals("nt_chancerain")) ||
+                (type.equals("light drizzle")) || (type.equals("light_drizzle")) ) {
 
             // NIGHT:
             if ( (time > 21) || ( (time > 0) && (time < 7) ) ) {
@@ -70,7 +72,8 @@ public class WWWeather {
         }
 
         // CLEAR:
-        else if ( (type.equals("clear")) || (type.equals("moon")) || (type.equals("night")) || (type.equals("clear skies"))) {
+        else if ( (type.equals("clear")) || (type.equals("moon")) || (type.equals("night")) ||
+                (type.equals("clear skies")) || (type.equals("nt_clear"))) {
 
             // NIGHT:
             if ( (time > 21) || ( (time > 0) && (time < 7) ) ) {
@@ -87,7 +90,8 @@ public class WWWeather {
         }
 
         // PARTLY CLOUDY:
-        else if ( (type.equals("partly cloudy")) || (type.equals("Partly Cloudy")) ) {
+        else if ( (type.equals("partly cloudy")) || (type.equals("partlycloudy")) ||
+                (type.equals("nt_partlycloudy")) ) {
             weatherIcon = R.drawable.partly_cloudy;
         }
 
@@ -97,7 +101,8 @@ public class WWWeather {
         }
 
         // SNOW:
-        else if ( (type.equals("snow")) || (type.equals("Snow")) || (type.equals("Snowy")) ) {
+        else if ( (type.equals("snow")) || (type.equals("nt_snow")) || (type.equals("snowy")) ||
+                (type.equals("nt_chancesnow")) || (type.equals("chancesnow")) ) {
             weatherIcon = R.drawable.snow;
         }
 

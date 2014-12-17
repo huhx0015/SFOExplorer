@@ -7,7 +7,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
  */
-public class WWClient {
+public class SFOClient {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -24,12 +24,12 @@ public class WWClient {
     private String flightNumber; // References the flight number.
 
     // LOGGING VARIABLES:
-    private static final String TAG = WWClient.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOClient.class.getSimpleName(); // Retrieves the simple name of the class.
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
     // WWClient(): Sets up the HTTP Client.
-    public WWClient(String api_type) {
+    public SFOClient(String api_type) {
 
         // Initializes the class variables.
         this.client = new AsyncHttpClient();
@@ -39,7 +39,7 @@ public class WWClient {
     }
 
     // WWClient(): Sets up the HTTP Client for getting the flight status.
-    public WWClient(String api_type, String carrier, String flight) {
+    public SFOClient(String api_type, String carrier, String flight) {
 
         // Initializes the class variables.
         this.client = new AsyncHttpClient();

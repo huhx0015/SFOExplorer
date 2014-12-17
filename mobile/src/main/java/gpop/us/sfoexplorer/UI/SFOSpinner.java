@@ -14,7 +14,7 @@ import gpop.us.sfoexplorer.R;
 /**
  * Created by Michael Yoon Huh on 12/3/2014.
  */
-public class WWSpinner {
+public class SFOSpinner {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -27,7 +27,7 @@ public class WWSpinner {
     @SuppressLint("NewApi")
     public void createAirlineSpinner(final Context con, Spinner spin, final String airlines[]) {
 
-        final Typeface spinnerFont = WWFont.getInstance(con).setBigNoodleTypeFace();
+        final Typeface spinnerFont = SFOFont.getInstance(con).setBigNoodleTypeFace();
 
         // Initializes and creates a new ArrayAdapter object for the spinner.
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(con,

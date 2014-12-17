@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,25 +21,20 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import gpop.us.sfoexplorer.Data.WWWeather;
-import gpop.us.sfoexplorer.Model.WWEventModel;
-import gpop.us.sfoexplorer.Model.WWFlightModel;
-import gpop.us.sfoexplorer.Model.WWWeatherModel;
-import gpop.us.sfoexplorer.Motion.WWVibration;
-import gpop.us.sfoexplorer.Notifications.WWNotifications;
+import gpop.us.sfoexplorer.Data.SFOWeather;
+import gpop.us.sfoexplorer.Memory.SFOMemory;
+import gpop.us.sfoexplorer.Model.SFOWeatherModel;
 import gpop.us.sfoexplorer.R;
-import gpop.us.sfoexplorer.Server.WWClient;
-import gpop.us.sfoexplorer.UI.WWImages;
+import gpop.us.sfoexplorer.Server.SFOClient;
+import gpop.us.sfoexplorer.UI.SFOFont;
+import gpop.us.sfoexplorer.UI.SFOImages;
+import gpop.us.sfoexplorer.UI.SFOMenu;
 import it.sephiroth.android.library.picasso.Picasso;
-import gpop.us.sfoexplorer.Memory.WWMemory;
-import gpop.us.sfoexplorer.UI.WWFont;
 
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWTitleActivity extends Activity {
+public class SFOTitleActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -46,14 +44,15 @@ public class WWTitleActivity extends Activity {
     // LAYOUT VARIABLES
     private EditText flight_input; // References the EditText input fields.
     private ImageView weather_image; // References the ImageView object for the weather icon.
+    private Spinner airlineSpinner; // Spinner object for the main airline spinner.
     private TextView weather_status; // References the TextView object for the weather status.
 
     // LOGGING VARIABLES
-    private static final String TAG = WWTitleActivity.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOTitleActivity.class.getSimpleName(); // Retrieves the simple name of the class.
 
     // SERVER VARIABLES
-    private WWClient client; // Custom AsyncHttpClient client object for accessing JSON data.
-    private WWWeatherModel weatherModel; // The model object for JSON weather data.
+    private SFOClient client; // Custom AsyncHttpClient client object for accessing JSON data.
+    private SFOWeatherModel weatherModel; // The model object for JSON weather data.
 
     // THREAD VARIABLES
     private Handler updateThread = new Handler(); // A thread that handles the updating of the weather bar.
@@ -120,6 +119,7 @@ public class WWTitleActivity extends Activity {
         setUpImages(); // Sets up the ImageView objects.
         setUpInput(); // Sets up the EditText objects.
         setUpButtons(); // Sets up the Button objects.
+        setUpSpinner(); // Sets up the spinner dropdown object.
         setUpWeatherBar(); // Sets up the weather bar objects.
     }
 
@@ -131,8 +131,8 @@ public class WWTitleActivity extends Activity {
         Button skipButton = (Button) findViewById(R.id.skip_button);
 
         // Sets custom font styles for the buttons.
-        exploreButton.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace());
-        skipButton.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace());
+        exploreButton.setTypeface(SFOFont.getInstance(this).setBigNoodleTypeFace());
+        skipButton.setTypeface(SFOFont.getInstance(this).setBigNoodleTypeFace());
 
         // Sets up the listener and the actions for the EXPLORE button.
         exploreButton.setOnClickListener(new View.OnClickListener() {
@@ -187,8 +187,9 @@ public class WWTitleActivity extends Activity {
         flight_input = (EditText) findViewById(R.id.flight_number_input);
 
         // Sets custom font styles for the input.
-        flight_input.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace());
+        flight_input.setTypeface(SFOFont.getInstance(this).setBigNoodleTypeFace());
     }
+
 
     // setUpWeatherBar(): Sets up the weather bar.
     private void setUpWeatherBar() {
@@ -198,18 +199,60 @@ public class WWTitleActivity extends Activity {
 
         // Sets up the TextView objects.
         weather_status = (TextView) findViewById(R.id.title_weather_text);
-        weather_status.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
+        weather_status.setTypeface(SFOFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
         weather_status.setShadowLayer(4, 0, 0, Color.BLACK);
 
         getWeatherStatus(); // Updates the weather status on the notification bar.
     }
+
+    /** SPINNER FUNCTIONALITY __________________________________________________________________ **/
+
+    // setUSpinner(): Sets up the map spinner list for the map selection menu.
+    private void setUpSpinner() {
+
+        // SPINNER VARIABLES:
+        airlineSpinner = (Spinner) findViewById(R.id.title_airline_dropdown_spinner);
+
+        String[] airlineList = SFOMenu.setAirlineList(this, "terminal_2"); // Sets up the lists for the Spinner object.
+        SFOMenu.createAirlineSpinner(this, airlineSpinner, airlineList); // Creates a customized spinner for airlineSpinner.
+        airlineSpinner.setOnItemSelectedListener(this); // Sets a listener to the mapSpinner object.
+        airlineSpinner.setOnTouchListener(spinnerOnTouch); // Sets up an onClick-like event for the mapSpinner object.
+    }
+
+    // spinnerOnTouch(): Captures the touch events for mapSpinner and is primarily used to play the
+    // sound effect when the spinner is pressed. This is a workaround for onClick events for spinners,
+    // as spinner objects do not support onClick events natively.
+    private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+
+        public boolean onTouch(View v, MotionEvent event) {
+
+         // When the spinner is pressed, it plays a sound effect.
+         if (event.getAction() == MotionEvent.ACTION_UP) { }
+
+         return false;
+        }
+    };
+
+    // onItemSelected(): Override function for setOnTouchListener for the airlineSpinner object. When
+    // a airline is selected from the spinner drop down list, the airline is selected.
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        // DO SOMETHING HERE.
+
+        //int spinner_choice = airlineSpinner.getSelectedItemPosition(); // Saves the spinner position for onResume events.
+    }
+
+    // onNothingSelected(): Override function for setOnTouchListener for the airlineSpinner object.
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     /** SERVER FUNCTIONALITY ___________________________________________________________________ **/
 
     // getWeatherStatus(): Retrieves the current weather status.
     private void getWeatherStatus() {
 
-        client = new WWClient("WEATHER"); // Sets up the JSON client for retrieving weather data.
+        client = new SFOClient("WEATHER"); // Sets up the JSON client for retrieving weather data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -219,7 +262,7 @@ public class WWTitleActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 Log.d(TAG, "Weather Handshake successful! " + response.toString()); // Logging.
-                weatherModel = WWWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
+                weatherModel = SFOWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
                 String current_weather = weatherModel.getWeather(); // Sets the weather status from the JSON string.
                 double current_temperature = weatherModel.getTemperature(); // Sets the current temperature from the JSON string.
@@ -230,12 +273,12 @@ public class WWTitleActivity extends Activity {
                 int newTime = (int) (currentTime.toMillis(true) / 1000); // Converts the time into hours.
 
                 // Retrieves the appropriate weather image based on the value from the JSON string.
-                int weather_graphic = WWWeather.weatherGraphicSelector(current_weather, newTime);
+                int weather_graphic = SFOWeather.weatherGraphicSelector(current_weather, newTime);
 
                 // Sets the weather icon for the ImageView object.
                 Picasso.with(getApplicationContext())
                         .load(weather_graphic)
-                        .withOptions(WWImages.setBitmapOptions())
+                        .withOptions(SFOImages.setBitmapOptions())
                         .resize(48, 48)
                         .centerCrop()
                         .into(weather_image);
@@ -287,7 +330,7 @@ public class WWTitleActivity extends Activity {
         try {
 
             // Unbinds all Drawable objects attached to the current layout.
-            WWMemory.unbindDrawables(findViewById(R.id.ww_title_activity_layout));
+            SFOMemory.unbindDrawables(findViewById(R.id.ww_title_activity_layout));
         }
 
         catch (NullPointerException e) {

@@ -8,15 +8,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import gpop.us.sfoexplorer.Activities.WWMainActivity;
-import gpop.us.sfoexplorer.Activities.WWTitleActivity;
+
+import gpop.us.sfoexplorer.Activities.SFOTitleActivity;
 import gpop.us.sfoexplorer.R;
 
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
  */
 
-public class WWNotifications {
+public class SFONotifications {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -25,14 +25,14 @@ public class WWNotifications {
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
     // WWNotifications(): Constructor for the WWNotifications class.
-    public final static WWNotifications wwNotify = new WWNotifications();
+    public final static SFONotifications wwNotify = new SFONotifications();
 
     // WWNotifications(): Deconstructor for the SBNotifications class.
-    public WWNotifications() {
+    public SFONotifications() {
     }
 
     // getInstance(): Returns the wwNotify instance.
-    public static WWNotifications getInstance() {
+    public static SFONotifications getInstance() {
         return wwNotify;
     }
 
@@ -50,7 +50,7 @@ public class WWNotifications {
         int notificationId = 001; // Notification ID tag.
 
         // Intent to launch the splash.
-        Intent ww_intent = new Intent(con, WWTitleActivity.class);
+        Intent ww_intent = new Intent(con, SFOTitleActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(con, 0, ww_intent, 0);
 
         // ANDROID WEAR:

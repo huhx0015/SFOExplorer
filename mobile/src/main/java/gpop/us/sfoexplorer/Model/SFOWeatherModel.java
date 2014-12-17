@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.Serializable;
 
-public class WWWeatherModel implements Serializable {
+public class SFOWeatherModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -29,9 +29,9 @@ public class WWWeatherModel implements Serializable {
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
     // fromJson(): Retrieves the strings from the JSON object and returns a WWWeatherModel object.
-    public static WWWeatherModel fromJson(JSONObject jsonObject) {
+    public static SFOWeatherModel fromJson(JSONObject jsonObject) {
 
-        WWWeatherModel model = new WWWeatherModel();
+        SFOWeatherModel model = new SFOWeatherModel();
 
         // Deserializes the JSON string into object fields.
         try {

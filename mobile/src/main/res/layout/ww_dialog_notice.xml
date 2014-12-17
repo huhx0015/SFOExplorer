@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ww_notice_layout"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:typeface="sans"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:id="@+id/ww_header_text"
+        android:gravity="center"
+        android:paddingTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:typeface="sans"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        android:layout_gravity="center"
+        android:id="@+id/ww_notice_text"
+        android:text=""
+        android:gravity="left"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/ww_dialog_button_row">
+
+        <TableLayout
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialog_button_1_container"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:gravity="left" >
+
+            <Button
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:id="@+id/dialog_button_1"
+                android:textSize="24sp"
+                android:typeface="sans"
+                android:layout_gravity="center"
+                android:padding="10dp" />
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:id="@+id/dialog_button_2_container"
+            android:gravity="right"
+            android:visibility="gone">
+
+            <Button
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/dialog_button_2"
+                android:textSize="24sp"
+                android:typeface="sans"
+                android:textColor="#ffffff"
+                android:padding="10dp" />
+        </TableLayout>
+    </LinearLayout>
+
+</TableLayout>

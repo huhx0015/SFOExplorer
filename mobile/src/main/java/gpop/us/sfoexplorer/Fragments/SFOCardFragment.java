@@ -11,28 +11,27 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import gpop.us.sfoexplorer.Device.SFODisplay;
+import gpop.us.sfoexplorer.Model.SFOEventModel;
+import gpop.us.sfoexplorer.UI.SFOFont;
+import gpop.us.sfoexplorer.UI.SFOImages;
 import it.sephiroth.android.library.picasso.Picasso;
-import gpop.us.sfoexplorer.Device.WWDisplay;
-import gpop.us.sfoexplorer.Model.WWEventModel;
 import gpop.us.sfoexplorer.R;
-import gpop.us.sfoexplorer.UI.WWFont;
-import gpop.us.sfoexplorer.UI.WWImages;
 
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
  */
-public class WWCardFragment extends Fragment {
+public class SFOCardFragment extends Fragment {
 
     /** FRAGMENT VARIABLES _____________________________________________________________________ **/
 
     // EVENT VARIABLES
     private int cardNumber = 0; // References the fragment number.
-    private WWEventModel eventModel; // References the event model object for this fragment.
+    private SFOEventModel eventModel; // References the event model object for this fragment.
 
     // FRAGMENT VARIABLES
     private View card_view; // References the layout for the fragment.
@@ -42,7 +41,7 @@ public class WWCardFragment extends Fragment {
     private int main_card_image_resource; // Used to reference the main card image.
 
     // LOGGING VARIABLES
-    private static final String TAG = WWCardFragment.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOCardFragment.class.getSimpleName(); // Retrieves the simple name of the class.
 
     // SYSTEM VARIABLES
     private Activity currentActivity; // Used to determine the activity class this fragment is currently attached to.
@@ -52,16 +51,16 @@ public class WWCardFragment extends Fragment {
     
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
-    private final static WWCardFragment card_fragment = new WWCardFragment();
+    private final static SFOCardFragment card_fragment = new SFOCardFragment();
 
     // WWCardFragment(): Deconstructor for the WWCardFragment.
-    public WWCardFragment() {}
+    public SFOCardFragment() {}
 
     // getInstance(): Returns the card_fragment instance.
-    public static WWCardFragment getInstance() { return card_fragment; }
+    public static SFOCardFragment getInstance() { return card_fragment; }
 
     // initializeFragment(): Initializes the fragment with the event properties.
-    public void initializeFragment(int cardID, WWEventModel event) {
+    public void initializeFragment(int cardID, SFOEventModel event) {
         cardNumber = cardID;
         eventModel = event;
     }
@@ -191,13 +190,13 @@ public class WWCardFragment extends Fragment {
         TextView event_eta_spacer = (TextView) card_view.findViewById(R.id.card_eta_spacer);
 
         // Sets the custom font type to the TextView objects.
-        event_gate.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
-        event_gate_label.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
-        event_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
-        event_location_label.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace());
-        event_title.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
-        event_eta.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
-        event_eta_spacer.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
+        event_gate.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace());
+        event_gate_label.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace());
+        event_location.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace());
+        event_location_label.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace());
+        event_title.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
+        event_eta.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
+        event_eta_spacer.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());
 
         // Sets up a shadow effect for the TextView objects.
         event_title.setShadowLayer(8, 4, 4, Color.BLACK);
@@ -218,7 +217,7 @@ public class WWCardFragment extends Fragment {
         // Sets the event image for the ImageView object.
         Picasso.with(currentActivity)
                 .load(event_image_url)
-                .withOptions(WWImages.setBitmapOptions())
+                .withOptions(SFOImages.setBitmapOptions())
                 .fit()
                 .centerCrop()
                 .into(card_background_image);
@@ -255,9 +254,9 @@ public class WWCardFragment extends Fragment {
         // References the display parameters for the device.
         Display deviceWindow = currentActivity.getWindowManager().getDefaultDisplay();
 
-        currentOrientation = WWDisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
-        resolutionDimens = WWDisplay.getResolution(deviceWindow);
-        displaySize = WWDisplay.getDisplaySize(resolutionDimens, currentOrientation);
+        currentOrientation = SFODisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
+        resolutionDimens = SFODisplay.getResolution(deviceWindow);
+        displaySize = SFODisplay.getDisplaySize(resolutionDimens, currentOrientation);
     }
 
     /** INTERFACE FUNCTIONALITY ________________________________________________________________ **/

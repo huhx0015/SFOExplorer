@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
  */
-public class WWEventModel implements Serializable {
+public class SFOEventModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -32,7 +32,7 @@ public class WWEventModel implements Serializable {
     private String gate_location;
 
     // LOGGING VARIABLES
-    private static final String TAG = WWEventModel.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOEventModel.class.getSimpleName(); // Retrieves the simple name of the class.
 
     /** GET / SET FUNCTIONALITY ________________________________________________________________ **/
 
@@ -73,9 +73,9 @@ public class WWEventModel implements Serializable {
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
     // fromJson(): Retrieves the strings from the JSON object and returns a WWWeatherModel object.
-    public static WWEventModel fromJson(JSONObject jsonObject) {
+    public static SFOEventModel fromJson(JSONObject jsonObject) {
 
-        WWEventModel model = new WWEventModel();
+        SFOEventModel model = new SFOEventModel();
 
         // Deserializes the JSON string into object fields.
         try {
@@ -108,9 +108,9 @@ public class WWEventModel implements Serializable {
     }
 
     // fromJson(): Creates an ArrayList of WWEventModel objects from the jsonArray object.
-    public static ArrayList<WWEventModel> fromJson(JSONArray jsonArray) {
+    public static ArrayList<SFOEventModel> fromJson(JSONArray jsonArray) {
 
-        ArrayList<WWEventModel> events = new ArrayList<WWEventModel>(jsonArray.length());
+        ArrayList<SFOEventModel> events = new ArrayList<SFOEventModel>(jsonArray.length());
 
         // Processes each result in the JSON array, decoding and converting each to a WWEventModel
         // object.
@@ -125,7 +125,7 @@ public class WWEventModel implements Serializable {
                 continue;
             }
 
-            WWEventModel event = WWEventModel.fromJson(eventJson); // Creates the WWEventModel object.
+            SFOEventModel event = SFOEventModel.fromJson(eventJson); // Creates the WWEventModel object.
 
             if (event != null) { events.add(event); } // Adds the WWEventModel object to the ArrayList.
         }

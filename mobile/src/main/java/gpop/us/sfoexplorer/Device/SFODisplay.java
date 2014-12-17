@@ -9,7 +9,7 @@ import android.view.Display;
 /**
  * Created by Michael Yoon Huh on 11/17/2014.
  */
-public class WWDisplay {
+public class SFODisplay {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 

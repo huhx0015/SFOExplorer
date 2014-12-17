@@ -6,7 +6,7 @@ import android.os.Vibrator;
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWVibration {
+public class SFOVibration {
 
     /** VIBRATION FUNCTIONALITY ________________________________________________________________ **/
 

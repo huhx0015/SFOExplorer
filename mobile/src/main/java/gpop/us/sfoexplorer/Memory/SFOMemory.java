@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWMemory {
+public class SFOMemory {
 
     /** MEMORY FUNCTIONALITY ___________________________________________________________________ **/
 

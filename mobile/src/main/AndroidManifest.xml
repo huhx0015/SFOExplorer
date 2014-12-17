@@ -18,7 +18,7 @@
         android:alwaysRetainTaskState="true">
 
         <activity
-            android:name=".Activities.WWTitleActivity"
+            android:name=".Activities.SFOTitleActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-            android:name=".Activities.WWMainActivity"
+            android:name=".Activities.SFOMainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="gpop.us.sfoexplorer.MAINACTIVITY"/>

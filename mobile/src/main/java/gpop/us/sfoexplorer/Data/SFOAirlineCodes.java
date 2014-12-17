@@ -5,7 +5,7 @@ import gpop.us.sfoexplorer.R;
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWAirlineCodes {
+public class SFOAirlineCodes {
 
     /** AIRLINE CODE FUNCTIONALITY _____________________________________________________________ **/
 
@@ -75,6 +75,12 @@ public class WWAirlineCodes {
         // UNITED AIRLINES:
         else if (code.equals("UA")) { airline = "United Airlines"; }
 
+        // US AIRWAYS:
+        else if (code.equals("US")) { airline = "US Airways"; }
+
+        // VIRGIN AMERICA:
+        else if (code.equals("VX")) { airline = "Virgin America"; }
+
         // UNKNOWN:
         else { airline = "Unknown Airlines"; }
 
@@ -115,7 +121,7 @@ public class WWAirlineCodes {
         else if (code.equals("MU")) { icon = R.drawable.mu_icon; }
 
         // CONTINENTAL AIRLINES:
-        //else if (code.equals("CO")) { airline = "Continental Airlines"; }
+        else if (code.equals("CO")) { icon = R.drawable.co_icon; }
 
         // DELTA AIRLINES:
         else if (code.equals("DL")) { icon = R.drawable.dl_icon; }
@@ -143,6 +149,12 @@ public class WWAirlineCodes {
 
         // UNITED AIRLINES:
         //else if (code.equals("UA")) { airline = "United Airlines"; }
+
+        // US AIRWAYS:
+        else if (code.equals("US")) { icon = R.drawable.us_icon; }
+
+        // VIRGIN AMERICA:
+        else if (code.equals("VX")) { icon = R.drawable.vx_icon; }
 
         // UNKNOWN:
         //else { airline = "Unknown Airlines"; }

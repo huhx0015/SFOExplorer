@@ -5,7 +5,7 @@ import gpop.us.sfoexplorer.R;
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWWeather {
+public class SFOWeather {
 
     /** WEATHER GRAPHICS FUNCTIONALITY _________________________________________________________ **/
 

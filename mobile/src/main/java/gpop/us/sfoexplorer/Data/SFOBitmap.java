@@ -9,12 +9,12 @@ import java.io.FileOutputStream;
 /**
  * Created by Michael Yoon Huh on 12/15/2014.
  */
-public class WWBitmap {
+public class SFOBitmap {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // LOGGING VARIABLES
-    private static final String TAG = WWBitmap.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOBitmap.class.getSimpleName(); // Retrieves the simple name of the class.
 
     /** BITMAP FUNCTIONALITY ___________________________________________________________________ **/
 

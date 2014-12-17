@@ -10,9 +10,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -24,26 +21,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import gpop.us.sfoexplorer.Data.WWBitmap;
-import gpop.us.sfoexplorer.Device.WWDisplay;
-import gpop.us.sfoexplorer.Model.WWAirportWeatherModel;
-import gpop.us.sfoexplorer.Model.WWForecastModel;
+import gpop.us.sfoexplorer.Data.SFOBitmap;
+import gpop.us.sfoexplorer.Data.SFOWeather;
+import gpop.us.sfoexplorer.Device.SFODisplay;
+import gpop.us.sfoexplorer.Model.SFOAirportWeatherModel;
+import gpop.us.sfoexplorer.Model.SFOForecastModel;
 import gpop.us.sfoexplorer.R;
-import gpop.us.sfoexplorer.UI.WWFont;
-import gpop.us.sfoexplorer.UI.WWImages;
-import gpop.us.sfoexplorer.Data.WWWeather;
+import gpop.us.sfoexplorer.UI.SFOFont;
+import gpop.us.sfoexplorer.UI.SFOImages;
 import it.sephiroth.android.library.picasso.Picasso;
 import it.sephiroth.android.library.picasso.Target;
 
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWWeatherFragment extends Fragment {
+public class SFOWeatherFragment extends Fragment {
 
     /** FRAGMENT VARIABLES _____________________________________________________________________ **/
 
@@ -59,7 +53,7 @@ public class WWWeatherFragment extends Fragment {
     forecast_day_3_temp, forecast_day_4_temp, forecast_day_5_temp;
 
     // LOGGING VARIABLES
-    private static final String TAG = WWWeatherFragment.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOWeatherFragment.class.getSimpleName(); // Retrieves the simple name of the class.
 
     // RADAR VARIABLES
     private AnimationDrawable radar_animation;
@@ -75,20 +69,20 @@ public class WWWeatherFragment extends Fragment {
     private String currentLocation; // References the current location.
     private String destinationLocation; // References the destination location.
     //private WWWeatherModel weatherModel; // References the event model object for this fragment.
-    private WWAirportWeatherModel weatherModel; // References the event model object for this fragment.
+    private SFOAirportWeatherModel weatherModel; // References the event model object for this fragment.
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
-    private final static WWWeatherFragment weather_fragment = new WWWeatherFragment();
+    private final static SFOWeatherFragment weather_fragment = new SFOWeatherFragment();
 
     // WWWeatherFragment(): Deconstructor for the WWWeatherFragment.
-    public WWWeatherFragment() {}
+    public SFOWeatherFragment() {}
 
     // getInstance(): Returns the details_fragment instance.
-    public static WWWeatherFragment getInstance() { return weather_fragment; }
+    public static SFOWeatherFragment getInstance() { return weather_fragment; }
 
     // initializeFragment(): Initializes the fragment with the event properties.
-    public void initializeFragment(WWAirportWeatherModel weather, String location, String destination) {
+    public void initializeFragment(SFOAirportWeatherModel weather, String location, String destination) {
         weatherModel = weather;
         currentLocation = location;
         destinationLocation = destination;
@@ -229,7 +223,7 @@ public class WWWeatherFragment extends Fragment {
         Log.d(TAG, "Current Time: " + newTime); // Logging.
 
         // Retrieves the appropriate weather image resource based on the current weather status string.
-        int weather_image_resource = WWWeather.weatherGraphicSelector(currentWeather, newTime);
+        int weather_image_resource = SFOWeather.weatherGraphicSelector(currentWeather, newTime);
 
         return weather_image_resource;
     }
@@ -238,7 +232,7 @@ public class WWWeatherFragment extends Fragment {
     // forecast.
     private void setUpForecastWeek(Boolean isOrigin) {
 
-        ArrayList<WWForecastModel> forecastArray; // References the ArrayList of the WWForecastModel object.
+        ArrayList<SFOForecastModel> forecastArray; // References the ArrayList of the WWForecastModel object.
 
         // References the forecast ImageView objects.
         forecast_day_1_image = (ImageView) weather_view.findViewById(R.id.ww_forecast_day_1_image);
@@ -270,13 +264,13 @@ public class WWWeatherFragment extends Fragment {
         //for (int i = 0; i < forecastArray.size(); i++) {
         for (int i = 0; i < 5; i++) {
             Log.d(TAG, "Current Forecast Day: " + i); // Logging.
-            WWForecastModel forecast = forecastArray.get(i); // Retrieves the current forecast day model.
+            SFOForecastModel forecast = forecastArray.get(i); // Retrieves the current forecast day model.
             setUpForecastDay(forecast, i); // Sets the weather image and text for each of the forecast days.
         }
     }
 
     // setUpForecastDay(): Sets the weather image and text for each of the forecast days.
-    private void setUpForecastDay(WWForecastModel model, int day) {
+    private void setUpForecastDay(SFOForecastModel model, int day) {
 
         String forecastDay = model.getForecastDay(); // Retrieves the current forecast day.
         String forecastWeather = model.getWeatherIcon(); // Retrieves the current forecast weather.
@@ -333,7 +327,7 @@ public class WWWeatherFragment extends Fragment {
         // Sets the weather icon for the ImageView object.
         Picasso.with(currentActivity)
                 .load(forecastWeatherResource)
-                .withOptions(WWImages.setBitmapOptions())
+                .withOptions(SFOImages.setBitmapOptions())
                 .into(currentImage);
     }
 
@@ -352,14 +346,14 @@ public class WWWeatherFragment extends Fragment {
         TextView destination_weather_status_text = (TextView) weather_view.findViewById(R.id.ww_destination_weather_text);
 
         // Sets up the custom font type for the TextView objects.
-        origin_text.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
-        origin_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
-        origin_temperature_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
-        origin_weather_status_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
-        destination_text.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
-        destination_location.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
-        destination_temperature_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());// Sets the custom font face.
-        destination_weather_status_text.setTypeface(WWFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
+        origin_text.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        origin_location.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        origin_temperature_text.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
+        origin_weather_status_text.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
+        destination_text.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        destination_location.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
+        destination_temperature_text.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());// Sets the custom font face.
+        destination_weather_status_text.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
 
         // Sets up a shadow effect for the TextView objects.
         origin_text.setShadowLayer(8, 4, 4, Color.BLACK);
@@ -407,13 +401,13 @@ public class WWWeatherFragment extends Fragment {
         // Sets the weather icon for the ImageView object.
         Picasso.with(currentActivity)
                 .load(origin_weather_image_resource)
-                .withOptions(WWImages.setBitmapOptions())
+                .withOptions(SFOImages.setBitmapOptions())
                 .into(origin_weather_image);
 
         // Sets the weather icon for the ImageView object.
         Picasso.with(currentActivity)
                 .load(destination_weather_image_resource)
-                .withOptions(WWImages.setBitmapOptions())
+                .withOptions(SFOImages.setBitmapOptions())
                 .into(destination_weather_image);
     }
 
@@ -450,7 +444,7 @@ public class WWWeatherFragment extends Fragment {
                         Log.d(TAG, "Bitmap loaded for radar image " + currentRadarID + ".");
 
                         // Saves the Bitmap to local storage.
-                        WWBitmap.saveBitmapToFile(bitmap, currentActivity, "radar_" + currentRadarID + ".png", successfulDownloads);
+                        SFOBitmap.saveBitmapToFile(bitmap, currentActivity, "radar_" + currentRadarID + ".png", successfulDownloads);
                         successfulDownloads++; // Increments the number of successful downloads.
 
                         // If all images have been downloaded, the radar animation sequence is started.
@@ -521,9 +515,9 @@ public class WWWeatherFragment extends Fragment {
         // References the display parameters for the device.
         Display deviceWindow = currentActivity.getWindowManager().getDefaultDisplay();
 
-        currentOrientation = WWDisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
-        resolutionDimens = WWDisplay.getResolution(deviceWindow);
-        displaySize = WWDisplay.getDisplaySize(resolutionDimens, currentOrientation);
+        currentOrientation = SFODisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
+        resolutionDimens = SFODisplay.getResolution(deviceWindow);
+        displaySize = SFODisplay.getDisplaySize(resolutionDimens, currentOrientation);
     }
 
     /** INTERFACE FUNCTIONALITY ________________________________________________________________ **/

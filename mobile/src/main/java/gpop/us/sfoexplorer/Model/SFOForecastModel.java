@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WWForecastModel implements Serializable {
+public class SFOForecastModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -21,7 +21,7 @@ public class WWForecastModel implements Serializable {
     private String weather_pop; // Weather pop.
 
     // LOGGING VARIABLES
-    private static final String TAG = WWForecastModel.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOForecastModel.class.getSimpleName(); // Retrieves the simple name of the class.
 
     /** GET / SET FUNCTIONALITY ________________________________________________________________ **/
 
@@ -70,9 +70,9 @@ public class WWForecastModel implements Serializable {
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
     // fromJson(): Retrieves the strings from the JSON object and returns a WWForecastModel object.
-    public static WWForecastModel fromJson(JSONObject jsonObject) {
+    public static SFOForecastModel fromJson(JSONObject jsonObject) {
 
-        WWForecastModel model = new WWForecastModel();
+        SFOForecastModel model = new SFOForecastModel();
 
         // Deserializes the JSON string into object fields.
         try {
@@ -96,9 +96,9 @@ public class WWForecastModel implements Serializable {
     }
 
     // fromJson(): Creates an ArrayList of WWForecastModel objects from the jsonArray object.
-    public static ArrayList<WWForecastModel> fromJson(JSONArray jsonArray) {
+    public static ArrayList<SFOForecastModel> fromJson(JSONArray jsonArray) {
 
-        ArrayList<WWForecastModel> forecasts = new ArrayList<WWForecastModel>(jsonArray.length());
+        ArrayList<SFOForecastModel> forecasts = new ArrayList<SFOForecastModel>(jsonArray.length());
 
         // Processes each result in the JSON array, decoding and converting each to a WWForecastModel
         // object.
@@ -113,7 +113,7 @@ public class WWForecastModel implements Serializable {
                 continue;
             }
 
-            WWForecastModel forecast = WWForecastModel.fromJson(eventJson); // Creates the WWForecastModel object.
+            SFOForecastModel forecast = SFOForecastModel.fromJson(eventJson); // Creates the WWForecastModel object.
 
             if (forecast != null) { forecasts.add(forecast); } // Adds the WWForecastModel object to the ArrayList.
         }

@@ -6,42 +6,37 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import gpop.us.sfoexplorer.Device.WWDisplay;
-import gpop.us.sfoexplorer.Model.WWWeatherModel;
+import gpop.us.sfoexplorer.Device.SFODisplay;
+import gpop.us.sfoexplorer.Model.SFOFlightModel;
 import gpop.us.sfoexplorer.R;
-import gpop.us.sfoexplorer.UI.WWFont;
-import gpop.us.sfoexplorer.UI.WWImages;
-import gpop.us.sfoexplorer.Data.WWWeather;
+import gpop.us.sfoexplorer.UI.SFOFont;
+import gpop.us.sfoexplorer.UI.SFOImages;
 import it.sephiroth.android.library.picasso.Picasso;
 
 /**
- * Created by Michael Yoon Huh on 11/18/2014.
+ * Created by Michael Yoon Huh on 11/20/2014.
  */
-public class WWFlightNumberFragment extends Fragment {
+public class SFODepartureFragment extends Fragment {
 
     /** FRAGMENT VARIABLES _____________________________________________________________________ **/
 
-    // FRAGMENT VARIABLES
-    private View flight_number_view; // References the layout for the fragment.
+    // FLIGHT VARIABLES
+    private String carrier; // References the airline carrier of the flight.
+    private SFOFlightModel flightModel; // References the event model object for this fragment.
 
-    // LAYOUT VARIABLES
-    private Button enter_flight_button; // References the Button object.
-    private EditText enter_flight_input; // References the EditText input object.
+    // FRAGMENT VARIABLES
+    private View departure_view; // References the layout for the fragment.
 
     // LOGGING VARIABLES
-    private static final String TAG = WWFlightNumberFragment.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFODepartureFragment.class.getSimpleName(); // Retrieves the simple name of the class.
 
     // SYSTEM VARIABLES
     private Activity currentActivity; // Used to determine the activity class this fragment is currently attached to.
@@ -51,13 +46,19 @@ public class WWFlightNumberFragment extends Fragment {
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
-    private final static WWFlightNumberFragment flight_fragment = new WWFlightNumberFragment();
+    private final static SFODepartureFragment departure_fragment = new SFODepartureFragment();
 
-    // WWFlightNumberFragment(): Deconstructor for the WWFlightNumberFragment.
-    public WWFlightNumberFragment() {}
+    // WWWeatherFragment(): Deconstructor for the WWWeatherFragment.
+    public SFODepartureFragment() {}
 
-    // getInstance(): Returns the details_fragment instance.
-    public static WWFlightNumberFragment getInstance() { return flight_fragment; }
+    // getInstance(): Returns the departure_fragment instance.
+    public static SFODepartureFragment getInstance() { return departure_fragment; }
+
+    // initializeFragment(): Initializes the fragment with the event properties.
+    public void initializeFragment(SFOFlightModel flight, String airline) {
+        flightModel = flight;
+        carrier = airline;
+    }
 
     /** FRAGMENT LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
 
@@ -77,10 +78,10 @@ public class WWFlightNumberFragment extends Fragment {
         setUpDisplayParameters(); // Sets up the device's display parameters.
 
         // Sets the view to the specified XML layout file.
-        flight_number_view = (ViewGroup) inflater.inflate(R.layout.ww_flight_number_fragment, container, false);
+        departure_view = (ViewGroup) inflater.inflate(R.layout.ww_flight_fragment, container, false);
         setUpLayout(); // Sets up the layout for the fragment.
 
-        return flight_number_view;
+        return departure_view;
     }
 
     // onActivityCreated(): Runs after the attached activity's onCreate() function has been completed.
@@ -110,10 +111,10 @@ public class WWFlightNumberFragment extends Fragment {
 
     // updateActivity(): Interfaces with the attached activity class and signals that properties
     // have been changed.
-    private void updateActivity(Boolean isReturn, String flightNumber) {
+    private void updateActivity(Boolean hideFlight) {
 
         // Signals to the attached activity that the card details fragment needs to be closed.
-        try { ((OnFlightNumberSelectedListener) currentActivity).updateFromFlightNoFragment(isReturn, flightNumber); }
+        try { ((OnFlightSelectedListener) currentActivity).updateFromFlightFragment(hideFlight); }
         catch (ClassCastException cce) { } // Catch for class cast exception errors.
     }
 
@@ -133,63 +134,72 @@ public class WWFlightNumberFragment extends Fragment {
 
     // setUpLayout(): Sets up the layout for the activity.
     private void setUpLayout() {
-        setUpText(); // Sets up the TextView objects for the fragment.
+
         setUpButtons(); // Sets up the Button objects for the fragment.
+        setUpImages(); // Sets up the ImageView objects for the fragment.
+        setUpText(); // Sets up the TextView objects for the fragment.
+
     }
 
     // setUpButtons(): Sets up the button objects for the fragment.
     private void setUpButtons() {
 
         // References the ImageButton objects in the layout.
-        ImageButton back_button = (ImageButton) flight_number_view.findViewById(R.id.flight_back_button);
+        ImageButton back_button = (ImageButton) departure_view.findViewById(R.id.flight_back_button);
 
         // Sets up the listener and the actions for the back button.
         back_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                updateActivity(true, null); // Signals to the attached activity to close this fragment.
+                updateActivity(true); // Signals to the attached activity that the details fragment should be shown.
             }
         });
 
-        // Sets up the listener and the actions for the back button.
-        enter_flight_button.setOnClickListener(new View.OnClickListener() {
+    }
 
-            @Override
-            public void onClick(View v) {
+    // setUpImages(): Sets up the ImageView objects for the fragment.
+    private void setUpImages() {
 
-                String flightInput = null; // References the flight input.
+        // References the ImageView objects.
+        ImageView carrier_logo = (ImageView) departure_view.findViewById(R.id.airline_carrier_image);
 
-                try { flightInput = enter_flight_input.getText().toString(); } // Converts the input to a String object.
-                catch(NullPointerException e) { e.printStackTrace(); } // NullPointerException handler.
+        // Determines the airline carrier logo based on the flight.
+        int carrier_logo_resource = R.drawable.aa_icon; // Sets the American Airlines logo.
 
-                // If the flight input is not null, the main activity is signalled to close this fragment.
-                if (flightInput != null) { updateActivity(true, flightInput); } // Signals to the attached activity to close this fragment.
-
-                // Otherwise, a Toast is displayed to inform the user about entering in their flight number.
-                else {
-                    Toast.makeText(currentActivity, "Please input your flight number.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // Sets the weather icon for the ImageView object.
+        Picasso.with(currentActivity)
+                .load(carrier_logo_resource)
+                .withOptions(SFOImages.setBitmapOptions())
+                .into(carrier_logo);
     }
 
     // setUpText(): Sets up the TextView objects for the fragment.
     private void setUpText() {
 
-        // References the Button, EditText, and TextView objects.
-        enter_flight_button = (Button) flight_number_view.findViewById(R.id.enter_flight_button);
-        TextView enter_flight_text = (TextView) flight_number_view.findViewById(R.id.enter_flight_text);
-        enter_flight_input = (EditText) flight_number_view.findViewById(R.id.enter_flight_number_input);
+        // References the TextView objects.
+        TextView airline_carrier = (TextView) departure_view.findViewById(R.id.airline_carrier_text);
+        TextView flight_number = (TextView) departure_view.findViewById(R.id.flight_number_text);
+        TextView gate_number = (TextView) departure_view.findViewById(R.id.gate_text);
 
         // Sets up the custom font type for the TextView objects.
-        enter_flight_button.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
-        enter_flight_input.setTypeface(WWFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
-        enter_flight_text.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        airline_carrier.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace());// Sets the custom font face.
+        flight_number.setTypeface(SFOFont.getInstance(currentActivity).setYanoneKaffeeSatzTypeFace()); // Sets the custom font face.
+        gate_number.setTypeface(SFOFont.getInstance(currentActivity).setBigNoodleTypeFace()); // Sets the custom font face.
 
         // Sets up a shadow effect for the TextView objects.
-        enter_flight_button.setShadowLayer(8, 4, 4, Color.BLACK);
-        enter_flight_text.setShadowLayer(8, 4, 4, Color.BLACK);
+        airline_carrier.setShadowLayer(8, 4, 4, Color.BLACK);
+        flight_number.setShadowLayer(8, 4, 4, Color.BLACK);
+        gate_number.setShadowLayer(8, 4, 4, Color.BLACK);
+
+        // Retrieves the flight parameters from the WWFlightModel object.
+        int timeToDeparture = flightModel.getTimeToDeparture(); // Gets the time to departure value from the JSON string.
+        String departureGate = flightModel.getDepartureGate(); // Gets the departure gate from the JSON string.
+        String departureTime = flightModel.getDepartureTime(); // Gets the departure time from the JSON string.
+
+        // Sets the weather status for the TextView object.
+        airline_carrier.setText(carrier); // Sets the airline carrier text.
+        gate_number.setText(departureGate); // Sets the departure gate text.
     }
 
     /** RESOLUTION FUNCTIONALITY _______________________________________________________________ **/
@@ -200,21 +210,21 @@ public class WWFlightNumberFragment extends Fragment {
         // References the display parameters for the device.
         Display deviceWindow = currentActivity.getWindowManager().getDefaultDisplay();
 
-        currentOrientation = WWDisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
-        resolutionDimens = WWDisplay.getResolution(deviceWindow);
-        displaySize = WWDisplay.getDisplaySize(resolutionDimens, currentOrientation);
+        currentOrientation = SFODisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
+        resolutionDimens = SFODisplay.getResolution(deviceWindow);
+        displaySize = SFODisplay.getDisplaySize(resolutionDimens, currentOrientation);
     }
 
     /** INTERFACE FUNCTIONALITY ________________________________________________________________ **/
 
     /** --------------------------------------------------------------------------------------------
-     *  [OnFlightNumberSelectedListener] INTERFACE
+     *  [OnFlightSelectedListener] INTERFACE
      *  DESCRIPTION: An interface that is used by activities attached to this fragment to determine
      *  if buttons in the fragment have been clicked and if preference values have been changed.
      *  --------------------------------------------------------------------------------------------
      */
 
-    public interface OnFlightNumberSelectedListener {
-        public void updateFromFlightNoFragment(Boolean isReturn, String flightNumber);
+    public interface OnFlightSelectedListener{
+        public void updateFromFlightFragment(Boolean hideDetails);
     }
 }

@@ -7,25 +7,25 @@ package gpop.us.sfoexplorer.UI;
 import android.content.Context;
 import android.graphics.Typeface;
 
-public class WWFont {
+public class SFOFont {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     private final Context context;
-    private static WWFont instance;
+    private static SFOFont instance;
 
     /** CLASS FUNCTIONALITY ____________________________________________________________________ **/
 
     // WWFont(): Constructor for the WWFont class.
-    private WWFont(Context context) {
+    private SFOFont(Context context) {
         this.context = context;
     }
 
     // getInstance(): Creates an instance of the WWFont class.
-    public static WWFont getInstance(Context context) {
-        synchronized (WWFont.class) {
+    public static SFOFont getInstance(Context context) {
+        synchronized (SFOFont.class) {
             if (instance == null)
-                instance = new WWFont(context);
+                instance = new SFOFont(context);
             return instance;
         }
     }

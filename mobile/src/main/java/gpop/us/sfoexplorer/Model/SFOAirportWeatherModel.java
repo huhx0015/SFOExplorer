@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Michael Yoon Huh on 12/13/2014.
  */
-public class WWAirportWeatherModel implements Serializable {
+public class SFOAirportWeatherModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -21,15 +21,15 @@ public class WWAirportWeatherModel implements Serializable {
     private double destination_temperature;
 
     // JSON (FORECAST) VARIABLES
-    private static ArrayList<WWForecastModel> origin_forecast = new ArrayList<>();
-    private static ArrayList<WWForecastModel> destination_forecast = new ArrayList<>();
+    private static ArrayList<SFOForecastModel> origin_forecast = new ArrayList<>();
+    private static ArrayList<SFOForecastModel> destination_forecast = new ArrayList<>();
 
     // JSON (RADAR) VARIABLES
     private ArrayList<String> origin_radar_urls = new ArrayList<String>();
     private ArrayList<String> destination_radar_urls = new ArrayList<String>();
 
     // LOGGING VARIABLES
-    private static final String TAG = WWAirportWeatherModel.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOAirportWeatherModel.class.getSimpleName(); // Retrieves the simple name of the class.
 
     /** GET / SET FUNCTIONALITY ________________________________________________________________ **/
 
@@ -46,10 +46,10 @@ public class WWAirportWeatherModel implements Serializable {
     public double getDestinationTemperature() { return destination_temperature; }
 
     // getOriginForecast(): Retrieves the arrival forecast.
-    public ArrayList<WWForecastModel> getOriginForecast() { return origin_forecast; }
+    public ArrayList<SFOForecastModel> getOriginForecast() { return origin_forecast; }
 
     // getDestinationForecast(): Retrieves the destination forecast.
-    public ArrayList<WWForecastModel> getDestinationForecast() { return destination_forecast; }
+    public ArrayList<SFOForecastModel> getDestinationForecast() { return destination_forecast; }
 
     // getOriginRadarUrls(): Retrieves the arrival radar URLs.
     public ArrayList<String> getOriginRadarUrls() { return origin_radar_urls; }
@@ -71,10 +71,10 @@ public class WWAirportWeatherModel implements Serializable {
     public void setDestinationTemperature(double temp) { destination_temperature = temp; }
 
     // setOriginForecast(): Sets the arrival forecast list.
-    public void setOriginForecast(ArrayList<WWForecastModel> forecast) { origin_forecast = forecast; }
+    public void setOriginForecast(ArrayList<SFOForecastModel> forecast) { origin_forecast = forecast; }
 
     // setDestinationForecast(): Sets the destination forecast list.
-    public void setDestinationForecast(ArrayList<WWForecastModel> forecast) { destination_forecast = forecast; }
+    public void setDestinationForecast(ArrayList<SFOForecastModel> forecast) { destination_forecast = forecast; }
 
     // setOriginRadarUrls(): Sets the arrival radar url list.
     public void setOriginRadarUrls(ArrayList<String> urls) { origin_radar_urls = urls; }
@@ -85,9 +85,9 @@ public class WWAirportWeatherModel implements Serializable {
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
     // fromJson(): Retrieves the strings from the JSON object and returns a WWAirportWeatherModel object.
-    public static WWAirportWeatherModel fromJson(JSONObject jsonObject) {
+    public static SFOAirportWeatherModel fromJson(JSONObject jsonObject) {
 
-        WWAirportWeatherModel model = new WWAirportWeatherModel();
+        SFOAirportWeatherModel model = new SFOAirportWeatherModel();
 
         // Deserializes the JSON string into object fields.
         try {
@@ -99,11 +99,11 @@ public class WWAirportWeatherModel implements Serializable {
 
             // Retrieves the array of arrival forecasts from the JSON string.
             JSONArray arrivalForecasts = jsonObject.getJSONArray("origin_forecast");
-            origin_forecast = WWForecastModel.fromJson(arrivalForecasts);
+            origin_forecast = SFOForecastModel.fromJson(arrivalForecasts);
 
             // Retrieves the array of destination forecasts from the JSON string.
             JSONArray destinationForecasts = jsonObject.getJSONArray("destination_forecast");
-            destination_forecast = WWForecastModel.fromJson(destinationForecasts);
+            destination_forecast = SFOForecastModel.fromJson(destinationForecasts);
 
             // Builds the array of image URLs for the origin radar.
             JSONArray arrivalImages = jsonObject.getJSONArray("origin_radar");

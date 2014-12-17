@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class WWWeatherRadarModel implements Serializable {
+public class SFOWeatherRadarModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -31,9 +31,9 @@ public class WWWeatherRadarModel implements Serializable {
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
     // fromJson(): Retrieves the strings from the JSON object and returns a WWWeatherRadarModel object.
-    public static WWWeatherRadarModel fromJson(JSONObject jsonObject) {
+    public static SFOWeatherRadarModel fromJson(JSONObject jsonObject) {
 
-        WWWeatherRadarModel model = new WWWeatherRadarModel();
+        SFOWeatherRadarModel model = new SFOWeatherRadarModel();
 
         // Deserializes the JSON string into object fields.
         try {

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by Michael Yoon Huh on 11/17/2014.
  */
 
-public class WWFlightModel implements Serializable {
+public class SFOFlightModel implements Serializable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -38,9 +38,9 @@ public class WWFlightModel implements Serializable {
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
     // fromJson(): Retrieves the strings from the JSON object and returns a WWFlightModel object.
-    public static WWFlightModel fromJson(JSONObject jsonObject) {
+    public static SFOFlightModel fromJson(JSONObject jsonObject) {
 
-        WWFlightModel model = new WWFlightModel();
+        SFOFlightModel model = new SFOFlightModel();
 
         // Deserializes the JSON string into object fields.
         try {

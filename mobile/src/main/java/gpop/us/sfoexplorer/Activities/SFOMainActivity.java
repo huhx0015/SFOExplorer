@@ -31,41 +31,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import gpop.us.sfoexplorer.Data.WWAirlineCodes;
-import gpop.us.sfoexplorer.Fragments.WWDepartureFragment;
-import gpop.us.sfoexplorer.Fragments.WWDetailsFragment;
-import gpop.us.sfoexplorer.Fragments.WWFlightNumberFragment;
-import gpop.us.sfoexplorer.Fragments.WWSearchFragment;
-import gpop.us.sfoexplorer.Fragments.WWWeatherFragment;
-import gpop.us.sfoexplorer.Model.WWAirportWeatherModel;
-import gpop.us.sfoexplorer.Model.WWFlightModel;
-import gpop.us.sfoexplorer.Motion.WWVibration;
-import gpop.us.sfoexplorer.Notifications.WWNotifications;
-import gpop.us.sfoexplorer.Data.WWWeather;
+import gpop.us.sfoexplorer.Data.SFOAirlineCodes;
+import gpop.us.sfoexplorer.Data.SFOWeather;
+import gpop.us.sfoexplorer.Device.SFODisplay;
+import gpop.us.sfoexplorer.Fragments.SFOCardFragment;
+import gpop.us.sfoexplorer.Fragments.SFODepartureFragment;
+import gpop.us.sfoexplorer.Fragments.SFODetailsFragment;
+import gpop.us.sfoexplorer.Fragments.SFOFlightNumberFragment;
+import gpop.us.sfoexplorer.Fragments.SFOSearchFragment;
+import gpop.us.sfoexplorer.Fragments.SFOWeatherFragment;
+import gpop.us.sfoexplorer.Memory.SFOMemory;
+import gpop.us.sfoexplorer.Model.SFOAirportWeatherModel;
+import gpop.us.sfoexplorer.Model.SFOEventModel;
+import gpop.us.sfoexplorer.Model.SFOFlightModel;
+import gpop.us.sfoexplorer.Model.SFOWeatherModel;
+import gpop.us.sfoexplorer.Motion.SFOVibration;
+import gpop.us.sfoexplorer.Notifications.SFONotifications;
+import gpop.us.sfoexplorer.Server.SFOClient;
+import gpop.us.sfoexplorer.UI.SFOFont;
+import gpop.us.sfoexplorer.UI.SFOImages;
 import it.sephiroth.android.library.picasso.Picasso;
-import gpop.us.sfoexplorer.Device.WWDisplay;
-import gpop.us.sfoexplorer.Fragments.WWCardFragment;
-import gpop.us.sfoexplorer.Memory.WWMemory;
-import gpop.us.sfoexplorer.Model.WWEventModel;
-import gpop.us.sfoexplorer.Model.WWWeatherModel;
 import gpop.us.sfoexplorer.R;
-import gpop.us.sfoexplorer.Server.WWClient;
-import gpop.us.sfoexplorer.UI.WWFont;
-import gpop.us.sfoexplorer.UI.WWImages;
 
-public class WWMainActivity extends FragmentActivity implements WWCardFragment.OnCardSelectedListener,
-        WWDetailsFragment.OnDetailsSelectedListener, WWDepartureFragment.OnFlightSelectedListener,
-        WWFlightNumberFragment.OnFlightNumberSelectedListener, WWSearchFragment.OnSearchSelectedListener,
-        WWWeatherFragment.OnWeatherSelectedListener {
+public class SFOMainActivity extends FragmentActivity implements SFOCardFragment.OnCardSelectedListener,
+        SFODetailsFragment.OnDetailsSelectedListener, SFODepartureFragment.OnFlightSelectedListener,
+        SFOFlightNumberFragment.OnFlightNumberSelectedListener, SFOSearchFragment.OnSearchSelectedListener,
+        SFOWeatherFragment.OnWeatherSelectedListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // CARD VARIABLES
-    private ArrayList<WWEventModel> models; // References the ArrayList of WWEventModel objects.
+    private ArrayList<SFOEventModel> models; // References the ArrayList of WWEventModel objects.
     private String currentCategory = null; // Used to determine the current category of cards to display.
-    private WWAirportWeatherModel airportWeatherModel; // The model object for the JSON airport weather data.
-    private WWFlightModel flightModel; // The model object for JSON flight data.
-    private WWWeatherModel weatherModel; // The model object for JSON weather data.
+    private SFOAirportWeatherModel airportWeatherModel; // The model object for the JSON airport weather data.
+    private SFOFlightModel flightModel; // The model object for JSON flight data.
+    private SFOWeatherModel weatherModel; // The model object for JSON weather data.
 
     // FLIGHT VARIABLES
     private int timeToBoard = 31; // Used to reference the remaining time (in minutes) to flight boarding.
@@ -87,11 +87,11 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private Boolean isSearchFragmentMade = false; // Used to determine if the search fragment has already been created.
     private Boolean isWeatherOn = false; // Used to determine if the weather fragment is currently being shown.
     private Boolean isWeatherFragmentMade = false; // Used to determine if the weather fragment has already been created.
-    private WWDetailsFragment details_fragment; // References the WWDetailsFragment object.
-    private WWDepartureFragment flight_fragment; // References the WWDepartureFragment object.
-    private WWFlightNumberFragment flight_number_fragment; // References the WWFlightNumberFragment object.
-    private WWSearchFragment search_fragment; // References the WWSearchFragment object.
-    private WWWeatherFragment weather_fragment; // References the WWWeatherFragment object.
+    private SFODetailsFragment details_fragment; // References the WWDetailsFragment object.
+    private SFODepartureFragment flight_fragment; // References the WWDepartureFragment object.
+    private SFOFlightNumberFragment flight_number_fragment; // References the WWFlightNumberFragment object.
+    private SFOSearchFragment search_fragment; // References the WWSearchFragment object.
+    private SFOWeatherFragment weather_fragment; // References the WWWeatherFragment object.
 
     // LAYOUT VARIABLES
     private FrameLayout card_fragment_details_container; // References the card fragment details container object.
@@ -102,14 +102,14 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private LinearLayout notification_weather_container; // References the weather container on the notification bar.
 
     // LOGGING VARIABLES
-    private static final String TAG = WWMainActivity.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOMainActivity.class.getSimpleName(); // Retrieves the simple name of the class.
 
     // NOTIFICATION VARIABLES
     private ImageView notification_flight_image, notification_weather_image;
     private TextView notification_countdown_timer, notification_flight_number, notification_gate_number, notification_weather_status;
 
     // SERVER VARIABLES
-    private WWClient client; // Custom AsyncHttpClient client object for accessing JSON data.
+    private SFOClient client; // Custom AsyncHttpClient client object for accessing JSON data.
 
     // SLIDER VARIABLES
     private int currentCardNumber = 0; // Used to determine which card fragment is currently being displayed.
@@ -124,7 +124,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     private Point resolutionDimens; // Used to determine the device's full resolution parameters.
     private int currentOrientation = 0; // Used to determine the device's orientation. (0: PORTRAIT / 1: LANDSCAPE)
     private int displaySize; // Stores the device's display size.
-    private static WeakReference<WWMainActivity> weakRefActivity = null; // Used to maintain a weak reference to the activity.
+    private static WeakReference<SFOMainActivity> weakRefActivity = null; // Used to maintain a weak reference to the activity.
 
     // THREAD VARIABLES
     private Handler updateThread = new Handler(); // A thread that handles the updating of the notification bar.
@@ -138,7 +138,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        weakRefActivity = new WeakReference<WWMainActivity>(this); // Creates a weak reference of this activity.
+        weakRefActivity = new WeakReference<SFOMainActivity>(this); // Creates a weak reference of this activity.
         getIntentBundle(); // Retrieves data from the previous activity.
         setUpLayout(); // Sets up the layout for the activity.
     }
@@ -221,18 +221,23 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             isDetailsOn = true; // Indicates that the details fragment is currently being shown.
 
             // Retrieves the WWEventModel, based on the card that is currently displayed.
-            WWEventModel currentEvent = models.get(currentCardNumber);
+            SFOEventModel currentEvent = models.get(currentCardNumber);
 
             // If the card details fragment has already been made, the fragment is shown instead of
             // being created.
-            if (isDetailsFragmentMade) { displayFragment(true, details_fragment); }
+            if (isDetailsFragmentMade) {
+                displayFragment(true, details_fragment);
+                hideBars(true); // Hides the action and notification bar.
+            }
+
             else {
 
                 // Initializes the WWDetailsFragment object.
-                details_fragment = new WWDetailsFragment();
+                details_fragment = new SFODetailsFragment();
                 details_fragment.initializeFragment(currentCardNumber, currentEvent);
 
                 setUpFragment(details_fragment, "FLIGHT"); // Sets up the fragment for the card details.
+                hideBars(true); // Hides the action and notification bar.
             }
 
             // Disables flight fragment if currently active.
@@ -418,7 +423,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 }
 
                 // Deciphers the airline code to determine the airline carrier.
-                airlineCarrier = WWAirlineCodes.decipherAirlineCodes(airlineCode);
+                airlineCarrier = SFOAirlineCodes.decipherAirlineCodes(airlineCode);
             }
 
             else { flightNumber = null; } // Sets the flightNumber to be null.
@@ -446,7 +451,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 if (isFlightNumberFragmentMade) { displayFragment(true, flight_number_fragment); }
 
                 else {
-                    flight_number_fragment = new WWFlightNumberFragment(); // Initializes the WWFlightFragment object.
+                    flight_number_fragment = new SFOFlightNumberFragment(); // Initializes the WWFlightFragment object.
                     setUpFragment(flight_number_fragment, "FLIGHT_NO"); // Sets up the fragment for the flight number details.
                 }
 
@@ -468,7 +473,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 if (isSearchFragmentMade) { displayFragment(true, search_fragment); }
 
                 else {
-                    search_fragment = new WWSearchFragment(); // Initializes the WWFlightFragment object.
+                    search_fragment = new SFOSearchFragment(); // Initializes the WWFlightFragment object.
                     setUpFragment(search_fragment, "SEARCH"); // Sets up the fragment for the weather details.
                 }
 
@@ -495,7 +500,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                     else {
 
                         // Initializes the WWFlightFragment object.
-                        flight_fragment = new WWDepartureFragment();
+                        flight_fragment = new SFODepartureFragment();
                         flight_fragment.initializeFragment(flightModel, airlineCarrier);
                         setUpFragment(flight_fragment, "FLIGHT"); // Sets up the fragment for the weather details.
                     }
@@ -524,7 +529,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                     else {
 
                         // Initializes the WWWeatherFragment object.
-                        weather_fragment = new WWWeatherFragment();
+                        weather_fragment = new SFOWeatherFragment();
                         weather_fragment.initializeFragment(airportWeatherModel, currentLocation, flightDestination);
                         setUpFragment(weather_fragment, "WEATHER"); // Sets up the fragment for the weather details.
                     }
@@ -541,7 +546,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // retrieve the list of events.
     private void setUpCardEvents() {
 
-        client = new WWClient("FLYSFO"); // Sets up the JSON client for retrieving SFO data.
+        client = new SFOClient("FLYSFO"); // Sets up the JSON client for retrieving SFO data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -552,7 +557,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                 Log.d(TAG, "Fly SFO API Handshake Success (JSONArray Response)" + response.toString()); // Logging.
 
-                models = WWEventModel.fromJson(response); // Builds an ArrayList of WWEventModel objects from the JSONArray.
+                models = SFOEventModel.fromJson(response); // Builds an ArrayList of WWEventModel objects from the JSONArray.
                 numberOfCards = models.size(); // Retrieves the number of card fragments to build.
 
                 setUpSlider(false); // Initializes the fragment slides for the PagerAdapter.
@@ -689,14 +694,14 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         notification_weather_status = (TextView) findViewById(R.id.notification_weather_status);
 
         // Sets up the custom font type for the TextView objects.
-        notification_flight_status.setTypeface(WWFont.getInstance(this).setRobotoLight());// Sets the custom font face.
-        notification_countdown_timer.setTypeface(WWFont.getInstance(this).setRobotoRegular());// Sets the custom font face.
-        notification_flight_number.setTypeface(WWFont.getInstance(this).setRobotoLight()); // Sets the custom font face.
-        notification_gate_number.setTypeface(WWFont.getInstance(this).setRobotoRegular()); // Sets the custom font face.
-        notification_weather_status.setTypeface(WWFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
+        notification_flight_status.setTypeface(SFOFont.getInstance(this).setRobotoLight());// Sets the custom font face.
+        notification_countdown_timer.setTypeface(SFOFont.getInstance(this).setRobotoRegular());// Sets the custom font face.
+        notification_flight_number.setTypeface(SFOFont.getInstance(this).setRobotoLight()); // Sets the custom font face.
+        notification_gate_number.setTypeface(SFOFont.getInstance(this).setRobotoRegular()); // Sets the custom font face.
+        notification_weather_status.setTypeface(SFOFont.getInstance(this).setBigNoodleTypeFace()); // Sets the custom font face.
 
         // Sets up a shadow effect for the TextView objects.
-        notification_flight_status.setShadowLayer(4, 0, 0, Color.BLACK);;// Sets the custom font face.
+        notification_flight_status.setShadowLayer(4, 0, 0, Color.BLACK);
         notification_countdown_timer.setShadowLayer(4, 0, 0, Color.BLACK);
         notification_flight_number.setShadowLayer(4, 0, 0, Color.BLACK);
         notification_gate_number.setShadowLayer(4, 0, 0, Color.BLACK);
@@ -714,7 +719,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // getAirportWeatherStatus(): Retrieves the current airport weather status.
     private void getAirportWeatherStatus() {
 
-        client = new WWClient("WEATHER-AIRPORT", airlineCode, flightNumber); // Sets up the JSON client for retrieving the airport weather data.
+        client = new SFOClient("WEATHER-AIRPORT", airlineCode, flightNumber); // Sets up the JSON client for retrieving the airport weather data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -725,7 +730,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                 Log.d(TAG, "Weather-Airport Handshake successful! " + response.toString()); // Logging.
                 //Toast.makeText(getApplicationContext(), "Weather Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
-                airportWeatherModel = WWAirportWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
+                airportWeatherModel = SFOAirportWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
                 String current_origin_weather = airportWeatherModel.getOriginWeatherStatus(); // Sets the weather status from the JSON string.
                 double current_origin_temperature = airportWeatherModel.getOriginTemperature(); // Sets the current temperature from the JSON string.
@@ -736,12 +741,12 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 int newTime = (int) (currentTime.toMillis(true) / 1000); // Converts the time into hours.
 
                 // Retrieves the appropriate weather image based on the value from the JSON string.
-                int weather_image = WWWeather.weatherGraphicSelector(current_origin_weather, newTime);
+                int weather_image = SFOWeather.weatherGraphicSelector(current_origin_weather, newTime);
 
                 // Sets the weather icon for the ImageView object.
                 Picasso.with(getApplicationContext())
                         .load(weather_image)
-                        .withOptions(WWImages.setBitmapOptions())
+                        .withOptions(SFOImages.setBitmapOptions())
                         .resize(48, 48)
                         .centerCrop()
                         .into(notification_weather_image);
@@ -763,7 +768,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // getWeatherStatus(): Retrieves the current weather status.
     private void getWeatherStatus() {
 
-        client = new WWClient("WEATHER"); // Sets up the JSON client for retrieving weather data.
+        client = new SFOClient("WEATHER"); // Sets up the JSON client for retrieving weather data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -774,7 +779,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
 
                 Log.d(TAG, "Weather Handshake successful! " + response.toString()); // Logging.
                 //Toast.makeText(getApplicationContext(), "Weather Handshake successful! " + response.toString(), Toast.LENGTH_SHORT).show();
-                weatherModel = WWWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
+                weatherModel = SFOWeatherModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
                 String current_weather = weatherModel.getWeather(); // Sets the weather status from the JSON string.
                 double current_temperature = weatherModel.getTemperature(); // Sets the current temperature from the JSON string.
@@ -785,12 +790,12 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 int newTime = (int) (currentTime.toMillis(true) / 1000); // Converts the time into hours.
 
                 // Retrieves the appropriate weather image based on the value from the JSON string.
-                int weather_image = WWWeather.weatherGraphicSelector(current_weather, newTime);
+                int weather_image = SFOWeather.weatherGraphicSelector(current_weather, newTime);
 
                 // Sets the weather icon for the ImageView object.
                 Picasso.with(getApplicationContext())
                         .load(weather_image)
-                        .withOptions(WWImages.setBitmapOptions())
+                        .withOptions(SFOImages.setBitmapOptions())
                         .resize(48, 48)
                         .centerCrop()
                         .into(notification_weather_image);
@@ -812,7 +817,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
     // getFlightStatus(): Retrieves the current flight status.
     private void getFlightStatus() {
 
-        client = new WWClient("FLIGHT_STATUS", airlineCode, flightNumber); // Sets up the JSON client for retrieving flight data.
+        client = new SFOClient("FLIGHT_STATUS", airlineCode, flightNumber); // Sets up the JSON client for retrieving flight data.
 
         // Attempts to retrieve the JSON data from the server.
         client.getJsonData(new JsonHttpResponseHandler() {
@@ -822,7 +827,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 Log.d(TAG, "Flight Handshake successful! " + response.toString()); // Logging.
-                flightModel = WWFlightModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
+                flightModel = SFOFlightModel.fromJson(response); // Attempts to retrieve a JSON string from the server.
 
                 flightDestination = flightModel.getDestinationCity(); // Gets the flight destination value from the JSON string.
                 timeToBoard = flightModel.getTimeToDeparture(); // Gets the time to board value from the JSON string.
@@ -832,7 +837,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
                 Log.d(TAG, "Time to departure value: " + timeToBoard); // Logging.
 
                 // Image to use as the airline flag.
-                int airline_logo = WWAirlineCodes.getAirlineIcon(airlineCode);
+                int airline_logo = SFOAirlineCodes.getAirlineIcon(airlineCode);
 
                 // Sets the weather icon for the ImageView object.
                 Picasso.with(getApplicationContext())
@@ -874,9 +879,9 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         // References the display parameters for the device.
         Display deviceWindow = this.getWindowManager().getDefaultDisplay();
 
-        currentOrientation = WWDisplay.updateDisplayLayout(this, deviceWindow); // Retrieves the device's display attributes.
-        resolutionDimens = WWDisplay.getResolution(deviceWindow);
-        displaySize = WWDisplay.getDisplaySize(resolutionDimens, currentOrientation);
+        currentOrientation = SFODisplay.updateDisplayLayout(this, deviceWindow); // Retrieves the device's display attributes.
+        resolutionDimens = SFODisplay.getResolution(deviceWindow);
+        displaySize = SFODisplay.getDisplaySize(resolutionDimens, currentOrientation);
     }
 
     /** SLIDER FUNCTIONALITY ___________________________________________________________________ **/
@@ -890,7 +895,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         for (int i = 0; i < numberOfSlides; i++) {
 
             // Initializes the card fragment and adds it to the deck.
-            WWCardFragment cardFragment = new WWCardFragment();
+            SFOCardFragment cardFragment = new SFOCardFragment();
             cardFragment.initializeFragment(i, models.get(i));
             fragments.add(cardFragment);
         }
@@ -1033,8 +1038,8 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         // If the notification conditions have been met, send out a voice and notification message.
         if (notifyTraveler) {
             startSpeech(message); // Creates a speech instance.
-            WWNotifications.createNotification(this, message); // Creates a notification instance.
-            WWVibration.vibrateDevice(500, this); // Vibrates the device.
+            SFONotifications.createNotification(this, message); // Creates a notification instance.
+            SFOVibration.vibrateDevice(500, this); // Vibrates the device.
         }
     }
 
@@ -1077,7 +1082,7 @@ public class WWMainActivity extends FragmentActivity implements WWCardFragment.O
         try {
 
             // Unbinds all Drawable objects attached to the current layout.
-            WWMemory.unbindDrawables(findViewById(R.id.ww_main_activity_layout));
+            SFOMemory.unbindDrawables(findViewById(R.id.ww_main_activity_layout));
         }
 
         catch (NullPointerException e) {

@@ -12,14 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import gpop.us.sfoexplorer.Device.WWDisplay;
+
+import gpop.us.sfoexplorer.Device.SFODisplay;
 import gpop.us.sfoexplorer.R;
-import gpop.us.sfoexplorer.UI.WWFont;
+import gpop.us.sfoexplorer.UI.SFOFont;
 
 /**
  * Created by Michael Yoon Huh on 12/13/2014.
  */
-public class WWSearchFragment extends Fragment {
+public class SFOSearchFragment extends Fragment {
 
     /** FRAGMENT VARIABLES _____________________________________________________________________ **/
 
@@ -27,7 +28,7 @@ public class WWSearchFragment extends Fragment {
     private View search_view; // References the layout for the fragment.
 
     // LOGGING VARIABLES
-    private static final String TAG = WWFlightNumberFragment.class.getSimpleName(); // Retrieves the simple name of the class.
+    private static final String TAG = SFOFlightNumberFragment.class.getSimpleName(); // Retrieves the simple name of the class.
 
     // LAYOUT VARIABLES
     private Button eatButton, electronicsButton, coffeeButton, booksButton, shopButton,
@@ -44,13 +45,13 @@ public class WWSearchFragment extends Fragment {
 
     /** INITIALIZATION FUNCTIONALITY ___________________________________________________________ **/
 
-    private final static WWSearchFragment search_fragment = new WWSearchFragment();
+    private final static SFOSearchFragment search_fragment = new SFOSearchFragment();
 
     // WWSearchFragment(): Deconstructor for the WWFlightNumberFragment.
-    public WWSearchFragment() {}
+    public SFOSearchFragment() {}
 
     // getInstance(): Returns the details_fragment instance.
-    public static WWSearchFragment getInstance() { return search_fragment; }
+    public static SFOSearchFragment getInstance() { return search_fragment; }
 
     /** FRAGMENT LIFECYCLE FUNCTIONALITY _______________________________________________________ **/
 
@@ -253,16 +254,16 @@ public class WWSearchFragment extends Fragment {
     private void setUpText() {
 
         // Sets the custom font face for the Button objects.
-        eatButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        electronicsButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        coffeeButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        booksButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        shopButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        entertainmentButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        atmButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        restroomButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        rentalButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
-        mapButton.setTypeface(WWFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        eatButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        electronicsButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        coffeeButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        booksButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        shopButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        entertainmentButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        atmButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        restroomButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        rentalButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
+        mapButton.setTypeface(SFOFont.getInstance(currentActivity).setRobotoLight()); // Sets the custom font face.
 
         // Sets up a shadow effect for the TextView objects.
         eatButton.setShadowLayer(8, 4, 4, Color.BLACK);
@@ -285,9 +286,9 @@ public class WWSearchFragment extends Fragment {
         // References the display parameters for the device.
         Display deviceWindow = currentActivity.getWindowManager().getDefaultDisplay();
 
-        currentOrientation = WWDisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
-        resolutionDimens = WWDisplay.getResolution(deviceWindow);
-        displaySize = WWDisplay.getDisplaySize(resolutionDimens, currentOrientation);
+        currentOrientation = SFODisplay.updateDisplayLayout(currentActivity, deviceWindow); // Retrieves the device's display attributes.
+        resolutionDimens = SFODisplay.getResolution(deviceWindow);
+        displaySize = SFODisplay.getDisplaySize(resolutionDimens, currentOrientation);
     }
 
     /** INTERFACE FUNCTIONALITY ________________________________________________________________ **/

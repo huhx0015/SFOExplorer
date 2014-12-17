@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sfo_terminal_2_airline_list">
+        <item>American Airlines</item>
+        <item>Continental Airlines</item>
+        <item>Delta Airlines</item>
+        <item>Southwest Airlines</item>
+        <item>US Airways</item>
+        <item>Virgin America</item>
+    </string-array>
+</resources>

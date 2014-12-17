@@ -90,8 +90,7 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:id="@+id/title_weather_icon"
-            android:layout_gravity="center"
-            android:src="@drawable/weather_partly_cloudy" />
+            android:layout_gravity="center" />
 
         <ImageView
             android:layout_width="wrap_content"

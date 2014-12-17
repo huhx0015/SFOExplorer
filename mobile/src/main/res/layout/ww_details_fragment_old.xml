@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ww_details_fragment_layout"
+    android:background="@android:color/transparent">
+
+    <!-- TODO this can be put in the scrollview below if we override the touch handling to 
+    split out the events to the correct scrollview for each as per:
+    http://stackoverflow.com/questions/2646028/android-horizontalscrollview-within-scrollview-touch-handling -->
+    <HorizontalScrollView
+        android:id="@+id/event_information_images_container"
+        android:background="#000"
+        android:layout_width="match_parent"
+        android:layout_height="250dp" >
+        <LinearLayout
+            android:id="@+id/event_information_images"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/details_scrollview">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/details_scrollview_container">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:id="@+id/details_map_parent_container"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:id="@+id/details_map_container"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:adjustViewBounds="false"
+                        android:id="@+id/airport_map_display"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:id="@+id/card_details_text_container"
+                android:padding="10dp"
+                android:background="@drawable/wet_asphalt_background">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Event Name"
+                    android:id="@+id/details_event_name"
+                    android:layout_gravity="center"
+                    android:textSize="36sp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/wet_asphalt_background">
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_height="0px"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TERMINAL 3"
+                    android:id="@+id/details_event_location"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/white" />
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_height="0px"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GATE A20"
+                    android:id="@+id/details_event_gate"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp" />
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_height="0px"
+                    />
+                <ImageView
+                    android:id="@+id/details_map_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/map_red_button"
+                    />
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="0px"
+                    android:layout_height="0px"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/belize_hole_background_transparent"
+                android:id="@+id/card_details_description_container"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This is an event description that goes here."
+                    android:id="@+id/card_details_event_description"
+                    android:textColor="@android:color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:textIsSelectable="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yellow_background"
+                android:padding="10dp"
+                android:id="@+id/card_details_bonus_container">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Earn Extra Miles"
+                    android:id="@+id/card_details_bonus_text"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_details_bonus_spacer_1"
+                    android:padding="5dp"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/card_details_bonus_code_container"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/card_details_bonus_code_1"
+                        android:src="@drawable/barcode" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/card_details_bonus_spacer_2"
+                        android:padding="5dp"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/card_details_bonus_code_2"
+                        android:src="@drawable/qrcode" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:id="@+id/card_details_bottom_spacer"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_back_button"
+        android:layout_gravity="left|top"
+        android:src="@drawable/back"
+        android:background="@android:color/transparent"
+        android:padding="10dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_zoom_button"
+        android:layout_gravity="right|top"
+        android:src="@drawable/glass"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
+
+</LinearLayout>

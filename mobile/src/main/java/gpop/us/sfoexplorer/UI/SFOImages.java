@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 /**
  * Created by Michael Yoon Huh on 11/18/2014.
  */
-public class WWImages {
+public class SFOImages {
 
     /** CLASS FUNCTIONALITY ____________________________________________________________________ **/
 

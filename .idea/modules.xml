@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Airport_Explorer.iml" filepath="$PROJECT_DIR$/Airport_Explorer.iml" />
       <module fileurl="file://$PROJECT_DIR$/SFO_Explorer.iml" filepath="$PROJECT_DIR$/SFO_Explorer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/WearableWorldConnectedAirport.iml" filepath="$PROJECT_DIR$/WearableWorldConnectedAirport.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/wear/wear.iml" filepath="$PROJECT_DIR$/wear/wear.iml" />
     </modules>

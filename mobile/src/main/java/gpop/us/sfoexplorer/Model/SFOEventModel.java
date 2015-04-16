@@ -31,6 +31,14 @@ public class SFOEventModel implements Serializable {
     private String event_type;
     private String gate_location;
 
+    // NEW
+    private ArrayList<String> websiteUrl;
+    private String event_category;
+    private String yelp_stars;
+    private String latitude;
+    private String longitude;
+    private ArrayList<String> foursquare_photos;
+
     // LOGGING VARIABLES
     private static final String TAG = SFOEventModel.class.getSimpleName(); // Retrieves the simple name of the class.
 
@@ -53,6 +61,13 @@ public class SFOEventModel implements Serializable {
     public String getEventType() { return event_type; }
     public String getGateLocation() { return gate_location; }
 
+    public ArrayList<String> getWebsiteUrl() { return websiteUrl; }
+    public String getEventCategory() { return event_category; }
+    public String getYelpStars() { return yelp_stars; }
+    public String getLatitude() { return latitude; }
+    public String getLongitude() { return longitude; }
+    public ArrayList<String> getFoursquarePhotos() { return foursquare_photos; }
+
     // SET FUNCTIONS:
     public void setProximity(int prox) { proximity = prox; }
     public void setEventTitle(String name) { event_title = name; }
@@ -69,6 +84,13 @@ public class SFOEventModel implements Serializable {
     public void setEventWebsite(String site) { event_website = site; }
     public void setEventType(String type) { event_type = type; }
     public void setGateLocation(String gate) { gate_location = gate; }
+
+    public void setWebsiteUrl(ArrayList<String> url) { websiteUrl = url; }
+    public void setEventCategory(String cat) { event_category = cat; }
+    public void setYelpStars(String stars) { yelp_stars = stars; }
+    public void setLatitude(String lat) { latitude = lat; }
+    public void setLongitude(String longi) { longitude = longi; }
+    public void setFoursquarePhotos(ArrayList<String> photos) { foursquare_photos = photos; }
 
     /** JSON FUNCTIONALITY _____________________________________________________________________ **/
 
@@ -94,6 +116,25 @@ public class SFOEventModel implements Serializable {
             model.security_location = jsonObject.getString("security"); // Security.
             model.event_website = jsonObject.getString("website"); // Website URL.
             model.gate_location = jsonObject.getString("gate"); // Gate location.
+
+            // Builds the array of image URLs for the website URLs.
+            JSONArray websiteUrls = jsonObject.getJSONArray("website");
+            for (int i = 0; i < websiteUrls.length(); i++) {
+                String str_image_url = websiteUrls.getString(i);
+                model.websiteUrl.add(str_image_url);
+            }
+
+            // Builds the array of image URLs for the Foursquare URLs.
+            JSONArray foursquareUrls = jsonObject.getJSONArray("foursqaure_photos");
+            for (int i = 0; i < foursquareUrls.length(); i++) {
+                String str_image_url = foursquareUrls.getString(i);
+                model.foursquare_photos.add(str_image_url);
+            }
+
+            //model.event_category = jsonObject.getString("category");
+            model.yelp_stars = jsonObject.getString("yelp_stars");
+            model.latitude = jsonObject.getString("lat");
+            model.longitude = jsonObject.getString("lon");
         }
 
         // Exception handler.

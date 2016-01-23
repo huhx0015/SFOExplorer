@@ -7,6 +7,14 @@ Platform: Android
 
 ![sfoexplorer_preview](https://cloud.githubusercontent.com/assets/1645482/12527799/812cd75e-c137-11e5-90f7-3901468086fd.png)
 
+Event: Wearable World Invents: The Connected Airport
+
+Event Time: November 17 - 18, 2014 (Round 1) | December 17, 2014 (Round 2)
+
+Event Website: https://wwinvents.splashthat.com/
+
+DevPost: http://wwinvents.devpost.com/submissions/30338-sfo-explorer
+
 Find things to do at San Francisco International Airport while waiting for your flights!
 
 For the Wearable Worlds: The Connected Airport hackathon, we wanted to focus on some of the pain points that travelers encounter while at an airport. One of the pain points we have often heard about from travelers is what to do at airports during long waits or layovers before departure time.

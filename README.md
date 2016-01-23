@@ -1,7 +1,7 @@
 SFO Explorer | Wearable World Invents: The Connected Airport
 ============
 
-Team: Michael Huh, Ibrahim Kabil, David Lee
+Team: Michael Huh, Ibrahim Kabil, David Lee, Lance Nanek
 
 Platform: Android
 

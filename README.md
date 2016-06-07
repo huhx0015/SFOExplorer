@@ -5,7 +5,10 @@ Team: Michael Huh, Ibrahim Kabil, David Lee, Lance Nanek
 
 Platform: Android
 
+### SFO EXPLORER
 ![sfoexplorer_preview](https://cloud.githubusercontent.com/assets/1645482/12527799/812cd75e-c137-11e5-90f7-3901468086fd.png)
+
+## Event
 
 Event: Wearable World Invents: The Connected Airport
 
@@ -14,6 +17,8 @@ Event Time: November 17 - 18, 2014 (Round 1) | December 17, 2014 (Round 2)
 Event Website: https://wwinvents.splashthat.com/
 
 DevPost: http://wwinvents.devpost.com/submissions/30338-sfo-explorer
+
+## Description
 
 Find things to do at San Francisco International Airport while waiting for your flights!
 

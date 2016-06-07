@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.wearable.view.WatchViewStub
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/watch_view_stub"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    app:rectLayout="@layout/ww_main_activity_wear_rect"
-    app:roundLayout="@layout/ww_main_activity_wear_round" tools:context=".WWMainActivityWear"
-    tools:deviceIds="wear"></android.support.wearable.view.WatchViewStub>

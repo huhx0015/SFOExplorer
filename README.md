@@ -18,6 +18,8 @@ Event Website: https://wwinvents.splashthat.com/
 
 DevPost: http://wwinvents.devpost.com/submissions/30338-sfo-explorer
 
+YouTube: https://www.youtube.com/watch?v=z4DrALRak4k
+
 ## Description
 
 Find things to do at San Francisco International Airport while waiting for your flights!
